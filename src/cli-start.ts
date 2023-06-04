@@ -55,7 +55,7 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
   else {
     switch (preset) {
       case 'minimal':
-        usePreset = await import('./presets/minimal.ts').then(m => m.minimal)
+        usePreset = await import('./presets/minimal.ts').then(m => m.minimalPreset)
         break
       default:
         throw new Error(`Preset ${preset} not yet implemented`)
