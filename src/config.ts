@@ -8,6 +8,7 @@ import type { LogLevel } from './types.ts'
 export type { LoadConfigResult, LoadConfigSource }
 
 export * from './types.ts'
+export * from './presets'
 export {
   defaultAssetName,
   defaultPngCompressionOptions,

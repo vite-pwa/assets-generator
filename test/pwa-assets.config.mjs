@@ -1,10 +1,7 @@
-import { defineConfig } from '@vite-pwa/assets-generator/config'
-import { minimal } from '@vite-pwa/assets-generator/presets/minimal'
+import { defineConfig, minimal as preset } from '@vite-pwa/assets-generator/config'
 
 export default defineConfig({
-  preset: {
-    ...minimal,
-  },
+  preset,
   images: [
     'elk/public/logo.svg',
     'elk/public-dev/logo.svg',
