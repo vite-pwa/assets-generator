@@ -5,6 +5,10 @@ dev-dist
 # intellij stuff
 .idea/
 test/elk/public/*.png
+test/elk/public/*.ico
 test/elk/public-dev/*.png
+test/elk/public-dev/*.ico
 test/elk/public-staging/*.png
+test/elk/public-staging/*.ico
 test/pwa/public/*.png
+test/pwa/public/*.ico
