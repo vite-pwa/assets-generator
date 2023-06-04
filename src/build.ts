@@ -4,7 +4,7 @@ import { dirname, resolve } from 'node:path'
 import type { PngOptions } from 'sharp'
 import sharp from 'sharp'
 import { encode } from 'sharp-ico'
-import type { AssetType, Favicon, ResolvedAssetSize, ResolvedAssets, ResolvedBuildOptions } from './types.ts'
+import type { AssetType, ResolvedAssetSize, ResolvedAssets, ResolvedBuildOptions } from './types.ts'
 import {
   defaultAssetName,
   defaultPngCompressionOptions,
@@ -56,9 +56,7 @@ async function generateFavicon(
   if (!favicons)
     return
 
-  const faviconsArray: Favicon[] = Array.isArray(favicons) ? favicons as Favicon[] : [favicons]
-
-  await Promise.all(faviconsArray.map(async ([size, name]) => {
+  await Promise.all(favicons.map(async ([size, name]) => {
     const favicon = resolve(folder, name)
     if (!overrideAssets && existsSync(favicon))
       return
@@ -86,7 +84,6 @@ function extractAssetSize(size: ResolvedAssetSize, padding: number) {
 }
 
 async function optimizePng(filePath: string, png: PngOptions) {
-  await new Promise(resolve => setTimeout(resolve, 100))
   await sharp(filePath).png(png).toFile(`${filePath.replace(/-temp\.png$/, '.png')}`)
   await rm(filePath)
 }

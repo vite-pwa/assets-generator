@@ -17,14 +17,14 @@ export interface Asset {
   sizes: AssetSize[]
   padding?: number
   resizeOptions?: ResizeOptions
-  favicons?: Favicon | Favicon[]
+  favicons?: Favicon[]
 }
 
 export type AssetType = 'transparent' | 'maskable' | 'apple' // | 'screenshot
 
 export interface ResolvedAsset extends Required<Omit<Asset, 'favicons' | 'sizes'>> {
   sizes: ResolvedAssetSize[]
-  favicons?: Favicon | Favicon[]
+  favicons?: Favicon[]
 }
 
 export interface Assets extends Record<AssetType, Asset> {
