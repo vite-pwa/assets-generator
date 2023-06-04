@@ -57,7 +57,8 @@
     "lint": "eslint .",
     "lint-fix": "nr lint --fix",
     "prepublishOnly": "npm run build",
-    "release": "bumpp && npm publish --access=public"
+    "release": "bumpp && npm publish --access=public",
+    "test": "pnpm -C test run test"
   },
   "dependencies": {
     "cac": "^6.7.14",
