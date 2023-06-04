@@ -1,5 +1,5 @@
 <p align='center'>
-<img src='https://raw.githubusercontent.com/vite-pwa/assets-generator/main/hero.png' alt="@vite-pwa/assets-generator - Zero-config PWA Assets Generator"><br>
+<img src='./hero.svg' alt="@vite-pwa/assets-generator - Zero-config PWA Assets Generator"><br>
 Zero-config PWA Assets Generator
 </p>
 
