@@ -1,0 +1,10 @@
+node_modules
+.DS_Store
+dist
+dev-dist
+# intellij stuff
+.idea/
+test/elk/public/*.png
+test/elk/public-dev/*.png
+test/elk/public-staging/*.png
+test/pwa/public/*.png
