@@ -1,6 +1,6 @@
 import type { Preset } from '../preset.ts'
 
-export const minimal: Preset = {
+export const minimalPreset: Preset = {
   transparent: {
     sizes: [64, 192, 512],
     favicons: [[64, 'favicon.ico']],

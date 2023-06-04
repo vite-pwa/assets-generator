@@ -1,1 +1,1 @@
-export { minimal } from './minimal'
+export * from './minimal'
