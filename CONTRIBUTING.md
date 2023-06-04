@@ -27,4 +27,4 @@ git checkout -b my-new-branch
 
 ## Running tests
 
-Build the project from root folder and the test (`nr build && nr test`).
+Build the project from root folder and run the test (`nr build && nr test`).
