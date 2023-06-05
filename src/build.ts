@@ -21,14 +21,8 @@ export async function generatePWAImageAssets(
   image: string,
   assets: ResolvedAssets,
 ) {
-  let useRoot = normalizePath(resolve(buildOptions.root))
-  if (useRoot[useRoot.length - 1] !== '/')
-    useRoot += '/'
-
-  const imagePath = normalizePath(resolve(useRoot, image))
-  let folder = normalizePath(dirname(imagePath))
-  if (folder[folder.length - 1] !== '/')
-    folder += '/'
+  const imagePath = resolve(buildOptions.root, image)
+  const folder = dirname(imagePath)
 
   await Promise.all([
     generateTransparentAssets(buildOptions, assets, imagePath, folder),
@@ -86,12 +80,12 @@ function extractAssetSize(size: ResolvedAssetSize, padding: number) {
 }
 
 async function optimizePng(filePath: string, png: PngOptions) {
-  await sharp(filePath).png(png).toFile(`${filePath.replace(/-temp\.png$/, '.png')}`)
-  await rm(filePath)
-}
-
-function normalizePath(path: string) {
-  return path.replace(/\\/g, '/')
+  try {
+    await sharp(filePath).png(png).toFile(`${filePath.replace(/-temp\.png$/, '.png')}`)
+  }
+  finally {
+    await rm(filePath, { force: true })
+  }
 }
 
 function resolveTempPngAssetName(name: string) {
@@ -107,7 +101,7 @@ async function generateTransparentAssets(
   const asset = assets.assets.transparent
   const { sizes, padding, resizeOptions } = asset
   await Promise.all(sizes.map(async (size) => {
-    let filePath = normalizePath(resolve(folder, assets.assetName('transparent', size)))
+    let filePath = resolve(folder, assets.assetName('transparent', size))
     if (!buildOptions.overrideAssets && existsSync(filePath))
       return
 
@@ -143,7 +137,7 @@ async function generateMaskableAssets(
   const asset = assets.assets[type]
   const { sizes, padding, resizeOptions } = asset
   await Promise.all(sizes.map(async (size) => {
-    let filePath = normalizePath(resolve(folder, assets.assetName(type, size)))
+    let filePath = resolve(folder, assets.assetName(type, size))
     if (!buildOptions.overrideAssets && existsSync(filePath))
       return
 
