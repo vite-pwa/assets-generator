@@ -1,4 +1,6 @@
 import cac from 'cac'
+import { consola } from 'consola'
+import { green } from 'colorette'
 import { version } from '../package.json'
 import { loadConfig } from './config.ts'
 import type { BuiltInPreset, Preset, ResolvedAssets, UserConfig } from './config.ts'
@@ -28,6 +30,9 @@ export async function startCli(args: string[] = process.argv) {
 }
 
 async function run(images: string[] = [], cliOptions: CliOptions = {}) {
+  consola.log(green(`Zero Config PWA Assets Generator v${version}`))
+  consola.start('Preparing to generate PWA assets...')
+
   const root = cliOptions?.root ?? process.cwd()
 
   const { config } = await loadConfig<UserConfig>(root, cliOptions)
@@ -45,8 +50,10 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
     logLevel = 'info',
     overrideAssets = true,
     preset = 'minimal',
-    images: useImages,
+    images: configImages,
   } = config
+
+  const useImages = Array.isArray(configImages) ? configImages : [configImages]
 
   let usePreset: Preset
   if (typeof preset === 'object') {
@@ -77,9 +84,13 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
     assetName,
   }
 
+  consola.ready('PWA assets ready to be generated')
+  consola.start(`Generating PWA assets from ${useImages.join(', ')} image${useImages.length > 1 ? 's' : ''}`)
+
   await generatePWAAssets(
-    typeof useImages === 'string' ? [useImages] : useImages,
+    useImages,
     assets,
     { root, logLevel, overrideAssets },
   )
+  consola.ready('PWA assets generated')
 }

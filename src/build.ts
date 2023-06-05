@@ -1,6 +1,8 @@
 import { existsSync } from 'node:fs'
 import { rm, writeFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
+import { consola } from 'consola'
+import { green, yellow } from 'colorette'
 import type { PngOptions } from 'sharp'
 import sharp from 'sharp'
 import { encode } from 'sharp-ico'
@@ -53,15 +55,26 @@ async function generateFavicon(
 
   await Promise.all(favicons.map(async ([size, name]) => {
     const favicon = resolve(folder, name)
-    if (!buildOptions.overrideAssets && existsSync(favicon))
+    if (!buildOptions.overrideAssets && existsSync(favicon)) {
+      if (buildOptions.logLevel !== 'silent')
+        consola.log(yellow(`Skipping, ICO file already exists: ${favicon}`))
+
       return
+    }
 
     const png = resolve(folder, assets.assetName(type, toResolvedSize(size)))
-    if (!existsSync(png))
+    if (!existsSync(png)) {
+      if (buildOptions.logLevel !== 'silent')
+        consola.log(yellow(`Skipping: ${favicon}, missing PNG source file: ${png}`))
+
       return
+    }
 
     const pngBuffer = await sharp(png).toFormat('png').toBuffer()
     await writeFile(favicon, encode([pngBuffer]))
+
+    if (buildOptions.logLevel !== 'silent')
+      consola.ready(green(`Generated ICO file: ${favicon}`))
   }))
 }
 
@@ -102,8 +115,12 @@ async function generateTransparentAssets(
   const { sizes, padding, resizeOptions } = asset
   await Promise.all(sizes.map(async (size) => {
     let filePath = resolve(folder, assets.assetName('transparent', size))
-    if (!buildOptions.overrideAssets && existsSync(filePath))
+    if (!buildOptions.overrideAssets && existsSync(filePath)) {
+      if (buildOptions.logLevel !== 'silent')
+        consola.log(yellow(`Skipping, PNG file already exists: ${filePath}`))
+
       return
+    }
 
     filePath = resolveTempPngAssetName(filePath)
     const { width, height } = extractAssetSize(size, padding)
@@ -123,6 +140,9 @@ async function generateTransparentAssets(
         ).toBuffer(),
     }]).toFile(filePath)
     await optimizePng(filePath, assets.png)
+    if (buildOptions.logLevel !== 'silent')
+      consola.ready(green(`Generated PNG file: ${filePath.replace(/-temp\.png$/, '.png')}`))
+
     await generateFavicon(buildOptions, folder, 'transparent', assets)
   }))
 }
@@ -138,8 +158,12 @@ async function generateMaskableAssets(
   const { sizes, padding, resizeOptions } = asset
   await Promise.all(sizes.map(async (size) => {
     let filePath = resolve(folder, assets.assetName(type, size))
-    if (!buildOptions.overrideAssets && existsSync(filePath))
+    if (!buildOptions.overrideAssets && existsSync(filePath)) {
+      if (buildOptions.logLevel !== 'silent')
+        consola.log(yellow(`Skipping, PNG file already exists: ${filePath}`))
+
       return
+    }
 
     filePath = resolveTempPngAssetName(filePath)
     const { width, height } = extractAssetSize(size, padding)
@@ -159,6 +183,9 @@ async function generateMaskableAssets(
         ).toBuffer(),
     }]).toFile(filePath)
     await optimizePng(filePath, assets.png)
+    if (buildOptions.logLevel !== 'silent')
+      consola.ready(green(`Generated PNG file: ${filePath.replace(/-temp\.png$/, '.png')}`))
+
     await generateFavicon(buildOptions, folder, type, assets)
   }))
 }
