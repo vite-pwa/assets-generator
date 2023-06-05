@@ -13,6 +13,7 @@ import {
   toResolvedSize,
 } from './utils.ts'
 
+export * from './types'
 export { defaultAssetName, defaultPngCompressionOptions, defaultPngOptions, toResolvedAsset }
 
 export async function generatePWAImageAssets(
@@ -46,7 +47,7 @@ export async function generatePWAAssets(
 }
 
 async function generateFavicon(
-  { overrideAssets }: ResolvedBuildOptions,
+  buildOptions: ResolvedBuildOptions,
   folder: string,
   type: AssetType,
   assets: ResolvedAssets,
@@ -58,7 +59,7 @@ async function generateFavicon(
 
   await Promise.all(favicons.map(async ([size, name]) => {
     const favicon = resolve(folder, name)
-    if (!overrideAssets && existsSync(favicon))
+    if (!buildOptions.overrideAssets && existsSync(favicon))
       return
 
     const png = resolve(folder, assets.assetName(type, toResolvedSize(size)))
@@ -77,6 +78,7 @@ function extractAssetSize(size: ResolvedAssetSize, padding: number) {
   const height = typeof size.original === 'number'
     ? size.original
     : size.original.height
+
   return {
     width: Math.round(width * (1 - padding)),
     height: Math.round(height * (1 - padding)),

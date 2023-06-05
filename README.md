@@ -46,6 +46,7 @@ Zero-config PWA Assets Generator
 ## 📦 Install
 
 ```bash
+# npm 
 npm i @vite-pwa/assets-generator -D 
 
 # yarn 
@@ -66,7 +67,7 @@ export default defineConfig({
   preset,
   images: [
     'public/logo.svg',
-    'public-dev/logo.svg',
+    'public-dev/logo.svg'
   ]
 })
 ```
