@@ -54,11 +54,7 @@ async function generateFavicon(
   if (!favicons)
     return
 
-  await Promise.all(favicons.map(async ([size, name]) => {
-    // don't generate favicons multiple times
-    if (!sameAssetSize(size, assetSize))
-      return
-
+  await Promise.all(favicons.map(async ([_size, name]) => {
     const favicon = resolve(folder, name)
     if (!buildOptions.overrideAssets && existsSync(favicon)) {
       if (buildOptions.logLevel !== 'silent')
