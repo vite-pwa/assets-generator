@@ -82,7 +82,6 @@ export async function loadConfig<U extends UserConfig>(
   extraConfigSources: LoadConfigSource[] = [],
   defaults: UserConfig = { overrideAssets: true, logLevel: 'info' },
 ): Promise<LoadConfigResult<U>> {
-  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   let inlineConfig = {} as U
   if (typeof configOrPath !== 'string') {
     inlineConfig = configOrPath

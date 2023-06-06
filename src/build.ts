@@ -10,7 +10,8 @@ import type { AssetType, ResolvedAssetSize, ResolvedAssets, ResolvedBuildOptions
 import {
   defaultAssetName,
   defaultPngCompressionOptions,
-  defaultPngOptions, sameAssetSize,
+  defaultPngOptions,
+  sameAssetSize,
   toResolvedAsset,
 } from './utils.ts'
 
