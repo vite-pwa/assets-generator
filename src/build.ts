@@ -11,8 +11,8 @@ import {
   defaultAssetName,
   defaultPngCompressionOptions,
   defaultPngOptions,
+  sameAssetSize,
   toResolvedAsset,
-  toResolvedSize,
 } from './utils.ts'
 
 export * from './types'
@@ -47,13 +47,14 @@ async function generateFavicon(
   folder: string,
   type: AssetType,
   assets: ResolvedAssets,
+  assetSize: ResolvedAssetSize,
 ) {
   const asset = assets.assets[type]
-  const favicons = asset?.favicons
+  const favicons = asset?.favicons?.filter(([size]) => sameAssetSize(size, assetSize))
   if (!favicons)
     return
 
-  await Promise.all(favicons.map(async ([size, name]) => {
+  await Promise.all(favicons.map(async ([_size, name]) => {
     const favicon = resolve(folder, name)
     if (!buildOptions.overrideAssets && existsSync(favicon)) {
       if (buildOptions.logLevel !== 'silent')
@@ -62,7 +63,7 @@ async function generateFavicon(
       return
     }
 
-    const png = resolve(folder, assets.assetName(type, toResolvedSize(size)))
+    const png = resolve(folder, assets.assetName(type, assetSize))
     if (!existsSync(png)) {
       if (buildOptions.logLevel !== 'silent')
         consola.log(yellow(`Skipping: ${favicon}, missing PNG source file: ${png}`))
@@ -143,7 +144,7 @@ async function generateTransparentAssets(
     if (buildOptions.logLevel !== 'silent')
       consola.ready(green(`Generated PNG file: ${filePath.replace(/-temp\.png$/, '.png')}`))
 
-    await generateFavicon(buildOptions, folder, 'transparent', assets)
+    await generateFavicon(buildOptions, folder, 'transparent', assets, size)
   }))
 }
 
@@ -186,6 +187,6 @@ async function generateMaskableAssets(
     if (buildOptions.logLevel !== 'silent')
       consola.ready(green(`Generated PNG file: ${filePath.replace(/-temp\.png$/, '.png')}`))
 
-    await generateFavicon(buildOptions, folder, type, assets)
+    await generateFavicon(buildOptions, folder, type, assets, size)
   }))
 }
