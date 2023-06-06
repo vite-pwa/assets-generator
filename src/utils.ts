@@ -39,3 +39,13 @@ export function defaultAssetName(type: AssetType, size: ResolvedAssetSize) {
       return `apple-touch-icon-${size.width}x${size.height}.png`
   }
 }
+
+export function sameAssetSize(a: AssetSize, b: ResolvedAssetSize) {
+  if (typeof a === 'number' && typeof b.original === 'number')
+    return a === b.original
+
+  if (typeof a !== 'number' && typeof b.original !== 'number')
+    return a.width === b.width && a.height === b.height
+
+  return false
+}
