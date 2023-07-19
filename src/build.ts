@@ -8,11 +8,13 @@ import sharp from 'sharp'
 import { encode } from 'sharp-ico'
 import type { AssetType, Favicon, ResolvedAssetSize, ResolvedAssets, ResolvedBuildOptions } from './types.ts'
 import {
+  cloneResolvedAssetsSizes,
   defaultAssetName,
   defaultPngCompressionOptions,
   defaultPngOptions,
   sameAssetSize,
-  toResolvedAsset, toResolvedSize,
+  toResolvedAsset,
+  toResolvedSize,
 } from './utils.ts'
 
 export * from './types'
@@ -26,19 +28,19 @@ export async function generatePWAImageAssets(
   const imagePath = resolve(buildOptions.root, image)
   const folder = dirname(imagePath)
 
-  const pngToDelete: string[] = []
+  const pngFilesToDelete: string[] = []
 
-  collectMissingFavicons(assets, pngToDelete, folder)
+  const newAssets = collectMissingFavicons(assets, pngFilesToDelete, folder)
 
   await Promise.all([
-    generateTransparentAssets(buildOptions, assets, imagePath, folder),
-    generateMaskableAssets('maskable', buildOptions, assets, imagePath, folder),
-    generateMaskableAssets('apple', buildOptions, assets, imagePath, folder),
+    generateTransparentAssets(buildOptions, newAssets, imagePath, folder),
+    generateMaskableAssets('maskable', buildOptions, newAssets, imagePath, folder),
+    generateMaskableAssets('apple', buildOptions, newAssets, imagePath, folder),
   ])
 
-  if (pngToDelete.length) {
+  if (pngFilesToDelete.length) {
     consola.start('Deleting unused PNG files')
-    await Promise.all(pngToDelete.map((png) => {
+    await Promise.all(pngFilesToDelete.map((png) => {
       consola.ready(green(`Deleting PNG file: ${png}`))
       return rm(png, { force: true })
     }))
@@ -52,17 +54,19 @@ export async function generatePWAAssets(
   buildOptions: ResolvedBuildOptions,
 
 ) {
-  await Promise.all(images.map(image => generatePWAImageAssets(buildOptions, image, assets)))
+  for (const image of images)
+    await generatePWAImageAssets(buildOptions, image, assets)
 }
 
 function collectMissingFavicons(
-  assets: ResolvedAssets,
-  pngToDelete: string[],
+  resolvedAssets: ResolvedAssets,
+  pngFilesToDelete: string[],
   folder: string,
 ) {
   const missingFavicons = new Map<AssetType, Favicon[]>()
+  const newAssets = cloneResolvedAssetsSizes(resolvedAssets)
   // generate missing favicon icons
-  Object.entries(assets.assets).forEach(([type, asset]) => {
+  Object.entries(newAssets.assets).forEach(([type, asset]) => {
     const favicons = asset.favicons
     if (!favicons)
       return
@@ -74,7 +78,7 @@ function collectMissingFavicons(
       if (generate) {
         const resolvedSize = toResolvedSize(size)
         entriesToAdd.push(resolvedSize)
-        pngToDelete.push(resolve(folder, assets.assetName(type as AssetType, resolvedSize)))
+        pngFilesToDelete.push(resolve(folder, newAssets.assetName(type as AssetType, resolvedSize)))
         let entry = missingFavicons.get(type as AssetType)
         if (!entry) {
           entry = []
@@ -87,6 +91,8 @@ function collectMissingFavicons(
     if (entriesToAdd.length)
       asset.sizes.push(...entriesToAdd)
   })
+
+  return newAssets
 }
 
 async function generateFavicon(
