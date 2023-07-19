@@ -1,5 +1,5 @@
 import type { PngOptions, ResizeOptions } from 'sharp'
-import type { Asset, AssetSize, AssetType, ResolvedAsset, ResolvedAssetSize } from './types.ts'
+import type { Asset, AssetSize, AssetType, ResolvedAsset, ResolvedAssetSize, ResolvedAssets } from './types.ts'
 
 export const defaultPngCompressionOptions: PngOptions = {
   compressionLevel: 9,
@@ -48,4 +48,23 @@ export function sameAssetSize(a: AssetSize, b: ResolvedAssetSize) {
     return a.width === b.width && a.height === b.height
 
   return false
+}
+
+export function cloneResolvedAssetsSizes({ png, assetName, assets }: ResolvedAssets) {
+  return {
+    assets: {
+      transparent: cloneResolvedAssetSizes(assets.transparent),
+      maskable: cloneResolvedAssetSizes(assets.maskable),
+      apple: cloneResolvedAssetSizes(assets.apple),
+    },
+    png,
+    assetName,
+  } satisfies ResolvedAssets
+}
+
+export function cloneResolvedAssetSizes({ sizes, ...asset }: ResolvedAsset) {
+  return {
+    ...asset,
+    sizes: [...sizes],
+  } satisfies ResolvedAsset
 }

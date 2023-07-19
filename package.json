@@ -2,7 +2,7 @@
   "name": "@vite-pwa/assets-generator",
   "type": "module",
   "version": "0.0.3",
-  "packageManager": "pnpm@8.6.1",
+  "packageManager": "pnpm@8.6.8",
   "description": "Zero-config PWA Assets Generator",
   "author": "antfu <anthonyfu117@hotmail.com>",
   "license": "MIT",
