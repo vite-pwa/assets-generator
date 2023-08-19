@@ -3,10 +3,18 @@ import { rm, writeFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { consola } from 'consola'
 import { green, yellow } from 'colorette'
-import type { PngOptions } from 'sharp'
+import type { PngOptions, ResizeOptions } from 'sharp'
 import sharp from 'sharp'
 import { encode } from 'sharp-ico'
-import type { AssetType, Favicon, ResolvedAssetSize, ResolvedAssets, ResolvedBuildOptions } from './types.ts'
+import type {
+  AppleDeviceSize,
+  AssetType,
+  Favicon,
+  ResolvedAppleSplashScreens,
+  ResolvedAssetSize,
+  ResolvedAssets,
+  ResolvedBuildOptions,
+} from './types.ts'
 import {
   cloneResolvedAssetsSizes,
   defaultAssetName,
@@ -16,6 +24,7 @@ import {
   toResolvedAsset,
   toResolvedSize,
 } from './utils.ts'
+import { createHtmlLink } from './splash.ts'
 
 export * from './types'
 export { defaultAssetName, defaultPngCompressionOptions, defaultPngOptions, toResolvedAsset }
@@ -24,6 +33,7 @@ export async function generatePWAImageAssets(
   buildOptions: ResolvedBuildOptions,
   image: string,
   assets: ResolvedAssets,
+  appleSplashScreens?: ResolvedAppleSplashScreens,
 ) {
   const imagePath = resolve(buildOptions.root, image)
   const folder = dirname(imagePath)
@@ -46,16 +56,27 @@ export async function generatePWAImageAssets(
     }))
     consola.ready('Unused PNG files deleted')
   }
+
+  if (appleSplashScreens && appleSplashScreens.sizes.length) {
+    const appleLinks: string[] = []
+    consola.start('Generating Apple Splash Screens...')
+    await generateAppleSplashScreens(buildOptions, appleSplashScreens, imagePath, folder, appleLinks)
+    if (buildOptions.logLevel !== 'silent' && appleLinks.length && appleSplashScreens.linkMediaOptions.log) {
+      consola.start('Apple Splash Screens Links:')
+      appleLinks.forEach(link => consola.ready(green(link)))
+    }
+    consola.ready('Apple Splash Screens generated')
+  }
 }
 
 export async function generatePWAAssets(
   images: string[],
   assets: ResolvedAssets,
   buildOptions: ResolvedBuildOptions,
-
+  appleSplashScreens?: ResolvedAppleSplashScreens,
 ) {
   for (const image of images)
-    await generatePWAImageAssets(buildOptions, image, assets)
+    await generatePWAImageAssets(buildOptions, image, assets, appleSplashScreens)
 }
 
 function collectMissingFavicons(
@@ -143,6 +164,13 @@ function extractAssetSize(size: ResolvedAssetSize, padding: number) {
   return {
     width: Math.round(width * (1 - padding)),
     height: Math.round(height * (1 - padding)),
+  }
+}
+
+function extractAppleDeviceSize(size: AppleDeviceSize, padding: number) {
+  return {
+    width: Math.round(size.width * (1 - padding)),
+    height: Math.round(size.height * (1 - padding)),
   }
 }
 
@@ -241,5 +269,102 @@ async function generateMaskableAssets(
       consola.ready(green(`Generated PNG file: ${filePath.replace(/-temp\.png$/, '.png')}`))
 
     await generateFavicon(buildOptions, folder, type, assets, size)
+  }))
+}
+
+interface SplashScreenData {
+  size: AppleDeviceSize
+  landscape: boolean
+  dark?: boolean
+  resizeOptions?: ResizeOptions
+  padding: number
+  png: PngOptions
+}
+
+async function generateAppleSplashScreens(
+  buildOptions: ResolvedBuildOptions,
+  { linkMediaOptions, name, sizes, png }: ResolvedAppleSplashScreens,
+  image: string,
+  folder: string,
+  links: string[],
+) {
+  const splashScreens: SplashScreenData[] = sizes.reduce((acc, size) => {
+    acc.push({
+      size,
+      landscape: false,
+      dark: size.darkResizeOptions ? false : undefined,
+      resizeOptions: size.resizeOptions,
+      padding: size.padding ?? 0.3,
+      png: size.png ?? png,
+    })
+    acc.push({
+      size,
+      landscape: true,
+      dark: size.darkResizeOptions ? false : undefined,
+      resizeOptions: size.resizeOptions,
+      padding: size.padding ?? 0.3,
+      png: size.png ?? png,
+    })
+    if (size.darkResizeOptions) {
+      acc.push({
+        size,
+        landscape: false,
+        dark: true,
+        resizeOptions: size.darkResizeOptions,
+        padding: size.padding ?? 0.3,
+        png: size.png ?? png,
+      })
+      acc.push({
+        size,
+        landscape: true,
+        dark: true,
+        resizeOptions: size.darkResizeOptions,
+        padding: size.padding ?? 0.3,
+        png: size.png ?? png,
+      })
+    }
+    return acc
+  }, [] as SplashScreenData[])
+
+  await Promise.all(splashScreens.map(async (size) => {
+    let filePath = resolve(folder, name(size.landscape, size.size, size.dark))
+    if (!buildOptions.overrideAssets && existsSync(filePath)) {
+      if (buildOptions.logLevel !== 'silent')
+        consola.log(yellow(`Skipping Splash Screen, PNG file already exists: ${filePath}`))
+
+      return
+    }
+
+    filePath = resolveTempPngAssetName(filePath)
+    const { width, height } = extractAppleDeviceSize(size.size, size.padding)
+    await sharp({
+      create: {
+        width: size.size.width,
+        height: size.size.height,
+        channels: 4,
+        background: size.resizeOptions?.background ?? (size.dark ? 'black' : 'white'),
+      },
+    }).composite([{
+      input: await sharp(image)
+        .resize(
+          width,
+          height,
+          size.resizeOptions,
+        ).toBuffer(),
+    }]).toFile(filePath)
+    await optimizePng(filePath, size.png)
+    if (buildOptions.logLevel !== 'silent') {
+      consola.ready(green(`Generated Splash Screen PNG file: ${filePath.replace(/-temp\.png$/, '.png')}`))
+      if (linkMediaOptions.log) {
+        links.push(createHtmlLink(
+          size.size,
+          size.landscape,
+          linkMediaOptions.addMediaScreen,
+          name,
+          linkMediaOptions.basePath,
+          size.dark,
+        ))
+      }
+    }
   }))
 }

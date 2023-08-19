@@ -1,5 +1,12 @@
 import type { PngOptions, ResizeOptions } from 'sharp'
-import type { Asset, AssetSize, AssetType, ResolvedAsset, ResolvedAssetSize, ResolvedAssets } from './types.ts'
+import type {
+  Asset,
+  AssetSize,
+  AssetType,
+  ResolvedAsset,
+  ResolvedAssetSize,
+  ResolvedAssets,
+} from './types.ts'
 
 export const defaultPngCompressionOptions: PngOptions = {
   compressionLevel: 9,
