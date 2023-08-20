@@ -1,5 +1,6 @@
 import type { ResizeOptions } from 'sharp'
 import type { AppleDeviceSize, AppleSplashScreenName, AppleSplashScreens, AppleTouchStartupImageOptions } from './types.ts'
+import type { Preset } from './preset.ts'
 
 export type AppleDeviceName =
     | 'iPad Pro 12.9"'
@@ -92,14 +93,15 @@ export function defaultSplashScreenName(landscape: boolean, size: AppleDeviceSiz
 
 export const AllAppleDeviceNames = Array.from(Object.keys(appleSplashScreenSizes).map(k => k as AppleDeviceName))
 
-export function createAppleSplashScreens(options: {
-  padding?: number
-  resizeOptions?: ResizeOptions
-  darkResizeOptions?: ResizeOptions
-  linkMediaOptions?: AppleTouchStartupImageOptions
-  name?: AppleSplashScreenName
-} = {},
-devices: AppleDeviceName[] = AllAppleDeviceNames,
+export function createAppleSplashScreens(
+  options: {
+    padding?: number
+    resizeOptions?: ResizeOptions
+    darkResizeOptions?: ResizeOptions
+    linkMediaOptions?: AppleTouchStartupImageOptions
+    name?: AppleSplashScreenName
+  } = {},
+  devices: AppleDeviceName[] = AllAppleDeviceNames,
 ) {
   const {
     padding,
@@ -116,6 +118,23 @@ devices: AppleDeviceName[] = AllAppleDeviceNames,
     darkResizeOptions,
     linkMediaOptions,
     name,
+  }
+}
+
+export function combinePresetAndAppleSplashScreens(
+  preset: Preset,
+  options: {
+    padding?: number
+    resizeOptions?: ResizeOptions
+    darkResizeOptions?: ResizeOptions
+    linkMediaOptions?: AppleTouchStartupImageOptions
+    name?: AppleSplashScreenName
+  } = {},
+  devices: AppleDeviceName[] = AllAppleDeviceNames,
+) {
+  return <Preset>{
+    ...preset,
+    appleSplashScreens: createAppleSplashScreens(options, devices),
   }
 }
 
