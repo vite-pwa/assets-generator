@@ -289,7 +289,14 @@ async function generateAppleSplashScreens(
   folder: string,
   links: string[],
 ) {
+  const sizesMap = new Map<number, number>()
   const splashScreens: SplashScreenData[] = sizes.reduce((acc, size) => {
+    // cleanup duplicates screen dimensions:
+    // should we add the links (maybe scaleFactor is different)?
+    if (sizesMap.get(size.width) === size.height)
+      return acc
+
+    sizesMap.set(size.width, size.height)
     const { width: height, height: width, ...restSize } = size
     const {
       width: lheight,
@@ -355,6 +362,8 @@ async function generateAppleSplashScreens(
     }
     return acc
   }, [] as SplashScreenData[])
+
+  sizesMap.clear()
 
   await Promise.all(splashScreens.map(async (size) => {
     let filePath = resolve(folder, name(size.landscape, size.size, size.dark))
