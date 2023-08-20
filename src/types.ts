@@ -67,6 +67,12 @@ export interface AppleTouchStartupImageOptions {
    * @default true
    */
   addMediaScreen?: boolean
+  /**
+   * Using XHTML?
+   *
+   * @default false
+   */
+  xhtml?: boolean
 }
 
 export interface AppleSplashScreens {

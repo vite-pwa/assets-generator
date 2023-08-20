@@ -90,16 +90,16 @@ export function defaultSplashScreenName(landscape: boolean, size: AppleDeviceSiz
   return `apple-splash-${landscape ? 'landscape' : 'portrait'}-${typeof dark === 'boolean' ? (dark ? 'dark-' : 'light-') : ''}${size.width}x${size.height}.png`
 }
 
-const AllAppleDeviceNames = Array.from(Object.keys(appleSplashScreenSizes).map(k => k as AppleDeviceName))
+export const AllAppleDeviceNames = Array.from(Object.keys(appleSplashScreenSizes).map(k => k as AppleDeviceName))
 
-export function createSplashScreen(options: {
+export function createAppleSplashScreens(options: {
   padding?: number
   resizeOptions?: ResizeOptions
   darkResizeOptions?: ResizeOptions
   linkMediaOptions?: AppleTouchStartupImageOptions
   name?: AppleSplashScreenName
 } = {},
-names: AppleDeviceName[] = AllAppleDeviceNames,
+devices: AppleDeviceName[] = AllAppleDeviceNames,
 ) {
   const {
     padding,
@@ -110,7 +110,7 @@ names: AppleDeviceName[] = AllAppleDeviceNames,
   } = options
 
   return <AppleSplashScreens>{
-    sizes: names.map(deviceName => appleSplashScreenSizes[deviceName]),
+    sizes: devices.map(deviceName => appleSplashScreenSizes[deviceName]),
     padding,
     resizeOptions,
     darkResizeOptions,
@@ -119,12 +119,13 @@ names: AppleDeviceName[] = AllAppleDeviceNames,
   }
 }
 
-export function createHtmlLink(
+export function createAppleSplashScreenHtmlLink(
   size: AppleDeviceSize,
   landscape: boolean,
   addMediaScreen: boolean,
-  name: ((landscape: boolean, size: AppleDeviceSize, dark?: boolean) => string) = defaultSplashScreenName,
-  basePath = '',
+  xhtml: boolean,
+  name: AppleSplashScreenName = defaultSplashScreenName,
+  basePath = '/',
   dark?: boolean,
 ) {
   const { width, height, scaleFactor } = size
@@ -141,5 +142,5 @@ export function createHtmlLink(
   if (addMediaScreen)
     tokens.unshift('screen')
 
-  return `<link rel="apple-touch-startup-image" media="${tokens.join(' and ')}" href="${basePath}${name(landscape, size, dark)}">`
+  return `<link rel="apple-touch-startup-image" media="${tokens.join(' and ')}" href="${basePath}${name(landscape, size, dark)}"${xhtml ? ' /' : ''}>`
 }

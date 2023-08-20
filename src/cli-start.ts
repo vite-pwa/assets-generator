@@ -103,6 +103,7 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
       log = true,
       addMediaScreen = true,
       basePath = '/',
+      xhtml = false,
     } = useLinkMediaOptions
     appleSplashScreens = {
       padding,
@@ -111,6 +112,7 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
         log,
         addMediaScreen,
         basePath,
+        xhtml,
       },
       name,
       png,

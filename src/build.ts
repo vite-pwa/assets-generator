@@ -24,7 +24,7 @@ import {
   toResolvedAsset,
   toResolvedSize,
 } from './utils.ts'
-import { createHtmlLink } from './splash.ts'
+import { createAppleSplashScreenHtmlLink } from './splash.ts'
 
 export * from './types'
 export { defaultAssetName, defaultPngCompressionOptions, defaultPngOptions, toResolvedAsset }
@@ -63,7 +63,8 @@ export async function generatePWAImageAssets(
     await generateAppleSplashScreens(buildOptions, appleSplashScreens, imagePath, folder, appleLinks)
     if (buildOptions.logLevel !== 'silent' && appleLinks.length && appleSplashScreens.linkMediaOptions.log) {
       consola.start('Apple Splash Screens Links:')
-      appleLinks.forEach(link => consola.ready(green(link)))
+      // eslint-disable-next-line no-console
+      appleLinks.forEach(link => console.log(link))
     }
     consola.ready('Apple Splash Screens generated')
   }
@@ -330,7 +331,7 @@ async function generateAppleSplashScreens(
     let filePath = resolve(folder, name(size.landscape, size.size, size.dark))
     if (!buildOptions.overrideAssets && existsSync(filePath)) {
       if (buildOptions.logLevel !== 'silent')
-        consola.log(yellow(`Skipping Splash Screen, PNG file already exists: ${filePath}`))
+        consola.log(yellow(`Skipping, PNG file already exists: ${filePath}`))
 
       return
     }
@@ -354,12 +355,13 @@ async function generateAppleSplashScreens(
     }]).toFile(filePath)
     await optimizePng(filePath, size.png)
     if (buildOptions.logLevel !== 'silent') {
-      consola.ready(green(`Generated Splash Screen PNG file: ${filePath.replace(/-temp\.png$/, '.png')}`))
+      consola.ready(green(`Generated PNG file: ${filePath.replace(/-temp\.png$/, '.png')}`))
       if (linkMediaOptions.log) {
-        links.push(createHtmlLink(
+        links.push(createAppleSplashScreenHtmlLink(
           size.size,
           size.landscape,
           linkMediaOptions.addMediaScreen,
+          linkMediaOptions.xhtml,
           name,
           linkMediaOptions.basePath,
           size.dark,
