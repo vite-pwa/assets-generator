@@ -290,6 +290,22 @@ async function generateAppleSplashScreens(
   links: string[],
 ) {
   const splashScreens: SplashScreenData[] = sizes.reduce((acc, size) => {
+    const { width: height, height: width, ...restSize } = size
+    const {
+      width: lheight,
+      height: lwidth,
+      ...restResizeOptions
+    } = size.resizeOptions || {}
+    const landscapeSize: AppleDeviceSize = {
+      ...restSize,
+      width,
+      height,
+      resizeOptions: {
+        ...restResizeOptions,
+        width: lwidth,
+        height: lheight,
+      },
+    }
     acc.push({
       size,
       landscape: false,
@@ -299,14 +315,27 @@ async function generateAppleSplashScreens(
       png: size.png ?? png,
     })
     acc.push({
-      size,
+      size: landscapeSize,
       landscape: true,
       dark: size.darkResizeOptions ? false : undefined,
-      resizeOptions: size.resizeOptions,
+      resizeOptions: landscapeSize.resizeOptions,
       padding: size.padding ?? 0.3,
       png: size.png ?? png,
     })
     if (size.darkResizeOptions) {
+      const {
+        width: dlheight,
+        height: dlwidth,
+        ...restDarkResizeOptions
+      } = size.darkResizeOptions
+      const landscapeDarkResizeOptions: ResizeOptions = { ...restDarkResizeOptions, width: dlwidth, height: dlheight }
+      const landscapeDarkSize: AppleDeviceSize = {
+        ...restSize,
+        width,
+        height,
+        resizeOptions: landscapeDarkResizeOptions,
+        darkResizeOptions: undefined,
+      }
       acc.push({
         size,
         landscape: false,
@@ -316,10 +345,10 @@ async function generateAppleSplashScreens(
         png: size.png ?? png,
       })
       acc.push({
-        size,
+        size: landscapeDarkSize,
         landscape: true,
         dark: true,
-        resizeOptions: size.darkResizeOptions,
+        resizeOptions: landscapeDarkResizeOptions,
         padding: size.padding ?? 0.3,
         png: size.png ?? png,
       })
