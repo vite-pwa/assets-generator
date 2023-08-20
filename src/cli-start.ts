@@ -2,8 +2,8 @@ import cac from 'cac'
 import { consola } from 'consola'
 import { green } from 'colorette'
 import { version } from '../package.json'
-import { loadConfig } from './config.ts'
-import type { BuiltInPreset, Preset, ResolvedAssets, UserConfig } from './config.ts'
+import { defaultSplashScreenName, loadConfig } from './config.ts'
+import type { BuiltInPreset, Preset, ResolvedAppleSplashScreens, ResolvedAssets, UserConfig } from './config.ts'
 import { defaultAssetName, defaultPngCompressionOptions, toResolvedAsset } from './utils.ts'
 import { generatePWAAssets } from './build.ts'
 
@@ -72,7 +72,52 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
   const {
     assetName = defaultAssetName,
     png = defaultPngCompressionOptions,
+    appleSplashScreens: useAppleSplashScreens,
   } = usePreset
+
+  let appleSplashScreens: ResolvedAppleSplashScreens | undefined
+  if (useAppleSplashScreens) {
+    const {
+      padding = 0.3,
+      resizeOptions,
+      darkResizeOptions,
+      linkMediaOptions: useLinkMediaOptions = {},
+      sizes,
+      name = defaultSplashScreenName,
+      png = { compressionLevel: 9, quality: 60 },
+    } = useAppleSplashScreens
+    sizes.forEach((size) => {
+      if (typeof size.padding === 'undefined')
+        size.padding = padding
+
+      if (typeof size.png === 'undefined')
+        size.png = png
+
+      if (typeof size.resizeOptions === 'undefined')
+        size.resizeOptions = resizeOptions
+
+      if (typeof size.darkResizeOptions === 'undefined')
+        size.darkResizeOptions = darkResizeOptions
+    })
+    const {
+      log = true,
+      addMediaScreen = true,
+      basePath = '/',
+      xhtml = false,
+    } = useLinkMediaOptions
+    appleSplashScreens = {
+      padding,
+      sizes,
+      linkMediaOptions: {
+        log,
+        addMediaScreen,
+        basePath,
+        xhtml,
+      },
+      name,
+      png,
+    }
+  }
 
   const assets: ResolvedAssets = {
     assets: {
@@ -91,6 +136,7 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
     useImages,
     assets,
     { root, logLevel, overrideAssets },
+    appleSplashScreens,
   )
   consola.ready('PWA assets generated')
 }

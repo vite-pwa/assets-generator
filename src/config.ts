@@ -9,6 +9,7 @@ export type { LoadConfigResult, LoadConfigSource }
 
 export * from './types.ts'
 export * from './presets'
+export * from './splash.ts'
 export {
   defaultAssetName,
   defaultPngCompressionOptions,
