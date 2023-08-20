@@ -26,8 +26,8 @@ export default defineConfig({
   },
   images: [
     'elk/public/logo.svg',
-    // 'elk/public-dev/logo.svg',
-    // 'elk/public-staging/logo.svg',
-    // 'pwa/public/favicon.svg',
+    'elk/public-dev/logo.svg',
+    'elk/public-staging/logo.svg',
+    'pwa/public/favicon.svg',
   ],
 })
