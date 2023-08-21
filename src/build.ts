@@ -1,5 +1,5 @@
-import { existsSync, mkdirSync } from 'node:fs'
-import { rm, writeFile } from 'node:fs/promises'
+import { existsSync } from 'node:fs'
+import { mkdir, rm, writeFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { consola } from 'consola'
 import { green, yellow } from 'colorette'
@@ -185,7 +185,7 @@ async function optimizePng(filePath: string, png: PngOptions) {
 }
 
 async function resolveTempPngAssetName(name: string) {
-  await mkdirSync(dirname(name), { recursive: true })
+  await mkdir(dirname(name), { recursive: true })
   return name.replace(/\.png$/, '-temp.png')
 }
 
