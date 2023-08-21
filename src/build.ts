@@ -1,4 +1,4 @@
-import { existsSync } from 'node:fs'
+import { existsSync, mkdirSync } from 'node:fs'
 import { rm, writeFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { consola } from 'consola'
@@ -206,6 +206,7 @@ async function generateTransparentAssets(
     }
 
     filePath = resolveTempPngAssetName(filePath)
+    checkGenerateFolder(filePath)
     const { width, height } = extractAssetSize(size, padding)
     await sharp({
       create: {
@@ -249,6 +250,7 @@ async function generateMaskableAssets(
     }
 
     filePath = resolveTempPngAssetName(filePath)
+    checkGenerateFolder(filePath)
     const { width, height } = extractAssetSize(size, padding)
     await sharp({
       create: {
@@ -375,6 +377,7 @@ async function generateAppleSplashScreens(
     }
 
     filePath = resolveTempPngAssetName(filePath)
+    checkGenerateFolder(filePath)
     const { width, height } = extractAppleDeviceSize(size.size, size.padding)
     await sharp({
       create: {
@@ -407,4 +410,10 @@ async function generateAppleSplashScreens(
       }
     }
   }))
+}
+
+function checkGenerateFolder(filePath: string) {
+  const generateFolder = dirname(filePath)
+  if (!existsSync(generateFolder))
+    mkdirSync(generateFolder, { recursive: true })
 }
