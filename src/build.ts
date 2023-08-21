@@ -1,5 +1,5 @@
 import { existsSync } from 'node:fs'
-import { rm, writeFile } from 'node:fs/promises'
+import { mkdir, rm, writeFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { consola } from 'consola'
 import { green, yellow } from 'colorette'
@@ -184,7 +184,8 @@ async function optimizePng(filePath: string, png: PngOptions) {
   }
 }
 
-function resolveTempPngAssetName(name: string) {
+async function resolveTempPngAssetName(name: string) {
+  await mkdir(dirname(name), { recursive: true })
   return name.replace(/\.png$/, '-temp.png')
 }
 
@@ -205,7 +206,7 @@ async function generateTransparentAssets(
       return
     }
 
-    filePath = resolveTempPngAssetName(filePath)
+    filePath = await resolveTempPngAssetName(filePath)
     const { width, height } = extractAssetSize(size, padding)
     await sharp({
       create: {
@@ -248,7 +249,7 @@ async function generateMaskableAssets(
       return
     }
 
-    filePath = resolveTempPngAssetName(filePath)
+    filePath = await resolveTempPngAssetName(filePath)
     const { width, height } = extractAssetSize(size, padding)
     await sharp({
       create: {
@@ -374,7 +375,7 @@ async function generateAppleSplashScreens(
       return
     }
 
-    filePath = resolveTempPngAssetName(filePath)
+    filePath = await resolveTempPngAssetName(filePath)
     const { width, height } = extractAppleDeviceSize(size.size, size.padding)
     await sharp({
       create: {
