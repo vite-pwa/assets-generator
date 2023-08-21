@@ -184,7 +184,8 @@ async function optimizePng(filePath: string, png: PngOptions) {
   }
 }
 
-function resolveTempPngAssetName(name: string) {
+async function resolveTempPngAssetName(name: string) {
+  await mkdirSync(dirname(name), { recursive: true })
   return name.replace(/\.png$/, '-temp.png')
 }
 
@@ -205,8 +206,7 @@ async function generateTransparentAssets(
       return
     }
 
-    filePath = resolveTempPngAssetName(filePath)
-    checkGenerateFolder(filePath)
+    filePath = await resolveTempPngAssetName(filePath)
     const { width, height } = extractAssetSize(size, padding)
     await sharp({
       create: {
@@ -249,8 +249,7 @@ async function generateMaskableAssets(
       return
     }
 
-    filePath = resolveTempPngAssetName(filePath)
-    checkGenerateFolder(filePath)
+    filePath = await resolveTempPngAssetName(filePath)
     const { width, height } = extractAssetSize(size, padding)
     await sharp({
       create: {
@@ -376,8 +375,7 @@ async function generateAppleSplashScreens(
       return
     }
 
-    filePath = resolveTempPngAssetName(filePath)
-    checkGenerateFolder(filePath)
+    filePath = await resolveTempPngAssetName(filePath)
     const { width, height } = extractAppleDeviceSize(size.size, size.padding)
     await sharp({
       create: {
@@ -410,10 +408,4 @@ async function generateAppleSplashScreens(
       }
     }
   }))
-}
-
-function checkGenerateFolder(filePath: string) {
-  const generateFolder = dirname(filePath)
-  if (!existsSync(generateFolder))
-    mkdirSync(generateFolder, { recursive: true })
 }
