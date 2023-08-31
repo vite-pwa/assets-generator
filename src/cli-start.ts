@@ -77,7 +77,7 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
 
   let appleSplashScreens: ResolvedAppleSplashScreens | undefined
   if (useAppleSplashScreens) {
-    const {
+    let {
       padding = 0.3,
       resizeOptions,
       darkResizeOptions,
@@ -86,6 +86,11 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
       name = defaultSplashScreenName,
       png = { compressionLevel: 9, quality: 60 },
     } = useAppleSplashScreens
+
+    // Set default fit to contain
+    resizeOptions = { fit: 'contain', ...{ resizeOptions } }
+    darkResizeOptions = { fit: 'contain', ...{ darkResizeOptions } }
+
     sizes.forEach((size) => {
       if (typeof size.padding === 'undefined')
         size.padding = padding
