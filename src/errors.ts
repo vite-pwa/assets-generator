@@ -17,5 +17,6 @@ export function handleError(error: unknown) {
   if (error instanceof PrettyError)
     consola.error(error.message)
 
+  // eslint-disable-next-line n/prefer-global/process
   process.exitCode = 1
 }
