@@ -1,6 +1,7 @@
 import cac from 'cac'
 import { consola } from 'consola'
 import { green } from 'colorette'
+import type { PngOptions, ResizeOptions } from 'sharp'
 import { version } from '../package.json'
 import { defaultSplashScreenName, loadConfig } from './config.ts'
 import type { BuiltInPreset, Preset, ResolvedAppleSplashScreens, ResolvedAssets, UserConfig } from './config.ts'
@@ -79,13 +80,27 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
   if (useAppleSplashScreens) {
     const {
       padding = 0.3,
-      resizeOptions,
-      darkResizeOptions,
+      resizeOptions: useResizeOptions = {},
+      darkResizeOptions: useDarkResizeOptions = {},
       linkMediaOptions: useLinkMediaOptions = {},
       sizes,
       name = defaultSplashScreenName,
-      png = { compressionLevel: 9, quality: 60 },
+      png: usePng = {},
     } = useAppleSplashScreens
+
+    // Initialize defaults
+    const resizeOptions: ResizeOptions = {
+      fit: 'contain',
+      background: 'white',
+      ...useResizeOptions,
+    }
+    const darkResizeOptions: ResizeOptions = {
+      fit: 'contain',
+      background: 'black',
+      ...useDarkResizeOptions,
+    }
+    const png: PngOptions = { compressionLevel: 9, quality: 60, ...usePng }
+
     sizes.forEach((size) => {
       if (typeof size.padding === 'undefined')
         size.padding = padding
