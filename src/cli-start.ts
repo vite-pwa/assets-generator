@@ -6,6 +6,7 @@ import { defaultSplashScreenName, loadConfig } from './config.ts'
 import type { BuiltInPreset, Preset, ResolvedAppleSplashScreens, ResolvedAssets, UserConfig } from './config.ts'
 import { defaultAssetName, defaultPngCompressionOptions, toResolvedAsset } from './utils.ts'
 import { generatePWAAssets } from './build.ts'
+import {PngOptions, ResizeOptions} from "sharp";
 
 interface CliOptions extends Omit<UserConfig, 'preset' | 'images'> {
   preset?: BuiltInPreset
@@ -77,19 +78,28 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
 
   let appleSplashScreens: ResolvedAppleSplashScreens | undefined
   if (useAppleSplashScreens) {
-    let {
+    const {
       padding = 0.3,
-      resizeOptions,
-      darkResizeOptions,
+      resizeOptions: useResizeOptions = {},
+      darkResizeOptions: useDarkResizeOptions = {},
       linkMediaOptions: useLinkMediaOptions = {},
       sizes,
       name = defaultSplashScreenName,
-      png = { compressionLevel: 9, quality: 60 },
+      png: usePng = {},
     } = useAppleSplashScreens
 
-    // Set default fit to contain
-    resizeOptions = { fit: 'contain', ...{ resizeOptions } }
-    darkResizeOptions = { fit: 'contain', ...{ darkResizeOptions } }
+    // Initialize defaults
+    const resizeOptions: ResizeOptions = {
+      fit: 'contain',
+      background: 'white',
+      ...useResizeOptions
+    }
+    const darkResizeOptions: ResizeOptions = {
+      fit: 'contain',
+      background: 'black',
+      ...useDarkResizeOptions
+    }
+    const png: PngOptions = { compressionLevel: 9, quality: 60, ...usePng }
 
     sizes.forEach((size) => {
       if (typeof size.padding === 'undefined')
