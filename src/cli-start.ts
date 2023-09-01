@@ -1,12 +1,12 @@
 import cac from 'cac'
 import { consola } from 'consola'
 import { green } from 'colorette'
+import type { PngOptions, ResizeOptions } from 'sharp'
 import { version } from '../package.json'
 import { defaultSplashScreenName, loadConfig } from './config.ts'
 import type { BuiltInPreset, Preset, ResolvedAppleSplashScreens, ResolvedAssets, UserConfig } from './config.ts'
 import { defaultAssetName, defaultPngCompressionOptions, toResolvedAsset } from './utils.ts'
 import { generatePWAAssets } from './build.ts'
-import {PngOptions, ResizeOptions} from "sharp";
 
 interface CliOptions extends Omit<UserConfig, 'preset' | 'images'> {
   preset?: BuiltInPreset
@@ -92,12 +92,12 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
     const resizeOptions: ResizeOptions = {
       fit: 'contain',
       background: 'white',
-      ...useResizeOptions
+      ...useResizeOptions,
     }
     const darkResizeOptions: ResizeOptions = {
       fit: 'contain',
       background: 'black',
-      ...useDarkResizeOptions
+      ...useDarkResizeOptions,
     }
     const png: PngOptions = { compressionLevel: 9, quality: 60, ...usePng }
 
