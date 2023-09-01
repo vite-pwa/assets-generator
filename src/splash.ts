@@ -1,4 +1,4 @@
-import type { ResizeOptions } from 'sharp'
+import type { PngOptions, ResizeOptions } from 'sharp'
 import type { AppleDeviceSize, AppleSplashScreenName, AppleSplashScreens, AppleTouchStartupImageOptions } from './types.ts'
 import type { Preset } from './preset.ts'
 
@@ -99,6 +99,7 @@ export function createAppleSplashScreens(
     resizeOptions?: ResizeOptions
     darkResizeOptions?: ResizeOptions
     linkMediaOptions?: AppleTouchStartupImageOptions
+    png?: PngOptions
     name?: AppleSplashScreenName
   } = {},
   devices: AppleDeviceName[] = AllAppleDeviceNames,
@@ -108,6 +109,7 @@ export function createAppleSplashScreens(
     resizeOptions,
     darkResizeOptions,
     linkMediaOptions,
+    png,
     name,
   } = options
 
@@ -117,6 +119,7 @@ export function createAppleSplashScreens(
     resizeOptions,
     darkResizeOptions,
     linkMediaOptions,
+    png,
     name,
   }
 }
@@ -128,6 +131,7 @@ export function combinePresetAndAppleSplashScreens(
     resizeOptions?: ResizeOptions
     darkResizeOptions?: ResizeOptions
     linkMediaOptions?: AppleTouchStartupImageOptions
+    png?: PngOptions
     name?: AppleSplashScreenName
   } = {},
   devices: AppleDeviceName[] = AllAppleDeviceNames,
