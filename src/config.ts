@@ -1,5 +1,6 @@
 import { existsSync, statSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
+import process from 'node:process'
 import type { LoadConfigResult, LoadConfigSource } from 'unconfig'
 import { createConfigLoader as createLoader } from 'unconfig'
 import type { Preset } from './preset.ts'
@@ -78,7 +79,6 @@ export function defineConfig(config: UserConfig): UserConfig {
 }
 
 export async function loadConfig<U extends UserConfig>(
-  // eslint-disable-next-line n/prefer-global/process
   cwd = process.cwd(),
   configOrPath: string | U = cwd,
   extraConfigSources: LoadConfigSource[] = [],
@@ -94,7 +94,6 @@ export async function loadConfig<U extends UserConfig>(
       }
     }
     else {
-      // eslint-disable-next-line n/prefer-global/process
       configOrPath = inlineConfig.config || process.cwd()
     }
   }

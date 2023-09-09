@@ -1,3 +1,4 @@
+import process from 'node:process'
 import cac from 'cac'
 import { consola } from 'consola'
 import { green } from 'colorette'
@@ -12,7 +13,6 @@ interface CliOptions extends Omit<UserConfig, 'preset' | 'images'> {
   preset?: BuiltInPreset
 }
 
-// eslint-disable-next-line n/prefer-global/process
 export async function startCli(args: string[] = process.argv) {
   const cli = cac('pwa-assets-generator')
 
@@ -35,7 +35,6 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
   consola.log(green(`Zero Config PWA Assets Generator v${version}`))
   consola.start('Preparing to generate PWA assets...')
 
-  // eslint-disable-next-line n/prefer-global/process
   const root = cliOptions?.root ?? process.cwd()
 
   const { config } = await loadConfig<UserConfig>(root, cliOptions)
