@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { consola } from 'consola'
 
 export class PrettyError extends Error {
@@ -17,6 +18,5 @@ export function handleError(error: unknown) {
   if (error instanceof PrettyError)
     consola.error(error.message)
 
-  // eslint-disable-next-line n/prefer-global/process
   process.exitCode = 1
 }

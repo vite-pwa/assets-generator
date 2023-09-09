@@ -2,7 +2,7 @@
   "name": "@vite-pwa/assets-generator",
   "type": "module",
   "version": "0.0.9",
-  "packageManager": "pnpm@8.7.1",
+  "packageManager": "pnpm@8.7.4",
   "description": "Zero-config PWA Assets Generator",
   "author": "antfu <anthonyfu117@hotmail.com>",
   "license": "MIT",
@@ -70,11 +70,11 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.41.0",
-    "@antfu/ni": "^0.21.7",
+    "@antfu/ni": "^0.21.8",
     "@types/debug": "^4.1.8",
-    "@types/node": "^18.16.16",
-    "bumpp": "^8.2.1",
-    "eslint": "^8.48.0",
+    "@types/node": "^18.17.15",
+    "bumpp": "^9.2.0",
+    "eslint": "^8.49.0",
     "typescript": "^5.2.2",
     "unbuild": "^1.2.1"
   }
