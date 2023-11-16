@@ -31,7 +31,7 @@ export interface AppleDeviceSize {
    */
   padding?: number
   /**
-   * @default: { compressionLevel: 9, quality: 60 }`
+   * @default { compressionLevel: 9, quality: 60 }
    */
   png?: PngOptions
   /**

@@ -31,10 +31,10 @@ export type BuiltInPreset = 'minimal' | 'android' | 'windows' | 'ios' | 'all'
 
 export interface UserConfig {
   /**
-     * Project root directory. Can be an absolute path, or a path relative from
-     * the location of the config file itself.
-     * @default process.cwd()
-     */
+   * Project root directory. Can be an absolute path, or a path relative from
+   * the location of the config file itself.
+   * @default process.cwd()
+   */
   root?: string
   /**
    * Path to the config file.
@@ -63,10 +63,10 @@ export interface UserConfig {
    */
   images?: string | string[]
   /**
-     * Preset to use.
-     *
-     * @default 'minimal'
-     */
+   * Preset to use.
+   *
+   * @default 'minimal'
+   */
   preset?: BuiltInPreset | Preset
 }
 
