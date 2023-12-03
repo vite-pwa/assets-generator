@@ -2,37 +2,45 @@ import type { AppleDeviceSize, AppleSplashScreenName } from '../types.ts'
 import { defaultSplashScreenName } from '../splash.ts'
 import type { HtmlLink } from './types.ts'
 
-type HtmlLinkType = 'string' | 'link'
-type HtmlLinkReturnType<T> =
+export type HtmlLinkType = 'string' | 'link'
+export type HtmlLinkReturnType<T> =
     T extends 'string' ? string :
       T extends 'link' ? HtmlLink :
         never
 
+export interface HtmlLinkOptions {
+  size: AppleDeviceSize
+  landscape: boolean
+  addMediaScreen: boolean
+  xhtml: boolean
+  name?: AppleSplashScreenName
+  basePath?: string
+  dark?: boolean
+}
+
+interface RequiredHtmlLinkOptions extends Required<Omit<HtmlLinkOptions, 'xhtml'>> {}
+
 export function createAppleSplashScreenHtmlLink<Format extends HtmlLinkType>(
   format: Format,
-  size: AppleDeviceSize,
-  landscape: boolean,
-  addMediaScreen: boolean,
-  xhtml: boolean,
-  name: AppleSplashScreenName = defaultSplashScreenName,
-  basePath = '/',
-  dark?: boolean,
+  options: HtmlLinkOptions,
 ): HtmlLinkReturnType<Format> {
-  const link = createAppleSplashScreenLink(size, landscape, addMediaScreen, name, basePath, dark)
+  const link = createAppleSplashScreenLink(
+    createRequiredHtmlLinkOptions(options),
+  )
 
   return (format === 'string'
-    ? `<link rel="${link.rel}" media="${link.media}" href="${link.href}"${xhtml ? ' /' : ''}>`
+    ? `<link rel="${link.rel}" media="${link.media}" href="${link.href}"${options.xhtml ? ' /' : ''}>`
     : link) as HtmlLinkReturnType<Format>
 }
 
-function createAppleSplashScreenLink(
-  size: AppleDeviceSize,
-  landscape: boolean,
-  addMediaScreen: boolean,
-  name: AppleSplashScreenName = defaultSplashScreenName,
-  basePath = '/',
-  dark?: boolean,
-) {
+function createAppleSplashScreenLink({
+  size,
+  landscape,
+  addMediaScreen,
+  name,
+  basePath,
+  dark,
+}: RequiredHtmlLinkOptions) {
   const { width, height, scaleFactor } = size
   // As weird as it gets, Apple expects the same device width and height values from portrait orientation, for landscape
   const tokens: string[] = [
@@ -42,7 +50,7 @@ function createAppleSplashScreenLink(
         `(orientation: ${landscape ? 'landscape' : 'portrait'})`,
   ]
 
-  if (dark === true)
+  if (dark)
     tokens.unshift('(prefers-color-scheme: dark)')
 
   if (addMediaScreen)
@@ -55,31 +63,36 @@ function createAppleSplashScreenLink(
   } satisfies HtmlLink
 }
 
+function createRequiredHtmlLinkOptions(options: HtmlLinkOptions) {
+  return {
+    size: options.size,
+    landscape: options.landscape,
+    addMediaScreen: options.addMediaScreen,
+    name: options.name ?? defaultSplashScreenName,
+    basePath: options.basePath ?? '/',
+    dark: options.dark === true,
+  } satisfies RequiredHtmlLinkOptions
+}
+
 if (import.meta.vitest) {
   const { expect, expectTypeOf, it } = import.meta.vitest
   it('html api', () => {
-    const linkString = createAppleSplashScreenHtmlLink(
-      'string',
-      { width: 320, height: 480, scaleFactor: 1 },
-      true,
-      true,
-      true,
-    )
+    const options = {
+      size: { width: 320, height: 480, scaleFactor: 1 },
+      landscape: true,
+      addMediaScreen: true,
+      xhtml: true,
+    } satisfies HtmlLinkOptions
+    const linkString = createAppleSplashScreenHtmlLink('string', options)
     expectTypeOf(linkString).toEqualTypeOf<string>()
     // eslint-disable-next-line @typescript-eslint/quotes
-    expect(linkString).toMatchInlineSnapshot(`"<link rel="apple-touch-startup-image" media="screen and (device-width: 480px) and (device-height: 320px) and (-webkit-device-pixel-ratio: 1) and (orientation: landscape)" href="/apple-splash-landscape-320x480.png" />"`)
-    const link = createAppleSplashScreenHtmlLink(
-      'link',
-      { width: 320, height: 480, scaleFactor: 1 },
-      true,
-      true,
-      true,
-    )
+    expect(linkString).toMatchInlineSnapshot(`"<link rel="apple-touch-startup-image" media="screen and (device-width: 480px) and (device-height: 320px) and (-webkit-device-pixel-ratio: 1) and (orientation: landscape)" href="/apple-splash-landscape-light-320x480.png" />"`)
+    const link = createAppleSplashScreenHtmlLink('link', options)
     expectTypeOf(link).toEqualTypeOf<HtmlLink>()
     expect(link).toEqual({
       rel: 'apple-touch-startup-image',
       media: 'screen and (device-width: 480px) and (device-height: 320px) and (-webkit-device-pixel-ratio: 1) and (orientation: landscape)',
-      href: '/apple-splash-landscape-320x480.png',
+      href: '/apple-splash-landscape-light-320x480.png',
     } satisfies HtmlLink)
   })
 }

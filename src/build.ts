@@ -396,16 +396,15 @@ async function generateAppleSplashScreens(
     if (buildOptions.logLevel !== 'silent') {
       consola.ready(green(`Generated PNG file: ${filePath.replace(/-temp\.png$/, '.png')}`))
       if (linkMediaOptions.log) {
-        links.push(createAppleSplashScreenHtmlLink(
-          'string',
-          size.size,
-          size.landscape,
-          linkMediaOptions.addMediaScreen,
-          linkMediaOptions.xhtml,
+        links.push(createAppleSplashScreenHtmlLink('string', {
+          size: size.size,
+          landscape: size.landscape,
+          addMediaScreen: linkMediaOptions.addMediaScreen,
+          xhtml: linkMediaOptions.xhtml,
           name,
-          linkMediaOptions.basePath,
-          size.dark,
-        ))
+          basePath: linkMediaOptions.basePath,
+          dark: size.dark,
+        }))
       }
     }
   }))
