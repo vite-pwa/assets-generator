@@ -28,10 +28,10 @@ function createAppleSplashScreenLink(options: RequiredHtmlLinkOptions) {
   const { width, height, scaleFactor } = size
   // As weird as it gets, Apple expects the same device width and height values from portrait orientation, for landscape
   const tokens: string[] = [
-        `(device-width: ${(landscape ? height : width) / scaleFactor}px)`,
-        `(device-height: ${(landscape ? width : height) / scaleFactor}px)`,
-        `(-webkit-device-pixel-ratio: ${scaleFactor})`,
-        `(orientation: ${landscape ? 'landscape' : 'portrait'})`,
+    `(device-width: ${(landscape ? height : width) / scaleFactor}px)`,
+    `(device-height: ${(landscape ? width : height) / scaleFactor}px)`,
+    `(-webkit-device-pixel-ratio: ${scaleFactor})`,
+    `(orientation: ${landscape ? 'landscape' : 'portrait'})`,
   ]
 
   if (dark)
