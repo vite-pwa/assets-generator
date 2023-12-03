@@ -9,6 +9,7 @@
     "resolveJsonModule": true,
     "noEmit": true,
     "isolatedModules": true,
+    "types": ["vite", "vitest/importMeta"],
     "strict": true,
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,

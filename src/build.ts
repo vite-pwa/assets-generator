@@ -24,7 +24,7 @@ import {
   toResolvedAsset,
   toResolvedSize,
 } from './utils.ts'
-import { createAppleSplashScreenHtmlLinkString } from './api/index.ts'
+import { createAppleSplashScreenHtmlLink } from './api/index.ts'
 
 export * from './types'
 export { defaultAssetName, defaultPngCompressionOptions, defaultPngOptions, toResolvedAsset }
@@ -396,7 +396,8 @@ async function generateAppleSplashScreens(
     if (buildOptions.logLevel !== 'silent') {
       consola.ready(green(`Generated PNG file: ${filePath.replace(/-temp\.png$/, '.png')}`))
       if (linkMediaOptions.log) {
-        links.push(createAppleSplashScreenHtmlLinkString(
+        links.push(createAppleSplashScreenHtmlLink(
+          'string',
           size.size,
           size.landscape,
           linkMediaOptions.addMediaScreen,
