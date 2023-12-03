@@ -80,8 +80,7 @@
   },
   "files": [
     "bin",
-    "dist",
-    "presets"
+    "dist"
   ],
   "engines": {
     "node": ">=16.14.0"
