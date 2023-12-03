@@ -4,6 +4,7 @@ export default defineBuildConfig({
   entries: [
     { input: 'src/index', name: 'index' },
     { input: 'src/config', name: 'config' },
+    { input: 'src/presets/index', name: 'presets' },
     { input: 'src/presets/minimal', name: 'presets/minimal' },
     { input: 'src/api/index', name: 'api' },
     { input: 'src/cli', name: 'cli' },
