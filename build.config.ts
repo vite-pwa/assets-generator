@@ -12,11 +12,9 @@ export default defineBuildConfig({
   declaration: true,
   rollup: {
     emitCJS: true,
-    esbuild: {
-      define: {
-        'import.meta.vitest': 'false',
-      },
-    },
     inlineDependencies: true,
+  },
+  replace: {
+    'import.meta.vitest': 'false',
   },
 })

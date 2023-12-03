@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "test": "pwa-assets-generator"
+    "build": "pwa-assets-generator"
   },
   "devDependencies": {
     "@vite-pwa/assets-generator": "workspace:*"
