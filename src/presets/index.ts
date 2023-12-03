@@ -1,1 +1,1 @@
-export * from './minimal'
+export * from './minimal.ts'

@@ -24,7 +24,7 @@ import {
   toResolvedAsset,
   toResolvedSize,
 } from './utils.ts'
-import { createAppleSplashScreenHtmlLink } from './splash.ts'
+import { createAppleSplashScreenHtmlLink } from './api'
 
 export * from './types'
 export { defaultAssetName, defaultPngCompressionOptions, defaultPngOptions, toResolvedAsset }

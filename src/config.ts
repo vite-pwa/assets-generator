@@ -9,7 +9,7 @@ import type { LogLevel } from './types.ts'
 export type { LoadConfigResult, LoadConfigSource }
 
 export * from './types.ts'
-export * from './presets'
+export * from './presets/index.ts'
 export * from './splash.ts'
 export {
   defaultAssetName,
