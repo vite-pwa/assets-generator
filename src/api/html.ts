@@ -1,24 +1,5 @@
-import type { AppleDeviceSize, AppleSplashScreenName } from '../types.ts'
 import { defaultSplashScreenName } from '../splash.ts'
-import type { HtmlLink } from './types.ts'
-
-export type HtmlLinkType = 'string' | 'link'
-export type HtmlLinkReturnType<T> =
-    T extends 'string' ? string :
-      T extends 'link' ? HtmlLink :
-        never
-
-export interface HtmlLinkOptions {
-  size: AppleDeviceSize
-  landscape: boolean
-  addMediaScreen: boolean
-  xhtml: boolean
-  name?: AppleSplashScreenName
-  basePath?: string
-  dark?: boolean
-}
-
-interface RequiredHtmlLinkOptions extends Required<Omit<HtmlLinkOptions, 'xhtml'>> {}
+import type { HtmlLink, HtmlLinkOptions, HtmlLinkReturnType, HtmlLinkType } from './types.ts'
 
 export function createAppleSplashScreenHtmlLink<Format extends HtmlLinkType>(
   format: Format,
@@ -33,14 +14,17 @@ export function createAppleSplashScreenHtmlLink<Format extends HtmlLinkType>(
     : link) as HtmlLinkReturnType<Format>
 }
 
-function createAppleSplashScreenLink({
-  size,
-  landscape,
-  addMediaScreen,
-  name,
-  basePath,
-  dark,
-}: RequiredHtmlLinkOptions) {
+interface RequiredHtmlLinkOptions extends Required<Omit<HtmlLinkOptions, 'xhtml'>> {}
+
+function createAppleSplashScreenLink(options: RequiredHtmlLinkOptions) {
+  const {
+    size,
+    landscape,
+    addMediaScreen,
+    name,
+    basePath,
+    dark,
+  } = options
   const { width, height, scaleFactor } = size
   // As weird as it gets, Apple expects the same device width and height values from portrait orientation, for landscape
   const tokens: string[] = [
@@ -64,25 +48,25 @@ function createAppleSplashScreenLink({
 }
 
 function createRequiredHtmlLinkOptions(options: HtmlLinkOptions) {
-  return {
+  return <RequiredHtmlLinkOptions>{
     size: options.size,
     landscape: options.landscape,
     addMediaScreen: options.addMediaScreen,
     name: options.name ?? defaultSplashScreenName,
     basePath: options.basePath ?? '/',
     dark: options.dark === true,
-  } satisfies RequiredHtmlLinkOptions
+  }
 }
 
 if (import.meta.vitest) {
   const { expect, expectTypeOf, it } = import.meta.vitest
   it('html api', () => {
-    const options = {
+    const options: HtmlLinkOptions = {
       size: { width: 320, height: 480, scaleFactor: 1 },
       landscape: true,
       addMediaScreen: true,
       xhtml: true,
-    } satisfies HtmlLinkOptions
+    }
     const linkString = createAppleSplashScreenHtmlLink('string', options)
     expectTypeOf(linkString).toEqualTypeOf<string>()
     // eslint-disable-next-line @typescript-eslint/quotes
