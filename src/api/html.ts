@@ -1,7 +1,8 @@
 import type { AppleDeviceSize, AppleSplashScreenName } from '../types.ts'
 import { defaultSplashScreenName } from '../splash.ts'
+import type { HtmlLink } from './types.ts'
 
-export function createAppleSplashScreenHtmlLink(
+export function createAppleSplashScreenLink(
   size: AppleDeviceSize,
   landscape: boolean,
   addMediaScreen: boolean,
@@ -25,5 +26,23 @@ export function createAppleSplashScreenHtmlLink(
   if (addMediaScreen)
     tokens.unshift('screen')
 
-  return `<link rel="apple-touch-startup-image" media="${tokens.join(' and ')}" href="${basePath}${name(landscape, size, dark)}"${xhtml ? ' /' : ''}>`
+  return {
+    rel: 'apple-touch-startup-image',
+    media: tokens.join(' and '),
+    href: `${basePath}${name(landscape, size, dark)}"${xhtml ? ' /' : ''}`,
+  } satisfies HtmlLink
+}
+
+export function createAppleSplashScreenHtmlLinkString(
+  size: AppleDeviceSize,
+  landscape: boolean,
+  addMediaScreen: boolean,
+  xhtml: boolean,
+  name: AppleSplashScreenName = defaultSplashScreenName,
+  basePath = '/',
+  dark?: boolean,
+) {
+  const { rel, media, href } = createAppleSplashScreenLink(size, landscape, addMediaScreen, xhtml, name, basePath, dark)
+
+  return `<link rel="${rel}" media="${media}" href="${href}>`
 }
