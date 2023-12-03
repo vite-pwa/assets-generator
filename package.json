@@ -23,44 +23,24 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "import": {
-        "types": "./dist/index.d.mts",
-        "default": "./dist/index.mjs"
-      },
-      "require": {
-        "types": "./dist/index.d.cts",
-        "default": "./dist/index.cjs"
-      }
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
     },
     "./api": {
-      "import": {
-        "types": "./dist/api.d.mts",
-        "default": "./dist/api.mjs"
-      },
-      "require": {
-        "types": "./dist/api.d.cts",
-        "default": "./dist/api.cjs"
-      }
+      "import": "./dist/api.mjs",
+      "require": "./dist/api.cjs"
     },
     "./config": {
-      "import": {
-        "types": "./dist/config.d.mts",
-        "default": "./dist/config.mjs"
-      },
-      "require": {
-        "types": "./dist/config.d.cts",
-        "default": "./dist/config.cjs"
-      }
+      "import": "./dist/config.mjs",
+      "require": "./dist/config.cjs"
+    },
+    "./presets": {
+      "import": "./dist/presets.mjs",
+      "require": "./dist/presets.cjs"
     },
     "./presets/minimal": {
-      "import": {
-        "types": "./dist/presets/minimal.d.mts",
-        "default": "./dist/presets/minimal.mjs"
-      },
-      "require": {
-        "types": "./dist/presets/minimal.d.cts",
-        "default": "./dist/presets/minimal.cjs"
-      }
+      "import": "./dist/presets/minimal.mjs",
+      "require": "./dist/presets/minimal.cjs"
     },
     "./*": "./*"
   },
