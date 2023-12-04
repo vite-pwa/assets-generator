@@ -5,4 +5,7 @@ export default defineConfig({
   test: {
     includeSource: ['src/api/*.ts'],
   },
+  /* optimizeDeps: {
+    include: ['sharp'],
+  }, */
 })

@@ -72,7 +72,8 @@
     "prepublishOnly": "npm run build",
     "release": "bumpp && npm publish",
     "run-playground": "pnpm -C playground run build",
-    "test": "vitest"
+    "test": "vitest",
+    "test1": "tsx scripts/test.ts"
   },
   "dependencies": {
     "cac": "^6.7.14",
@@ -92,6 +93,6 @@
     "esno": "^4.0.0",
     "typescript": "^5.3.2",
     "unbuild": "^2.0.0",
-    "vitest": "^1.0.0-beta.6"
+    "vitest": "^1.0.1"
   }
 }
