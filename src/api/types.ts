@@ -1,23 +1,14 @@
-import type { AppleDeviceSize, AppleSplashScreenName } from '../types.ts'
-
-export interface HtmlLink {
-  rel: string
-  media: string
-  href: string
-}
-
-export type HtmlLinkType = 'string' | 'link'
-export type HtmlLinkReturnType<T> =
-    T extends 'string' ? string :
-      T extends 'link' ? HtmlLink :
-        never
-
-export interface HtmlLinkOptions {
-  size: AppleDeviceSize
-  landscape: boolean
-  addMediaScreen: boolean
-  xhtml?: boolean
-  name?: AppleSplashScreenName
-  basePath?: string
-  dark?: boolean
-}
+export type ImageSourceInput =
+    // eslint-disable-next-line n/prefer-global/buffer
+    | Buffer
+    | ArrayBuffer
+    | Uint8Array
+    | Uint8ClampedArray
+    | Int8Array
+    | Uint16Array
+    | Int16Array
+    | Uint32Array
+    | Int32Array
+    | Float32Array
+    | Float64Array
+    | string

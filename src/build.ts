@@ -24,7 +24,7 @@ import {
   toResolvedAsset,
   toResolvedSize,
 } from './utils.ts'
-import { createAppleSplashScreenHtmlLink } from './api/index.ts'
+import { createAppleSplashScreenHtmlLink, extractAssetSize } from './api'
 
 export * from './types'
 export { defaultAssetName, defaultPngCompressionOptions, defaultPngOptions, toResolvedAsset }
@@ -152,20 +152,6 @@ async function generateFavicon(
     if (buildOptions.logLevel !== 'silent')
       consola.ready(green(`Generated ICO file: ${favicon}`))
   }))
-}
-
-function extractAssetSize(size: ResolvedAssetSize, padding: number) {
-  const width = typeof size.original === 'number'
-    ? size.original
-    : size.original.width
-  const height = typeof size.original === 'number'
-    ? size.original
-    : size.original.height
-
-  return {
-    width: Math.round(width * (1 - padding)),
-    height: Math.round(height * (1 - padding)),
-  }
 }
 
 function extractAppleDeviceSize(size: AppleDeviceSize, padding: number) {
