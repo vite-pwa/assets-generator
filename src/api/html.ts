@@ -9,9 +9,11 @@ export function createAppleSplashScreenHtmlLink<Format extends HtmlLinkType>(
     createRequiredHtmlLinkOptions(options),
   )
 
-  return (format === 'string'
-    ? `<link rel="${link.rel}" media="${link.media}" href="${link.href}"${options.xhtml ? ' /' : ''}>`
-    : link) as HtmlLinkReturnType<Format>
+  return (
+    format === 'string'
+      ? `<link rel="${link.rel}" media="${link.media}" href="${link.href}"${options.xhtml ? ' /' : ''}>`
+      : link
+  ) as HtmlLinkReturnType<Format>
 }
 
 interface RequiredHtmlLinkOptions extends Required<Omit<HtmlLinkOptions, 'xhtml'>> {}
@@ -73,10 +75,12 @@ if (import.meta.vitest) {
     expect(linkString).toMatchInlineSnapshot(`"<link rel="apple-touch-startup-image" media="screen and (device-width: 480px) and (device-height: 320px) and (-webkit-device-pixel-ratio: 1) and (orientation: landscape)" href="/apple-splash-landscape-light-320x480.png" />"`)
     const link = createAppleSplashScreenHtmlLink('link', options)
     expectTypeOf(link).toEqualTypeOf<HtmlLink>()
-    expect(link).toEqual({
-      rel: 'apple-touch-startup-image',
-      media: 'screen and (device-width: 480px) and (device-height: 320px) and (-webkit-device-pixel-ratio: 1) and (orientation: landscape)',
-      href: '/apple-splash-landscape-light-320x480.png',
-    } satisfies HtmlLink)
+    expect(link).toMatchInlineSnapshot(`
+      {
+        "href": "/apple-splash-landscape-light-320x480.png",
+        "media": "screen and (device-width: 480px) and (device-height: 320px) and (-webkit-device-pixel-ratio: 1) and (orientation: landscape)",
+        "rel": "apple-touch-startup-image",
+      }
+    `)
   })
 }
