@@ -24,7 +24,7 @@ import {
   toResolvedAsset,
   toResolvedSize,
 } from './utils.ts'
-import { createAppleSplashScreenHtmlLink, extractAssetSize } from './api'
+import { createAppleSplashScreenHtmlLink, extractAssetSize, generateTransparentAsset } from './api'
 
 export * from './types'
 export { defaultAssetName, defaultPngCompressionOptions, defaultPngOptions, toResolvedAsset }
@@ -184,7 +184,7 @@ async function generateTransparentAssets(
   const asset = assets.assets.transparent
   const { sizes, padding, resizeOptions } = asset
   await Promise.all(sizes.map(async (size) => {
-    let filePath = resolve(folder, assets.assetName('transparent', size))
+    const filePath = resolve(folder, assets.assetName('transparent', size))
     if (!buildOptions.overrideAssets && existsSync(filePath)) {
       if (buildOptions.logLevel !== 'silent')
         consola.log(yellow(`Skipping, PNG file already exists: ${filePath}`))
@@ -192,24 +192,11 @@ async function generateTransparentAssets(
       return
     }
 
-    filePath = await resolveTempPngAssetName(filePath)
-    const { width, height } = extractAssetSize(size, padding)
-    await sharp({
-      create: {
-        width: size.width,
-        height: size.height,
-        channels: 4,
-        background: { r: 0, g: 0, b: 0, alpha: 0 },
-      },
-    }).composite([{
-      input: await sharp(image)
-        .resize(
-          width,
-          height,
-          resizeOptions,
-        ).toBuffer(),
-    }]).toFile(filePath)
-    await optimizePng(filePath, assets.png)
+    await (await generateTransparentAsset('png', image, size, {
+      padding,
+      resizeOptions,
+      outputOptions: assets.png,
+    })).toFile(filePath)
     if (buildOptions.logLevel !== 'silent')
       consola.ready(green(`Generated PNG file: ${filePath.replace(/-temp\.png$/, '.png')}`))
 
