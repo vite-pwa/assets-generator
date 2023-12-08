@@ -1,10 +1,9 @@
 import { existsSync } from 'node:fs'
-import { mkdir, rm, writeFile } from 'node:fs/promises'
+import { rm, writeFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { consola } from 'consola'
 import { green, yellow } from 'colorette'
 import type { PngOptions, ResizeOptions } from 'sharp'
-import sharp from 'sharp'
 import type {
   AppleDeviceSize,
   AssetType,
@@ -23,12 +22,20 @@ import {
   toResolvedAsset,
   toResolvedSize,
 } from './utils.ts'
-import { createAppleSplashScreenHtmlLink, generateTransparentAsset } from './api'
-import { generateMaskableAsset } from './api/maskable.ts'
-import { generateFavicon } from './api/favicon.ts'
+import {
+  createAppleSplashScreenHtmlLink,
+  generateFavicon,
+  generateMaskableAsset,
+  generateTransparentAsset,
+} from './api'
 
 export * from './types'
-export { defaultAssetName, defaultPngCompressionOptions, defaultPngOptions, toResolvedAsset }
+export {
+  defaultAssetName,
+  defaultPngCompressionOptions,
+  defaultPngOptions,
+  toResolvedAsset,
+}
 
 export async function generatePWAImageAssets(
   buildOptions: ResolvedBuildOptions,
@@ -153,27 +160,6 @@ async function generateFaviconFile(
     if (buildOptions.logLevel !== 'silent')
       consola.ready(green(`Generated ICO file: ${favicon}`))
   }))
-}
-
-function extractAppleDeviceSize(size: AppleDeviceSize, padding: number) {
-  return {
-    width: Math.round(size.width * (1 - padding)),
-    height: Math.round(size.height * (1 - padding)),
-  }
-}
-
-async function optimizePng(filePath: string, png: PngOptions) {
-  try {
-    await sharp(filePath).png(png).toFile(`${filePath.replace(/-temp\.png$/, '.png')}`)
-  }
-  finally {
-    await rm(filePath, { force: true })
-  }
-}
-
-async function resolveTempPngAssetName(name: string) {
-  await mkdir(dirname(name), { recursive: true })
-  return name.replace(/\.png$/, '-temp.png')
 }
 
 async function generateTransparentAssets(
@@ -332,7 +318,7 @@ async function generateAppleSplashScreens(
   sizesMap.clear()
 
   await Promise.all(splashScreens.map(async (size) => {
-    let filePath = resolve(folder, name(size.landscape, size.size, size.dark))
+    const filePath = resolve(folder, name(size.landscape, size.size, size.dark))
     if (!buildOptions.overrideAssets && existsSync(filePath)) {
       if (buildOptions.logLevel !== 'silent')
         consola.log(yellow(`Skipping, PNG file already exists: ${filePath}`))
@@ -340,24 +326,14 @@ async function generateAppleSplashScreens(
       return
     }
 
-    filePath = await resolveTempPngAssetName(filePath)
-    const { width, height } = extractAppleDeviceSize(size.size, size.padding)
-    await sharp({
-      create: {
-        width: size.size.width,
-        height: size.size.height,
-        channels: 4,
+    await (await generateMaskableAsset('png', image, size.size, {
+      padding: size.padding,
+      resizeOptions: {
+        ...size.resizeOptions,
         background: size.resizeOptions?.background ?? (size.dark ? 'black' : 'white'),
       },
-    }).composite([{
-      input: await sharp(image)
-        .resize(
-          width,
-          height,
-          size.resizeOptions,
-        ).toBuffer(),
-    }]).toFile(filePath)
-    await optimizePng(filePath, size.png)
+      outputOptions: size.png,
+    })).toFile(filePath)
     if (buildOptions.logLevel !== 'silent') {
       consola.ready(green(`Generated PNG file: ${filePath.replace(/-temp\.png$/, '.png')}`))
       if (linkMediaOptions.log) {
