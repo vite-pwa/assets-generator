@@ -5,7 +5,6 @@ import { consola } from 'consola'
 import { green, yellow } from 'colorette'
 import type { PngOptions, ResizeOptions } from 'sharp'
 import sharp from 'sharp'
-import { encode } from 'sharp-ico'
 import type {
   AppleDeviceSize,
   AssetType,
@@ -26,6 +25,7 @@ import {
 } from './utils.ts'
 import { createAppleSplashScreenHtmlLink, generateTransparentAsset } from './api'
 import { generateMaskableAsset } from './api/maskable.ts'
+import { generateFavicon } from './api/favicon.ts'
 
 export * from './types'
 export { defaultAssetName, defaultPngCompressionOptions, defaultPngOptions, toResolvedAsset }
@@ -118,7 +118,7 @@ function collectMissingFavicons(
   return newAssets
 }
 
-async function generateFavicon(
+async function generateFaviconFile(
   buildOptions: ResolvedBuildOptions,
   folder: string,
   type: AssetType,
@@ -147,9 +147,9 @@ async function generateFavicon(
       return
     }
 
-    const pngBuffer = await sharp(png).toFormat('png').toBuffer()
-    await writeFile(favicon, encode([pngBuffer]))
-
+    // const pngBuffer = await sharp(png).toFormat('png').toBuffer()
+    // await writeFile(favicon, encode([pngBuffer]))
+    await writeFile(favicon, await generateFavicon('png', png))
     if (buildOptions.logLevel !== 'silent')
       consola.ready(green(`Generated ICO file: ${favicon}`))
   }))
@@ -203,7 +203,7 @@ async function generateTransparentAssets(
     if (buildOptions.logLevel !== 'silent')
       consola.ready(green(`Generated PNG file: ${filePath.replace(/-temp\.png$/, '.png')}`))
 
-    await generateFavicon(buildOptions, folder, 'transparent', assets, size)
+    await generateFaviconFile(buildOptions, folder, 'transparent', assets, size)
   }))
 }
 
@@ -235,7 +235,7 @@ async function generateMaskableAssets(
     if (buildOptions.logLevel !== 'silent')
       consola.ready(green(`Generated PNG file: ${filePath.replace(/-temp\.png$/, '.png')}`))
 
-    await generateFavicon(buildOptions, folder, type, assets, size)
+    await generateFaviconFile(buildOptions, folder, type, assets, size)
   }))
 }
 

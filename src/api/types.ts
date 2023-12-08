@@ -1,5 +1,5 @@
+import type { PngOptions, WebpOptions } from 'sharp'
 import type sharp from 'sharp'
-import { type PngOptions, type WebpOptions } from 'sharp'
 
 export type ImageSourceInput =
     // eslint-disable-next-line n/prefer-global/buffer
@@ -34,3 +34,9 @@ export type GenerateOptionsOptionType<T> =
 export interface GenerateOutputOptions<T> extends GenerateOptions {
   outputOptions: T
 }
+
+export type GenerateFaviconType = 'png' | 'webp'
+export type GenerateFaviconOptionsType<T> =
+    T extends 'png' ? PngOptions :
+      T extends 'webp' ? WebpOptions :
+        never
