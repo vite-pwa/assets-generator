@@ -24,7 +24,8 @@ import {
   toResolvedAsset,
   toResolvedSize,
 } from './utils.ts'
-import { createAppleSplashScreenHtmlLink, extractAssetSize, generateTransparentAsset } from './api'
+import { createAppleSplashScreenHtmlLink, generateTransparentAsset } from './api'
+import { generateMaskableAsset } from './api/maskable.ts'
 
 export * from './types'
 export { defaultAssetName, defaultPngCompressionOptions, defaultPngOptions, toResolvedAsset }
@@ -192,11 +193,13 @@ async function generateTransparentAssets(
       return
     }
 
-    await (await generateTransparentAsset('png', image, size, {
+    const result = await generateTransparentAsset('png', image, size, {
       padding,
       resizeOptions,
       outputOptions: assets.png,
-    })).toFile(filePath)
+    })
+
+    await result.toFile(filePath)
     if (buildOptions.logLevel !== 'silent')
       consola.ready(green(`Generated PNG file: ${filePath.replace(/-temp\.png$/, '.png')}`))
 
@@ -214,7 +217,7 @@ async function generateMaskableAssets(
   const asset = assets.assets[type]
   const { sizes, padding, resizeOptions } = asset
   await Promise.all(sizes.map(async (size) => {
-    let filePath = resolve(folder, assets.assetName(type, size))
+    const filePath = resolve(folder, assets.assetName(type, size))
     if (!buildOptions.overrideAssets && existsSync(filePath)) {
       if (buildOptions.logLevel !== 'silent')
         consola.log(yellow(`Skipping, PNG file already exists: ${filePath}`))
@@ -222,24 +225,13 @@ async function generateMaskableAssets(
       return
     }
 
-    filePath = await resolveTempPngAssetName(filePath)
-    const { width, height } = extractAssetSize(size, padding)
-    await sharp({
-      create: {
-        width: size.width,
-        height: size.height,
-        channels: 4,
-        background: resizeOptions?.background ?? 'white',
-      },
-    }).composite([{
-      input: await sharp(image)
-        .resize(
-          width,
-          height,
-          resizeOptions,
-        ).toBuffer(),
-    }]).toFile(filePath)
-    await optimizePng(filePath, assets.png)
+    const result = await generateMaskableAsset('png', image, size, {
+      padding,
+      resizeOptions,
+      outputOptions: assets.png,
+    })
+
+    await result.toFile(filePath)
     if (buildOptions.logLevel !== 'silent')
       consola.ready(green(`Generated PNG file: ${filePath.replace(/-temp\.png$/, '.png')}`))
 

@@ -1,4 +1,5 @@
 export * from './types.ts'
 export * from './utils.ts'
 export * from './html.ts'
+export * from './maskable.ts'
 export * from './transparent.ts'

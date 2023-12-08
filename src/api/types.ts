@@ -1,3 +1,6 @@
+import type sharp from 'sharp'
+import { type PngOptions, type WebpOptions } from 'sharp'
+
 export type ImageSourceInput =
     // eslint-disable-next-line n/prefer-global/buffer
     | Buffer
@@ -12,3 +15,22 @@ export type ImageSourceInput =
     | Float32Array
     | Float64Array
     | string
+
+export interface GenerateOptions {
+  /**
+   * @default 0
+   */
+  padding?: number
+  outputOptions?: any
+  resizeOptions?: sharp.ResizeOptions
+}
+export type GenerateOptionsType = 'png' | 'webp' | 'none'
+export type GenerateOptionsOptionType<T> =
+    T extends 'png' ? GenerateOutputOptions<PngOptions> :
+      T extends 'webp' ? GenerateOutputOptions<WebpOptions> :
+        T extends 'none' ? GenerateOptions :
+          never
+
+export interface GenerateOutputOptions<T> extends GenerateOptions {
+  outputOptions: T
+}
