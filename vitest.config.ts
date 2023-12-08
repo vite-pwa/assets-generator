@@ -6,6 +6,6 @@ export default defineConfig({
     includeSource: ['src/api/*.ts'],
   },
   /* optimizeDeps: {
-    include: ['sharp'],
+    exclude: ['sharp'],
   }, */
 })

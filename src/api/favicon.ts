@@ -9,3 +9,14 @@ export async function generateFavicon<Format extends GenerateFaviconType>(
 ) {
   return encode([await sharp(image).toFormat(format, options).toBuffer()])
 }
+
+if (import.meta.vitest) {
+  const { expect, it } = import.meta.vitest
+  it('should generate a favicon asset', async () => {
+    const result = await generateFavicon(
+      'png',
+      'playground/pwa/public/favicon.svg',
+    )
+    expect(result).toBeDefined()
+  })
+}
