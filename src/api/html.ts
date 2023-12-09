@@ -35,6 +35,14 @@ export interface HtmlIconLinkOptions {
   size?: AssetSize
   xhtml?: boolean
   basePath?: string
+  /**
+   * Render the id attribute when using string format?
+   *
+   * The id will always be present in object notation.
+   *
+   * @default false
+   */
+  includeId?: boolean
 }
 
 export interface AppleSplahScreenHtmlLinkOptions {
@@ -45,6 +53,14 @@ export interface AppleSplahScreenHtmlLinkOptions {
   name?: AppleSplashScreenName
   basePath?: string
   dark?: boolean
+  /**
+   * Render the id attribute when using string format?
+   *
+   * The id will always be present in object notation.
+   *
+   * @default false
+   */
+  includeId?: boolean
 }
 
 export function createIconHtmlLink<Format extends HtmlLinkType>(
@@ -56,9 +72,9 @@ export function createIconHtmlLink<Format extends HtmlLinkType>(
 
   if (format === 'string') {
     if (icon.type === 'apple-touch-icon')
-      return `<link rel="${result.rel}" href="${result.href}"${icon.xhtml ? ' /' : ''}>` as HtmlLinkReturnType<Format, IconLink>
+      return `<link${icon.includeId ? ` id="${result.id}"` : ''} rel="${result.rel}" href="${result.href}"${icon.xhtml ? ' /' : ''}>` as HtmlLinkReturnType<Format, IconLink>
 
-    let favicon = `<link rel="${result.rel}" href="${result.href} `
+    let favicon = `<link${icon.includeId ? ` id="${result.id}"` : ''}rel="${result.rel}" href="${result.href}" `
     if (result.sizes)
       favicon += `sizes="${result.sizes}" `
 
@@ -83,7 +99,7 @@ export function createAppleSplashScreenHtmlLink<Format extends HtmlLinkType>(
 
   return (
     format === 'string'
-      ? `<link rel="${link.rel}" media="${link.media!}" href="${link.href}"${options.xhtml ? ' /' : ''}>`
+      ? `<link${options.includeId ? ` id="${link.id}"` : ''} rel="${link.rel}" media="${link.media!}" href="${link.href}"${options.xhtml ? ' /' : ''}>`
       : link
   ) as HtmlLinkReturnType<Format, AppleSplashScreenLink>
 }
@@ -179,18 +195,19 @@ function createRequiredHtmlLinkOptions(options: AppleSplahScreenHtmlLinkOptions)
     name: options.name ?? defaultSplashScreenName,
     basePath: options.basePath ?? '/',
     dark: options.dark === true,
+    includeId: options.includeId === true,
   } satisfies AppleSplahScreenHtmlLinkOptions
 }
 
 if (import.meta.vitest) {
   const { expect, expectTypeOf, it } = import.meta.vitest
   it('html api', () => {
-    const options: AppleSplahScreenHtmlLinkOptions = {
+    const options = {
       size: { width: 320, height: 480, scaleFactor: 1 },
       landscape: true,
       addMediaScreen: true,
       xhtml: true,
-    }
+    } satisfies AppleSplahScreenHtmlLinkOptions
     const linkString = createAppleSplashScreenHtmlLink('string', options)
     expectTypeOf(linkString).toEqualTypeOf<string>()
     // eslint-disable-next-line @typescript-eslint/quotes
@@ -200,8 +217,26 @@ if (import.meta.vitest) {
     expect(link).toMatchInlineSnapshot(`
       {
         "href": "/apple-splash-landscape-light-320x480.png",
+        "id": "atsi-480-320-1-light",
         "media": "screen and (device-width: 480px) and (device-height: 320px) and (-webkit-device-pixel-ratio: 1) and (orientation: landscape)",
         "rel": "apple-touch-startup-image",
+      }
+    `)
+    const appleTouchIconOptions = {
+      name: 'apple-touch-icon.png',
+      type: 'apple-touch-icon',
+    } satisfies HtmlIconLinkOptions
+    const appleTouchIconString = createIconHtmlLink('string', 'default', appleTouchIconOptions)
+    expectTypeOf(appleTouchIconString).toEqualTypeOf<string>()
+    // eslint-disable-next-line @typescript-eslint/quotes
+    expect(appleTouchIconString).toMatchInlineSnapshot(`"<link rel="apple-touch-icon" href="/apple-touch-icon.png">"`)
+    const appleTouchIcon = createIconHtmlLink('link', 'default', appleTouchIconOptions)
+    expectTypeOf(appleTouchIcon).toEqualTypeOf<IconLink>()
+    expect(appleTouchIcon).toMatchInlineSnapshot(`
+      {
+        "href": "/apple-touch-icon.png",
+        "id": "apple-touch-icon",
+        "rel": "apple-touch-icon",
       }
     `)
   })
