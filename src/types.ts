@@ -1,4 +1,5 @@
 import type { PngOptions, ResizeOptions } from 'sharp'
+import type { HeadLinkOptions } from './config.ts'
 
 export type AssetSize = number | { width: number; height: number }
 
@@ -161,6 +162,7 @@ export interface BuildOptions {
   root: string
   logLevel?: LogLevel
   overrideAssets?: boolean
+  headLinkOptions: Required<HeadLinkOptions>
 }
 
 export interface ResolvedBuildOptions extends Required<BuildOptions> {}

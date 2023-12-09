@@ -22,6 +22,8 @@ import {
 } from './utils.ts'
 import {
   createAppleSplashScreenHtmlLink,
+  createAppleTouchStartHtmlLink,
+  createFaviconHtmlLink,
   defaultPngCompressionOptions,
   defaultPngOptions,
   generateFavicon,
@@ -50,11 +52,33 @@ export async function generatePWAImageAssets(
 
   const newAssets = collectMissingFavicons(assets, pngFilesToDelete, folder)
 
+  const links: string[] = []
   await Promise.all([
-    generateTransparentAssets(buildOptions, newAssets, imagePath, folder),
-    generateMaskableAssets('maskable', buildOptions, newAssets, imagePath, folder),
-    generateMaskableAssets('apple', buildOptions, newAssets, imagePath, folder),
+    generateTransparentAssets(buildOptions, newAssets, imagePath, folder, links),
+    generateMaskableAssets('maskable', buildOptions, newAssets, imagePath, folder, undefined),
+    generateMaskableAssets('apple', buildOptions, newAssets, imagePath, folder, links),
   ])
+
+  if (links.length) {
+    if (image.endsWith('.svg')) {
+      const { basePath, preset, resolveSvgName } = buildOptions.headLinkOptions
+      links.push(createFaviconHtmlLink('string', preset, {
+        name: resolveSvgName(image),
+        basePath,
+      }))
+    }
+    consola.start('Head Links:')
+
+    links.sort((i1, i2) => {
+      if (i1.includes('apple-touch-icon'))
+        return i2.includes('apple-touch-icon') ? 0 : 1
+
+      return i2.includes('apple-touch-icon') ? -1 : 0
+    }).forEach((link) => {
+      // eslint-disable-next-line no-console
+      console.log(link)
+    })
+  }
 
   if (pngFilesToDelete.length) {
     consola.start('Deleting unused PNG files')
@@ -131,6 +155,7 @@ async function generateFaviconFile(
   type: AssetType,
   assets: ResolvedAssets,
   assetSize: ResolvedAssetSize,
+  headLinks?: string[],
 ) {
   const asset = assets.assets[type]
   const favicons = asset?.favicons?.filter(([size]) => sameAssetSize(size, assetSize))
@@ -157,8 +182,17 @@ async function generateFaviconFile(
     // const pngBuffer = await sharp(png).toFormat('png').toBuffer()
     // await writeFile(favicon, encode([pngBuffer]))
     await writeFile(favicon, await generateFavicon('png', png))
-    if (buildOptions.logLevel !== 'silent')
+    if (buildOptions.logLevel !== 'silent') {
+      if (headLinks) {
+        const { basePath, preset } = buildOptions.headLinkOptions
+        headLinks.push(createFaviconHtmlLink('string', preset, {
+          name,
+          size: assetSize.original,
+          basePath,
+        }))
+      }
       consola.ready(green(`Generated ICO file: ${favicon}`))
+    }
   }))
 }
 
@@ -167,6 +201,7 @@ async function generateTransparentAssets(
   assets: ResolvedAssets,
   image: string,
   folder: string,
+  headLinks: string[],
 ) {
   const asset = assets.assets.transparent
   const { sizes, padding, resizeOptions } = asset
@@ -189,7 +224,14 @@ async function generateTransparentAssets(
     if (buildOptions.logLevel !== 'silent')
       consola.ready(green(`Generated PNG file: ${filePath.replace(/-temp\.png$/, '.png')}`))
 
-    await generateFaviconFile(buildOptions, folder, 'transparent', assets, size)
+    await generateFaviconFile(
+      buildOptions,
+      folder,
+      'transparent',
+      assets,
+      size,
+      headLinks,
+    )
   }))
 }
 
@@ -199,11 +241,15 @@ async function generateMaskableAssets(
   assets: ResolvedAssets,
   image: string,
   folder: string,
+  headLinks?: string[],
 ) {
   const asset = assets.assets[type]
+  const addAppleTouchIcon = type === 'apple'
   const { sizes, padding, resizeOptions } = asset
+  const { basePath } = buildOptions.headLinkOptions
   await Promise.all(sizes.map(async (size) => {
-    const filePath = resolve(folder, assets.assetName(type, size))
+    const name = assets.assetName(type, size)
+    const filePath = resolve(folder, name)
     if (!buildOptions.overrideAssets && existsSync(filePath)) {
       if (buildOptions.logLevel !== 'silent')
         consola.log(yellow(`Skipping, PNG file already exists: ${filePath}`))
@@ -218,10 +264,24 @@ async function generateMaskableAssets(
     })
 
     await result.toFile(filePath)
-    if (buildOptions.logLevel !== 'silent')
+    if (buildOptions.logLevel !== 'silent') {
+      if (addAppleTouchIcon && headLinks) {
+        headLinks.push(createAppleTouchStartHtmlLink('string', {
+          name,
+          basePath,
+        }))
+      }
       consola.ready(green(`Generated PNG file: ${filePath.replace(/-temp\.png$/, '.png')}`))
+    }
 
-    await generateFaviconFile(buildOptions, folder, type, assets, size)
+    await generateFaviconFile(
+      buildOptions,
+      folder,
+      type,
+      assets,
+      size,
+      undefined,
+    )
   }))
 }
 
