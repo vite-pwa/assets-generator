@@ -22,7 +22,7 @@ export type { Preset }
 /**
  * Built-in presets.
  * - `minimal-2023`: Only generate the bare minimum assets.
- * - `minimal`: Only generate the bare minimum assets.
+ * - `minimal`: Only generate the bare minimum assets (deprecated).
  * - `android`: Generate assets for Android.
  * - `windows`: Generate assets for Windows.
  * - `ios`: Generate assets for iOS.

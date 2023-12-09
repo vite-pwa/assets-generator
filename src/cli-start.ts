@@ -51,7 +51,7 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
   const {
     logLevel = 'info',
     overrideAssets = true,
-    preset = 'minimal-2023',
+    preset = 'minimal',
     images: configImages,
   } = config
 
