@@ -63,7 +63,7 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
   const useImages = Array.isArray(configImages) ? configImages : [configImages]
 
   let usePreset: Preset
-  let hmtmlPreset: HtmlLinkPreset | undefined
+  let htmlPreset: HtmlLinkPreset | undefined
   if (typeof preset === 'object') {
     usePreset = preset
   }
@@ -71,11 +71,11 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
     switch (preset) {
       case 'minimal':
         usePreset = await import('./presets/minimal.ts').then(m => m.minimalPreset)
-        hmtmlPreset = 'default'
+        htmlPreset = 'default'
         break
       case 'minimal-2023':
         usePreset = await import('./presets/minimal-2023.ts').then(m => m.minimal2023Preset)
-        hmtmlPreset = '2023'
+        htmlPreset = '2023'
         break
       default:
         throw new Error(`Preset ${preset} not yet implemented`)
@@ -148,14 +148,14 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
     assetName,
   }
 
-  consola.ready('PWA assets ready to be generated')
-  consola.start(`Generating PWA assets from ${useImages.join(', ')} image${useImages.length > 1 ? 's' : ''}`)
-
   const headLinkOptions: Required<HeadLinkOptions> = {
-    preset: hmtmlPreset ?? userHeadLinkOptions?.preset ?? 'default',
+    preset: htmlPreset ?? userHeadLinkOptions?.preset ?? 'default',
     resolveSvgName: userHeadLinkOptions?.resolveSvgName ?? (name => basename(name)),
     basePath: userHeadLinkOptions?.basePath ?? '/',
   }
+
+  consola.ready('PWA assets ready to be generated')
+  consola.start(`Generating PWA assets from ${useImages.join(', ')} image${useImages.length > 1 ? 's' : ''}`)
 
   await generatePWAAssets(
     useImages,
