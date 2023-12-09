@@ -21,13 +21,14 @@ export type { Preset }
 
 /**
  * Built-in presets.
+ * - `minimal-2023`: Only generate the bare minimum assets.
  * - `minimal`: Only generate the bare minimum assets.
  * - `android`: Generate assets for Android.
  * - `windows`: Generate assets for Windows.
  * - `ios`: Generate assets for iOS.
  * - `all`: `android`, `windows` and `ios` presets combined.
  */
-export type BuiltInPreset = 'minimal' | 'android' | 'windows' | 'ios' | 'all'
+export type BuiltInPreset = 'minimal' | 'minimal-2023' | 'android' | 'windows' | 'ios' | 'all'
 
 export interface UserConfig {
   /**

@@ -1,12 +1,9 @@
 import type { Preset } from '../preset.ts'
 
-/**
- * @deprecated use `minimal-2023` instead
- */
-export const minimalPreset: Preset = {
+export const minimal2023Preset: Preset = {
   transparent: {
     sizes: [64, 192, 512],
-    favicons: [[64, 'favicon.ico']],
+    favicons: [[48, 'favicon.ico']],
   },
   maskable: {
     sizes: [512],

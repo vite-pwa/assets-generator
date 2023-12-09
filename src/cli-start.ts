@@ -51,7 +51,7 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
   const {
     logLevel = 'info',
     overrideAssets = true,
-    preset = 'minimal',
+    preset = 'minimal-2023',
     images: configImages,
   } = config
 
@@ -65,6 +65,9 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
     switch (preset) {
       case 'minimal':
         usePreset = await import('./presets/minimal.ts').then(m => m.minimalPreset)
+        break
+      case 'minimal-2023':
+        usePreset = await import('./presets/minimal-2023.ts').then(m => m.minimal2023Preset)
         break
       default:
         throw new Error(`Preset ${preset} not yet implemented`)
