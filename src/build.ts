@@ -22,7 +22,7 @@ import {
 } from './utils.ts'
 import {
   createAppleSplashScreenHtmlLink,
-  createAppleTouchStartHtmlLink,
+  createAppleTouchIconHtmlLink,
   createFaviconHtmlLink,
   defaultPngCompressionOptions,
   defaultPngOptions,
@@ -266,7 +266,7 @@ async function generateMaskableAssets(
     await result.toFile(filePath)
     if (buildOptions.logLevel !== 'silent') {
       if (addAppleTouchIcon && headLinks) {
-        headLinks.push(createAppleTouchStartHtmlLink('string', {
+        headLinks.push(createAppleTouchIconHtmlLink('string', {
           name,
           basePath,
         }))

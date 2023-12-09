@@ -83,7 +83,7 @@ export function createFaviconHtmlLink<Format extends HtmlLinkType>(
   return result as HtmlLinkReturnType<Format, FaviconLink>
 }
 
-export function createAppleTouchStartHtmlLink<Format extends HtmlLinkType>(
+export function createAppleTouchIconHtmlLink<Format extends HtmlLinkType>(
   format: Format,
   icon: HtmlIconLinkOptions,
 ): HtmlLinkReturnType<Format, HtmlLink> {
@@ -231,11 +231,11 @@ if (import.meta.vitest) {
       const appleTouchIconOptions = {
         name: 'apple-touch-icon.png',
       } satisfies HtmlIconLinkOptions
-      const appleTouchIconString = createAppleTouchStartHtmlLink('string', appleTouchIconOptions)
+      const appleTouchIconString = createAppleTouchIconHtmlLink('string', appleTouchIconOptions)
       expectTypeOf(appleTouchIconString).toEqualTypeOf<string>()
       // eslint-disable-next-line @typescript-eslint/quotes
       expect(appleTouchIconString).toMatchInlineSnapshot(`"<link rel="apple-touch-icon" href="/apple-touch-icon.png">"`)
-      const appleTouchIcon = createAppleTouchStartHtmlLink('link', appleTouchIconOptions)
+      const appleTouchIcon = createAppleTouchIconHtmlLink('link', appleTouchIconOptions)
       expectTypeOf(appleTouchIcon).toEqualTypeOf<HtmlLink>()
       expect(appleTouchIcon).toMatchInlineSnapshot(`
       {
