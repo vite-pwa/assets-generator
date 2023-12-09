@@ -11,11 +11,8 @@ export type { LoadConfigResult, LoadConfigSource }
 export * from './types.ts'
 export * from './presets/index.ts'
 export * from './splash.ts'
-export {
-  defaultAssetName,
-  defaultPngCompressionOptions,
-  defaultPngOptions,
-} from './utils.ts'
+export * from './api/defaults.ts'
+export { defaultAssetName } from './utils.ts'
 
 export type { Preset }
 

@@ -2,12 +2,13 @@ import process from 'node:process'
 import cac from 'cac'
 import { consola } from 'consola'
 import { green } from 'colorette'
-import type { PngOptions, ResizeOptions } from 'sharp'
+import type { PngOptions } from 'sharp'
 import { version } from '../package.json'
 import { defaultSplashScreenName, loadConfig } from './config.ts'
 import type { BuiltInPreset, Preset, ResolvedAppleSplashScreens, ResolvedAssets, UserConfig } from './config.ts'
-import { defaultAssetName, defaultPngCompressionOptions, toResolvedAsset } from './utils.ts'
+import { defaultAssetName, toResolvedAsset } from './utils.ts'
 import { generatePWAAssets } from './build.ts'
+import { createPngCompressionOptions, createResizeOptions, defaultPngCompressionOptions } from './api/defaults.ts'
 
 interface CliOptions extends Omit<UserConfig, 'preset' | 'images'> {
   preset?: BuiltInPreset
@@ -93,17 +94,9 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
     } = useAppleSplashScreens
 
     // Initialize defaults
-    const resizeOptions: ResizeOptions = {
-      fit: 'contain',
-      background: 'white',
-      ...useResizeOptions,
-    }
-    const darkResizeOptions: ResizeOptions = {
-      fit: 'contain',
-      background: 'black',
-      ...useDarkResizeOptions,
-    }
-    const png: PngOptions = { compressionLevel: 9, quality: 60, ...usePng }
+    const resizeOptions = createResizeOptions(false, useResizeOptions)
+    const darkResizeOptions = createResizeOptions(true, useDarkResizeOptions)
+    const png: PngOptions = createPngCompressionOptions(usePng)
 
     sizes.forEach((size) => {
       if (typeof size.padding === 'undefined')

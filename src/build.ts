@@ -16,14 +16,14 @@ import type {
 import {
   cloneResolvedAssetsSizes,
   defaultAssetName,
-  defaultPngCompressionOptions,
-  defaultPngOptions,
   sameAssetSize,
   toResolvedAsset,
   toResolvedSize,
 } from './utils.ts'
 import {
   createAppleSplashScreenHtmlLink,
+  defaultPngCompressionOptions,
+  defaultPngOptions,
   generateFavicon,
   generateMaskableAsset,
   generateTransparentAsset,
