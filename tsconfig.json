@@ -5,6 +5,7 @@
     "useDefineForClassFields": true,
     "module": "ESNext",
     "moduleResolution": "bundler",
+    "types": ["vitest/importMeta"],
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "noEmit": true,

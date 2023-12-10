@@ -1,16 +1,20 @@
 import process from 'node:process'
+import { basename } from 'node:path'
 import cac from 'cac'
 import { consola } from 'consola'
 import { green } from 'colorette'
-import type { PngOptions, ResizeOptions } from 'sharp'
+import type { PngOptions } from 'sharp'
 import { version } from '../package.json'
 import { defaultSplashScreenName, loadConfig } from './config.ts'
-import type { BuiltInPreset, Preset, ResolvedAppleSplashScreens, ResolvedAssets, UserConfig } from './config.ts'
-import { defaultAssetName, defaultPngCompressionOptions, toResolvedAsset } from './utils.ts'
+import type { BuiltInPreset, HeadLinkOptions, Preset, ResolvedAppleSplashScreens, ResolvedAssets, UserConfig } from './config.ts'
+import { defaultAssetName, toResolvedAsset } from './utils.ts'
 import { generatePWAAssets } from './build.ts'
+import { createPngCompressionOptions, createResizeOptions, defaultPngCompressionOptions } from './api/defaults.ts'
+import type { HtmlLinkPreset } from './api'
 
 interface CliOptions extends Omit<UserConfig, 'preset' | 'images'> {
   preset?: BuiltInPreset
+  headLinkOptions?: HeadLinkOptions
 }
 
 export async function startCli(args: string[] = process.argv) {
@@ -53,11 +57,13 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
     overrideAssets = true,
     preset = 'minimal',
     images: configImages,
+    headLinkOptions: userHeadLinkOptions,
   } = config
 
   const useImages = Array.isArray(configImages) ? configImages : [configImages]
 
   let usePreset: Preset
+  let htmlPreset: HtmlLinkPreset | undefined
   if (typeof preset === 'object') {
     usePreset = preset
   }
@@ -65,6 +71,11 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
     switch (preset) {
       case 'minimal':
         usePreset = await import('./presets/minimal.ts').then(m => m.minimalPreset)
+        htmlPreset = 'default'
+        break
+      case 'minimal-2023':
+        usePreset = await import('./presets/minimal-2023.ts').then(m => m.minimal2023Preset)
+        htmlPreset = '2023'
         break
       default:
         throw new Error(`Preset ${preset} not yet implemented`)
@@ -90,17 +101,9 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
     } = useAppleSplashScreens
 
     // Initialize defaults
-    const resizeOptions: ResizeOptions = {
-      fit: 'contain',
-      background: 'white',
-      ...useResizeOptions,
-    }
-    const darkResizeOptions: ResizeOptions = {
-      fit: 'contain',
-      background: 'black',
-      ...useDarkResizeOptions,
-    }
-    const png: PngOptions = { compressionLevel: 9, quality: 60, ...usePng }
+    const resizeOptions = createResizeOptions(false, useResizeOptions)
+    const darkResizeOptions = createResizeOptions(true, useDarkResizeOptions)
+    const png: PngOptions = createPngCompressionOptions(usePng)
 
     sizes.forEach((size) => {
       if (typeof size.padding === 'undefined')
@@ -145,13 +148,24 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
     assetName,
   }
 
+  const headLinkOptions: Required<HeadLinkOptions> = {
+    preset: htmlPreset ?? userHeadLinkOptions?.preset ?? 'default',
+    resolveSvgName: userHeadLinkOptions?.resolveSvgName ?? (name => basename(name)),
+    basePath: userHeadLinkOptions?.basePath ?? '/',
+  }
+
   consola.ready('PWA assets ready to be generated')
   consola.start(`Generating PWA assets from ${useImages.join(', ')} image${useImages.length > 1 ? 's' : ''}`)
 
   await generatePWAAssets(
     useImages,
     assets,
-    { root, logLevel, overrideAssets },
+    {
+      root,
+      logLevel,
+      overrideAssets,
+      headLinkOptions,
+    },
     appleSplashScreens,
   )
   consola.ready('PWA assets generated')

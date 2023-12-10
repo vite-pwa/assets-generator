@@ -5,29 +5,53 @@ import type { LoadConfigResult, LoadConfigSource } from 'unconfig'
 import { createConfigLoader as createLoader } from 'unconfig'
 import type { Preset } from './preset.ts'
 import type { LogLevel } from './types.ts'
+import type { HtmlLinkPreset } from './api'
 
 export type { LoadConfigResult, LoadConfigSource }
 
 export * from './types.ts'
-export * from './presets'
+export * from './presets/index.ts'
 export * from './splash.ts'
-export {
-  defaultAssetName,
-  defaultPngCompressionOptions,
-  defaultPngOptions,
-} from './utils.ts'
+export * from './api/defaults.ts'
+export { defaultAssetName } from './utils.ts'
 
 export type { Preset }
 
 /**
  * Built-in presets.
- * - `minimal`: Only generate the bare minimum assets.
+ * - `minimal-2023`: Only generate the bare minimum assets.
+ * - `minimal`: Only generate the bare minimum assets (deprecated).
  * - `android`: Generate assets for Android.
  * - `windows`: Generate assets for Windows.
  * - `ios`: Generate assets for iOS.
  * - `all`: `android`, `windows` and `ios` presets combined.
  */
-export type BuiltInPreset = 'minimal' | 'android' | 'windows' | 'ios' | 'all'
+export type BuiltInPreset = 'minimal' | 'minimal-2023' | 'android' | 'windows' | 'ios' | 'all'
+
+export interface HeadLinkOptions {
+  /**
+   * Base path to generate the html head links.
+   *
+   * @default '/'
+   */
+  basePath?: string
+  /**
+   * The preset to use.
+   *
+   * If using the built-in presets from CLI (`minimal` or `minimal-2023`), this option will be ignored (will be set to `default` or `2023` for `minimal` and `minimal-2023` respectively).
+   *
+   * @default 'default'
+   */
+  preset?: HtmlLinkPreset
+  /**
+   * By default, the SVG favicon will use the SVG file name as the name.
+   *
+   * For example, if you provide `public/logo.svg` as the image source, the href in the link will be `<basePath>logo.svg`.
+   *
+   * @param name The name of the SVG icons.
+   */
+  resolveSvgName?: (name: string) => string
+}
 
 export interface UserConfig {
   /**
@@ -68,6 +92,10 @@ export interface UserConfig {
    * @default 'minimal'
    */
   preset?: BuiltInPreset | Preset
+  /**
+   * Options for generating the html head links for `apple-touch-icon` and favicons.
+   */
+  headLinkOptions?: HeadLinkOptions
 }
 
 export interface ResolvedConfig extends Required<Omit<UserConfig, 'preset'>> {

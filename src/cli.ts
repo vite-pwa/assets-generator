@@ -1,4 +1,4 @@
-import { startCli } from './cli-start'
-import { handleError } from './errors'
+import { startCli } from './cli-start.ts'
+import { handleError } from './errors.ts'
 
 startCli().catch(handleError)

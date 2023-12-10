@@ -2,7 +2,7 @@
   "name": "@vite-pwa/assets-generator",
   "type": "module",
   "version": "0.0.11",
-  "packageManager": "pnpm@8.10.5",
+  "packageManager": "pnpm@8.12.0",
   "description": "Zero-config PWA Assets Generator",
   "author": "antfu <anthonyfu117@hotmail.com>",
   "license": "MIT",
@@ -20,45 +20,63 @@
     "pwa icons generator",
     "pwa assets generator"
   ],
+  "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
-      "default": "./dist/index.mjs"
+      "require": "./dist/index.cjs"
+    },
+    "./api": {
+      "import": "./dist/api.mjs",
+      "require": "./dist/api.cjs"
     },
     "./config": {
-      "types": "./dist/config.d.ts",
       "import": "./dist/config.mjs",
-      "default": "./dist/config.mjs"
+      "require": "./dist/config.cjs"
+    },
+    "./presets": {
+      "import": "./dist/presets.mjs",
+      "require": "./dist/presets.cjs"
     },
     "./presets/minimal": {
-      "types": "./dist/presets/minimal.d.ts",
       "import": "./dist/presets/minimal.mjs",
-      "default": "./dist/presets/minimal.mjs"
-    }
+      "require": "./dist/presets/minimal.cjs"
+    },
+    "./presets/minimal-2023": {
+      "import": "./dist/presets/minimal-2023.mjs",
+      "require": "./dist/presets/minimal-2023.cjs"
+    },
+    "./*": "./*"
   },
-  "main": "dist/index.mjs",
+  "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*",
+        "./*"
+      ]
+    }
+  },
   "bin": {
     "pwa-assets-generator": "./bin/pwa-assets-generator.mjs"
   },
   "files": [
     "bin",
-    "dist",
-    "presets",
-    "*.d.ts"
+    "dist"
   ],
   "engines": {
     "node": ">=16.14.0"
   },
   "scripts": {
-    "build": "unbuild",
+    "build": "unbuild && tsx scripts/postbuild.ts",
     "lint": "eslint .",
     "lint-fix": "nr lint --fix",
     "prepublishOnly": "npm run build",
     "release": "bumpp && npm publish",
-    "test": "pnpm -C test run test"
+    "run-playground": "pnpm -C playground run build",
+    "test": "vitest"
   },
   "dependencies": {
     "cac": "^6.7.14",
@@ -66,16 +84,18 @@
     "consola": "^3.2.3",
     "sharp": "^0.32.6",
     "sharp-ico": "^0.1.5",
-    "unconfig": "^0.3.10"
+    "unconfig": "^0.3.11"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.43.1",
-    "@antfu/ni": "^0.21.9",
+    "@antfu/ni": "^0.21.12",
     "@types/debug": "^4.1.12",
     "@types/node": "^18.17.15",
     "bumpp": "^9.2.0",
     "eslint": "^8.53.0",
-    "typescript": "^5.2.2",
-    "unbuild": "^1.2.1"
+    "esno": "^4.0.0",
+    "typescript": "^5.3.3",
+    "unbuild": "^2.0.0",
+    "vitest": "^1.0.4"
   }
 }

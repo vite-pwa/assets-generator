@@ -1,11 +1,9 @@
 import { existsSync } from 'node:fs'
-import { mkdir, rm, writeFile } from 'node:fs/promises'
+import { rm, writeFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { consola } from 'consola'
 import { green, yellow } from 'colorette'
 import type { PngOptions, ResizeOptions } from 'sharp'
-import sharp from 'sharp'
-import { encode } from 'sharp-ico'
 import type {
   AppleDeviceSize,
   AssetType,
@@ -18,16 +16,28 @@ import type {
 import {
   cloneResolvedAssetsSizes,
   defaultAssetName,
-  defaultPngCompressionOptions,
-  defaultPngOptions,
   sameAssetSize,
   toResolvedAsset,
   toResolvedSize,
 } from './utils.ts'
-import { createAppleSplashScreenHtmlLink } from './splash.ts'
+import {
+  createAppleSplashScreenHtmlLink,
+  createAppleTouchIconHtmlLink,
+  createFaviconHtmlLink,
+  defaultPngCompressionOptions,
+  defaultPngOptions,
+  generateFavicon,
+  generateMaskableAsset,
+  generateTransparentAsset,
+} from './api'
 
 export * from './types'
-export { defaultAssetName, defaultPngCompressionOptions, defaultPngOptions, toResolvedAsset }
+export {
+  defaultAssetName,
+  defaultPngCompressionOptions,
+  defaultPngOptions,
+  toResolvedAsset,
+}
 
 export async function generatePWAImageAssets(
   buildOptions: ResolvedBuildOptions,
@@ -42,11 +52,33 @@ export async function generatePWAImageAssets(
 
   const newAssets = collectMissingFavicons(assets, pngFilesToDelete, folder)
 
+  const links: string[] = []
   await Promise.all([
-    generateTransparentAssets(buildOptions, newAssets, imagePath, folder),
-    generateMaskableAssets('maskable', buildOptions, newAssets, imagePath, folder),
-    generateMaskableAssets('apple', buildOptions, newAssets, imagePath, folder),
+    generateTransparentAssets(buildOptions, newAssets, imagePath, folder, links),
+    generateMaskableAssets('maskable', buildOptions, newAssets, imagePath, folder, undefined),
+    generateMaskableAssets('apple', buildOptions, newAssets, imagePath, folder, links),
   ])
+
+  if (links.length) {
+    if (image.endsWith('.svg')) {
+      const { basePath, preset, resolveSvgName } = buildOptions.headLinkOptions
+      links.push(createFaviconHtmlLink('string', preset, {
+        name: resolveSvgName(image),
+        basePath,
+      }))
+    }
+    consola.start('Head Links:')
+
+    links.sort((i1, i2) => {
+      if (i1.includes('apple-touch-icon'))
+        return i2.includes('apple-touch-icon') ? 0 : 1
+
+      return i2.includes('apple-touch-icon') ? -1 : 0
+    }).forEach((link) => {
+      // eslint-disable-next-line no-console
+      console.log(link)
+    })
+  }
 
   if (pngFilesToDelete.length) {
     consola.start('Deleting unused PNG files')
@@ -117,12 +149,13 @@ function collectMissingFavicons(
   return newAssets
 }
 
-async function generateFavicon(
+async function generateFaviconFile(
   buildOptions: ResolvedBuildOptions,
   folder: string,
   type: AssetType,
   assets: ResolvedAssets,
   assetSize: ResolvedAssetSize,
+  headLinks?: string[],
 ) {
   const asset = assets.assets[type]
   const favicons = asset?.favicons?.filter(([size]) => sameAssetSize(size, assetSize))
@@ -146,47 +179,21 @@ async function generateFavicon(
       return
     }
 
-    const pngBuffer = await sharp(png).toFormat('png').toBuffer()
-    await writeFile(favicon, encode([pngBuffer]))
-
-    if (buildOptions.logLevel !== 'silent')
+    // const pngBuffer = await sharp(png).toFormat('png').toBuffer()
+    // await writeFile(favicon, encode([pngBuffer]))
+    await writeFile(favicon, await generateFavicon('png', png))
+    if (buildOptions.logLevel !== 'silent') {
+      if (headLinks) {
+        const { basePath, preset } = buildOptions.headLinkOptions
+        headLinks.push(createFaviconHtmlLink('string', preset, {
+          name,
+          size: assetSize.original,
+          basePath,
+        }))
+      }
       consola.ready(green(`Generated ICO file: ${favicon}`))
+    }
   }))
-}
-
-function extractAssetSize(size: ResolvedAssetSize, padding: number) {
-  const width = typeof size.original === 'number'
-    ? size.original
-    : size.original.width
-  const height = typeof size.original === 'number'
-    ? size.original
-    : size.original.height
-
-  return {
-    width: Math.round(width * (1 - padding)),
-    height: Math.round(height * (1 - padding)),
-  }
-}
-
-function extractAppleDeviceSize(size: AppleDeviceSize, padding: number) {
-  return {
-    width: Math.round(size.width * (1 - padding)),
-    height: Math.round(size.height * (1 - padding)),
-  }
-}
-
-async function optimizePng(filePath: string, png: PngOptions) {
-  try {
-    await sharp(filePath).png(png).toFile(`${filePath.replace(/-temp\.png$/, '.png')}`)
-  }
-  finally {
-    await rm(filePath, { force: true })
-  }
-}
-
-async function resolveTempPngAssetName(name: string) {
-  await mkdir(dirname(name), { recursive: true })
-  return name.replace(/\.png$/, '-temp.png')
 }
 
 async function generateTransparentAssets(
@@ -194,11 +201,12 @@ async function generateTransparentAssets(
   assets: ResolvedAssets,
   image: string,
   folder: string,
+  headLinks: string[],
 ) {
   const asset = assets.assets.transparent
   const { sizes, padding, resizeOptions } = asset
   await Promise.all(sizes.map(async (size) => {
-    let filePath = resolve(folder, assets.assetName('transparent', size))
+    const filePath = resolve(folder, assets.assetName('transparent', size))
     if (!buildOptions.overrideAssets && existsSync(filePath)) {
       if (buildOptions.logLevel !== 'silent')
         consola.log(yellow(`Skipping, PNG file already exists: ${filePath}`))
@@ -206,28 +214,24 @@ async function generateTransparentAssets(
       return
     }
 
-    filePath = await resolveTempPngAssetName(filePath)
-    const { width, height } = extractAssetSize(size, padding)
-    await sharp({
-      create: {
-        width: size.width,
-        height: size.height,
-        channels: 4,
-        background: { r: 0, g: 0, b: 0, alpha: 0 },
-      },
-    }).composite([{
-      input: await sharp(image)
-        .resize(
-          width,
-          height,
-          resizeOptions,
-        ).toBuffer(),
-    }]).toFile(filePath)
-    await optimizePng(filePath, assets.png)
+    const result = await generateTransparentAsset('png', image, size, {
+      padding,
+      resizeOptions,
+      outputOptions: assets.png,
+    })
+
+    await result.toFile(filePath)
     if (buildOptions.logLevel !== 'silent')
       consola.ready(green(`Generated PNG file: ${filePath.replace(/-temp\.png$/, '.png')}`))
 
-    await generateFavicon(buildOptions, folder, 'transparent', assets, size)
+    await generateFaviconFile(
+      buildOptions,
+      folder,
+      'transparent',
+      assets,
+      size,
+      headLinks,
+    )
   }))
 }
 
@@ -237,11 +241,15 @@ async function generateMaskableAssets(
   assets: ResolvedAssets,
   image: string,
   folder: string,
+  headLinks?: string[],
 ) {
   const asset = assets.assets[type]
+  const addAppleTouchIcon = type === 'apple'
   const { sizes, padding, resizeOptions } = asset
+  const { basePath } = buildOptions.headLinkOptions
   await Promise.all(sizes.map(async (size) => {
-    let filePath = resolve(folder, assets.assetName(type, size))
+    const name = assets.assetName(type, size)
+    const filePath = resolve(folder, name)
     if (!buildOptions.overrideAssets && existsSync(filePath)) {
       if (buildOptions.logLevel !== 'silent')
         consola.log(yellow(`Skipping, PNG file already exists: ${filePath}`))
@@ -249,28 +257,31 @@ async function generateMaskableAssets(
       return
     }
 
-    filePath = await resolveTempPngAssetName(filePath)
-    const { width, height } = extractAssetSize(size, padding)
-    await sharp({
-      create: {
-        width: size.width,
-        height: size.height,
-        channels: 4,
-        background: resizeOptions?.background ?? 'white',
-      },
-    }).composite([{
-      input: await sharp(image)
-        .resize(
-          width,
-          height,
-          resizeOptions,
-        ).toBuffer(),
-    }]).toFile(filePath)
-    await optimizePng(filePath, assets.png)
-    if (buildOptions.logLevel !== 'silent')
-      consola.ready(green(`Generated PNG file: ${filePath.replace(/-temp\.png$/, '.png')}`))
+    const result = await generateMaskableAsset('png', image, size, {
+      padding,
+      resizeOptions,
+      outputOptions: assets.png,
+    })
 
-    await generateFavicon(buildOptions, folder, type, assets, size)
+    await result.toFile(filePath)
+    if (buildOptions.logLevel !== 'silent') {
+      if (addAppleTouchIcon && headLinks) {
+        headLinks.push(createAppleTouchIconHtmlLink('string', {
+          name,
+          basePath,
+        }))
+      }
+      consola.ready(green(`Generated PNG file: ${filePath.replace(/-temp\.png$/, '.png')}`))
+    }
+
+    await generateFaviconFile(
+      buildOptions,
+      folder,
+      type,
+      assets,
+      size,
+      undefined,
+    )
   }))
 }
 
@@ -367,7 +378,7 @@ async function generateAppleSplashScreens(
   sizesMap.clear()
 
   await Promise.all(splashScreens.map(async (size) => {
-    let filePath = resolve(folder, name(size.landscape, size.size, size.dark))
+    const filePath = resolve(folder, name(size.landscape, size.size, size.dark))
     if (!buildOptions.overrideAssets && existsSync(filePath)) {
       if (buildOptions.logLevel !== 'silent')
         consola.log(yellow(`Skipping, PNG file already exists: ${filePath}`))
@@ -375,36 +386,26 @@ async function generateAppleSplashScreens(
       return
     }
 
-    filePath = await resolveTempPngAssetName(filePath)
-    const { width, height } = extractAppleDeviceSize(size.size, size.padding)
-    await sharp({
-      create: {
-        width: size.size.width,
-        height: size.size.height,
-        channels: 4,
+    await (await generateMaskableAsset('png', image, size.size, {
+      padding: size.padding,
+      resizeOptions: {
+        ...size.resizeOptions,
         background: size.resizeOptions?.background ?? (size.dark ? 'black' : 'white'),
       },
-    }).composite([{
-      input: await sharp(image)
-        .resize(
-          width,
-          height,
-          size.resizeOptions,
-        ).toBuffer(),
-    }]).toFile(filePath)
-    await optimizePng(filePath, size.png)
+      outputOptions: size.png,
+    })).toFile(filePath)
     if (buildOptions.logLevel !== 'silent') {
       consola.ready(green(`Generated PNG file: ${filePath.replace(/-temp\.png$/, '.png')}`))
       if (linkMediaOptions.log) {
-        links.push(createAppleSplashScreenHtmlLink(
-          size.size,
-          size.landscape,
-          linkMediaOptions.addMediaScreen,
-          linkMediaOptions.xhtml,
+        links.push(createAppleSplashScreenHtmlLink('string', {
+          size: size.size,
+          landscape: size.landscape,
+          addMediaScreen: linkMediaOptions.addMediaScreen,
+          xhtml: linkMediaOptions.xhtml,
           name,
-          linkMediaOptions.basePath,
-          size.dark,
-        ))
+          basePath: linkMediaOptions.basePath,
+          dark: size.dark,
+        }))
       }
     }
   }))

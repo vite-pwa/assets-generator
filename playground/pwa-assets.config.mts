@@ -1,17 +1,11 @@
-import { createAppleSplashScreens, defineConfig } from '@vite-pwa/assets-generator/config'
+import { createAppleSplashScreens, defineConfig, minimal2023Preset } from '@vite-pwa/assets-generator/config'
 
 export default defineConfig({
+  headLinkOptions: {
+    preset: '2023'
+  },
   preset: {
-    transparent: {
-      sizes: [64, 192, 512],
-      favicons: [[48, 'favicon-48x48.ico'], [64, 'favicon.ico']],
-    },
-    maskable: {
-      sizes: [512],
-    },
-    apple: {
-      sizes: [180],
-    },
+    ...minimal2023Preset,
     appleSplashScreens: createAppleSplashScreens({
       padding: 0.3,
       resizeOptions: { fit: 'contain', background: 'white' },
