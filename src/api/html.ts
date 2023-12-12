@@ -236,14 +236,10 @@ if (import.meta.vitest) {
       } satisfies HtmlIconLinkOptions
       const appleTouchIconString = createAppleTouchIconHtmlLink('string', appleTouchIconOptions)
       expectTypeOf(appleTouchIconString).toEqualTypeOf<string>()
-      // eslint-disable-next-line no-console
-      console.log(appleTouchIconString)
       // eslint-disable-next-line @typescript-eslint/quotes
       expect(appleTouchIconString).toMatchInlineSnapshot(`"<link rel="apple-touch-icon" href="/apple-touch-icon.png">"`)
       const appleTouchIcon = createAppleTouchIconHtmlLink('link', appleTouchIconOptions)
       expectTypeOf(appleTouchIcon).toEqualTypeOf<HtmlLink>()
-      // eslint-disable-next-line no-console
-      console.log(appleTouchIconString)
       expect(appleTouchIcon).toMatchInlineSnapshot(`
         {
           "href": "/apple-touch-icon.png",

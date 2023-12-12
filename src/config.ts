@@ -113,7 +113,7 @@ export interface UserConfig {
    *
    * @default true
    */
-  manifestIconEntry?: boolean
+  manifestIconsEntry?: boolean
 }
 
 export interface ResolvedConfig extends Required<Omit<UserConfig, 'preset'>> {

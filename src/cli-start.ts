@@ -58,7 +58,7 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
     preset,
     images: configImages,
     headLinkOptions: userHeadLinkOptions,
-    manifestIconEntry = true,
+    manifestIconsEntry = true,
   } = config
 
   const useImages = Array.isArray(configImages) ? configImages : [configImages]
@@ -110,7 +110,7 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
         consola.ready('Html Head Links generated')
       }
       // 4. web manifest icons entry
-      if (manifestIconEntry) {
+      if (manifestIconsEntry) {
         consola.start('Generating PWA web manifest icons entry...')
         // eslint-disable-next-line no-console
         console.log(generateManifestIconsEntry('string', instruction))
