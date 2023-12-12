@@ -108,6 +108,12 @@ export interface UserConfig {
    * Options for generating the html head links for `apple-touch-icon` and favicons.
    */
   headLinkOptions?: HeadLinkOptions
+  /**
+   * Show the PWA web manifest icons' entry.
+   *
+   * @default true
+   */
+  manifestIconEntry?: boolean
 }
 
 export interface ResolvedConfig extends Required<Omit<UserConfig, 'preset'>> {

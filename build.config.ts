@@ -11,6 +11,7 @@ export default defineBuildConfig({
     { input: 'src/api/instructions', name: 'api/instructions' },
     { input: 'src/api/generate-assets', name: 'api/generate-assets' },
     { input: 'src/api/generate-html-markup', name: 'api/generate-html-markup' },
+    { input: 'src/api/generate-manifest-icons-entry', name: 'api/generate-manifest-icons-entry' },
     { input: 'src/cli', name: 'cli' },
   ],
   clean: true,

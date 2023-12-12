@@ -54,6 +54,10 @@
       "import": "./dist/api/generate-html-markup.mjs",
       "require": "./dist/api/generate-html-markup.cjs"
     },
+    "./api/generate-manifest-icons-entry": {
+      "import": "./dist/api/generate-manifest-icons-entry.mjs",
+      "require": "./dist/api/generate-manifest-icons-entry.cjs"
+    },
     "./api/generate-assets": {
       "import": "./dist/api/generate-assets.mjs",
       "require": "./dist/api/generate-assets.cjs"

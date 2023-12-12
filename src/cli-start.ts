@@ -10,6 +10,7 @@ import type { BuiltInPreset, HeadLinkOptions, UserConfig } from './config.ts'
 import { resolveInstructions } from './api/instructions-resolver.ts'
 import { generateHtmlMarkup } from './api/generate-html-markup.ts'
 import { generateAssets } from './api/generate-assets.ts'
+import { generateManifestIconsEntry } from './api/generate-manifest-icons-entry.ts'
 
 interface CliOptions extends Omit<UserConfig, 'preset' | 'images'> {
   preset?: BuiltInPreset
@@ -57,6 +58,7 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
     preset,
     images: configImages,
     headLinkOptions: userHeadLinkOptions,
+    manifestIconEntry = true,
   } = config
 
   const useImages = Array.isArray(configImages) ? configImages : [configImages]
@@ -98,14 +100,21 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
         : undefined,
     )
     consola.ready(`Assets generated for ${instruction.originalName}`)
-    // 3. html markup
     if (logLevel !== 'silent') {
+      // 3. html markup
       const links = generateHtmlMarkup(instruction)
       if (links.length) {
         consola.start('Generating Html Head Links...')
         // eslint-disable-next-line no-console
         links.forEach(link => console.log(link))
         consola.ready('Html Head Links generated')
+      }
+      // 4. web manifest icons entry
+      if (manifestIconEntry) {
+        consola.start('Generating PWA web manifest icons entry...')
+        // eslint-disable-next-line no-console
+        console.log(generateManifestIconsEntry('string', instruction))
+        consola.ready('PWA web manifest icons entry generated')
       }
     }
   }

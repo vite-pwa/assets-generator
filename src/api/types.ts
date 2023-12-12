@@ -43,9 +43,38 @@ export type GenerateFaviconOptionsType<T> =
       T extends 'webp' ? WebpOptions :
         never
 
+/**
+ * PWA web manifest icon.
+ *
+ * @see https://developer.mozilla.org/en-US/docs/Web/Manifest/icons
+ * @see https://w3c.github.io/manifest/#icons-member
+ */
+export interface ManifestIcon {
+  src: string
+  type?: string
+  sizes?: string
+  purpose?: string
+}
+
+/**
+ * PWA web manifest icons.
+ *
+ * @see https://developer.mozilla.org/en-US/docs/Web/Manifest/icons
+ * @see https://w3c.github.io/manifest/#icons-member
+ */
+export interface ManifestIcons {
+  icons: ManifestIcon[]
+}
+
+export type ManifestIconsType = 'string' | 'object'
+export type ManifestIconsOptionsType<T> =
+    T extends 'string' ? string :
+      T extends 'object' ? ManifestIcons :
+        never
+
 export interface IconAsset<T extends HtmlLink> {
   /**
-   * The name of the icon asset without.
+   * The name of the icon asset.
    */
   name: string
   /**
