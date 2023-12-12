@@ -51,6 +51,18 @@ export interface HeadLinkOptions {
    * @param name The name of the SVG icons.
    */
   resolveSvgName?: (name: string) => string
+  /**
+   * Generate an id when generating the html head links.
+   *
+   * @default false
+   */
+  xhtml?: boolean
+  /**
+   * Include the id when generating the html head links.
+   *
+   * @default false
+   */
+  includeId?: boolean
 }
 
 export interface UserConfig {
@@ -96,6 +108,12 @@ export interface UserConfig {
    * Options for generating the html head links for `apple-touch-icon` and favicons.
    */
   headLinkOptions?: HeadLinkOptions
+  /**
+   * Show the PWA web manifest icons' entry.
+   *
+   * @default true
+   */
+  manifestIconsEntry?: boolean
 }
 
 export interface ResolvedConfig extends Required<Omit<UserConfig, 'preset'>> {

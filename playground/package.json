@@ -1,7 +1,12 @@
 {
   "private": true,
   "scripts": {
-    "build": "pwa-assets-generator"
+    "build": "pwa-assets-generator",
+    "build-no-override": "pwa-assets-generator --override=false",
+    "build-no-manifest": "pwa-assets-generator --manifest=false",
+    "build-n-override": "pwa-assets-generator -o=false",
+    "build-n-manifest": "pwa-assets-generator -m=false",
+    "help": "pwa-assets-generator -h"
   },
   "devDependencies": {
     "@vite-pwa/assets-generator": "workspace:*"

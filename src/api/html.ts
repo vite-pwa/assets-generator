@@ -88,11 +88,13 @@ export function createAppleTouchIconHtmlLink<Format extends HtmlLinkType>(
   icon: HtmlIconLinkOptions,
 ): HtmlLinkReturnType<Format, HtmlLink> {
   const href = `${icon.basePath ?? '/'}${icon.name}`
+  const { width, height } = toResolvedSize(icon.size!)
+  const id = `ati-${width}-${height}`
   if (format === 'string')
-    return `<link${icon.includeId ? ' id="apple-touch-icon"' : ''} rel="apple-touch-icon" href="${href}"${icon.xhtml ? ' /' : ''}>` as HtmlLinkReturnType<Format, HtmlLink>
+    return `<link${icon.includeId ? ` id="${id}"` : ''} rel="apple-touch-icon" href="${href}"${icon.xhtml ? ' /' : ''}>` as HtmlLinkReturnType<Format, HtmlLink>
 
   return {
-    id: 'apple-touch-icon',
+    id,
     rel: 'apple-touch-icon',
     href,
   } as HtmlLinkReturnType<Format, HtmlLink>
@@ -230,6 +232,7 @@ if (import.meta.vitest) {
     it('apple touch icon generation', () => {
       const appleTouchIconOptions = {
         name: 'apple-touch-icon.png',
+        size: 180,
       } satisfies HtmlIconLinkOptions
       const appleTouchIconString = createAppleTouchIconHtmlLink('string', appleTouchIconOptions)
       expectTypeOf(appleTouchIconString).toEqualTypeOf<string>()
@@ -238,12 +241,12 @@ if (import.meta.vitest) {
       const appleTouchIcon = createAppleTouchIconHtmlLink('link', appleTouchIconOptions)
       expectTypeOf(appleTouchIcon).toEqualTypeOf<HtmlLink>()
       expect(appleTouchIcon).toMatchInlineSnapshot(`
-      {
-        "href": "/apple-touch-icon.png",
-        "id": "apple-touch-icon",
-        "rel": "apple-touch-icon",
-      }
-    `)
+        {
+          "href": "/apple-touch-icon.png",
+          "id": "ati-180-180",
+          "rel": "apple-touch-icon",
+        }
+      `)
     })
     it('favicon generation', () => {
       const svgFaviconOptions = {
