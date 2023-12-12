@@ -26,10 +26,6 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     },
-    "./api": {
-      "import": "./dist/api.mjs",
-      "require": "./dist/api.cjs"
-    },
     "./config": {
       "import": "./dist/config.mjs",
       "require": "./dist/config.cjs"
@@ -45,6 +41,22 @@
     "./presets/minimal-2023": {
       "import": "./dist/presets/minimal-2023.mjs",
       "require": "./dist/presets/minimal-2023.cjs"
+    },
+    "./api": {
+      "import": "./dist/api.mjs",
+      "require": "./dist/api.cjs"
+    },
+    "./api/instructions": {
+      "import": "./dist/api/instructions.mjs",
+      "require": "./dist/api/instructions.cjs"
+    },
+    "./api/generate-html-markup": {
+      "import": "./dist/api/generate-html-markup.mjs",
+      "require": "./dist/api/generate-html-markup.cjs"
+    },
+    "./api/generate-assets": {
+      "import": "./dist/api/generate-assets.mjs",
+      "require": "./dist/api/generate-assets.cjs"
     },
     "./*": "./*"
   },

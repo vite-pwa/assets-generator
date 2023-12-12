@@ -113,7 +113,7 @@ export function createAppleSplashScreens(
     name,
   } = options
 
-  return <AppleSplashScreens>{
+  return {
     sizes: devices.map(deviceName => appleSplashScreenSizes[deviceName]),
     padding,
     resizeOptions,
@@ -121,7 +121,7 @@ export function createAppleSplashScreens(
     linkMediaOptions,
     png,
     name,
-  }
+  } satisfies AppleSplashScreens
 }
 
 export function combinePresetAndAppleSplashScreens(
@@ -136,8 +136,8 @@ export function combinePresetAndAppleSplashScreens(
   } = {},
   devices: AppleDeviceName[] = AllAppleDeviceNames,
 ) {
-  return <Preset>{
+  return {
     ...preset,
     appleSplashScreens: createAppleSplashScreens(options, devices),
-  }
+  } satisfies Preset
 }

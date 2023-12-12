@@ -51,6 +51,18 @@ export interface HeadLinkOptions {
    * @param name The name of the SVG icons.
    */
   resolveSvgName?: (name: string) => string
+  /**
+   * Generate an id when generating the html head links.
+   *
+   * @default false
+   */
+  xhtml?: boolean
+  /**
+   * Include the id when generating the html head links.
+   *
+   * @default false
+   */
+  includeId?: boolean
 }
 
 export interface UserConfig {
