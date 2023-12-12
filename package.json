@@ -92,7 +92,7 @@
     "prepublishOnly": "npm run build",
     "release": "bumpp && npm publish",
     "run-playground": "pnpm -C playground run build",
-    "test": "vitest"
+    "test": "vitest run"
   },
   "dependencies": {
     "cac": "^6.7.14",

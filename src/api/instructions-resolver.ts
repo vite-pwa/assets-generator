@@ -14,7 +14,7 @@ import {
 } from './html.ts'
 import type { ImageAssets, ImageAssetsInstructions } from './types.ts'
 import { resolveAppleSplashScreensInstructions } from './apple-icons-helper.ts'
-import { resolveMaskableIcons, resolveTransparentIcons } from './icons-resolver.ts'
+import { resolveMaskableIcons, resolveTransparentIcons } from './icons-resolver-helper.ts'
 
 export async function resolveInstructions(imageAssets: ImageAssets) {
   const {
