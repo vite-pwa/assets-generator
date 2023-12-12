@@ -15,6 +15,8 @@ import { generateManifestIconsEntry } from './api/generate-manifest-icons-entry.
 interface CliOptions extends Omit<UserConfig, 'preset' | 'images'> {
   preset?: BuiltInPreset
   headLinkOptions?: HeadLinkOptions
+  override?: boolean
+  manifest?: boolean
 }
 
 export async function startCli(args: string[] = process.argv) {
@@ -26,6 +28,7 @@ export async function startCli(args: string[] = process.argv) {
     .option('-c, --config <path>', 'Path to config file')
     .option('-p, --preset <preset-name>', 'Built-in preset name: minimal, android, windows, ios or all')
     .option('-o, --override', 'Override assets? Defaults to true')
+    .option('-m, --manifest', 'Generate generate PWA web manifest icons entry? Defaults to true')
     .help()
     .command(
       '[...images]',
@@ -61,10 +64,17 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
     manifestIconsEntry = true,
   } = config
 
+  const useOverrideAssets = cliOptions.override === false
+    ? false
+    : overrideAssets
+  const useManifestIconsEntry = cliOptions.manifest === false
+    ? false
+    : manifestIconsEntry
+
   const useImages = Array.isArray(configImages) ? configImages : [configImages]
 
-  const xhtml = userHeadLinkOptions?.xhtml ?? false
-  const includeId = userHeadLinkOptions?.includeId ?? false
+  const xhtml = userHeadLinkOptions?.xhtml === true
+  const includeId = userHeadLinkOptions?.includeId === true
 
   consola.start('Resolving instructions...')
   // 1. resolve instructions
@@ -88,7 +98,7 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
     consola.start(`Generating assets for ${instruction.originalName}...`)
     await generateAssets(
       instruction,
-      overrideAssets,
+      useOverrideAssets,
       dirname(instruction.image),
       log
         ? (message, ignored) => {
@@ -110,7 +120,7 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
         consola.ready('Html Head Links generated')
       }
       // 4. web manifest icons entry
-      if (manifestIconsEntry) {
+      if (useManifestIconsEntry) {
         consola.start('Generating PWA web manifest icons entry...')
         // eslint-disable-next-line no-console
         console.log(generateManifestIconsEntry('string', instruction))
