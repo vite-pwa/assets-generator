@@ -3,7 +3,7 @@ import { basename, dirname, resolve } from 'node:path'
 import { readFile } from 'node:fs/promises'
 import cac from 'cac'
 import { consola } from 'consola'
-import { green } from 'colorette'
+import { green, yellow } from 'colorette'
 import { version } from '../package.json'
 import { loadConfig } from './config.ts'
 import type { BuiltInPreset, HeadLinkOptions, UserConfig } from './config.ts'
@@ -69,6 +69,7 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
   const instructions = await Promise.all(useImages.map(i => resolveInstructions({
     imageResolver: () => readFile(resolve(root, i)),
     imageName: resolve(root, i),
+    originalName: i,
     preset,
     faviconPreset: userHeadLinkOptions?.preset,
     htmlLinks: { xhtml, includeId },
@@ -82,9 +83,21 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
   const log = logLevel !== 'silent'
   for (const instruction of instructions) {
     // 2. generate assets
-    log && consola.start('Generating assets...')
-    await generateAssets(instruction, overrideAssets, logLevel, dirname(instruction.image))
-    log && consola.ready('Assets generated')
+    consola.start(`Generating assets for ${instruction.originalName}...`)
+    await generateAssets(
+      instruction,
+      overrideAssets,
+      dirname(instruction.image),
+      log
+        ? (message, ignored) => {
+            if (ignored)
+              consola.log(yellow(message))
+            else
+              consola.ready(green(message))
+          }
+        : undefined,
+    )
+    consola.ready(`Assets generated for ${instruction.originalName}`)
     // 3. html markup
     if (logLevel !== 'silent') {
       const links = generateHtmlMarkup(instruction)
