@@ -31,9 +31,6 @@ async function generateAsset(
   const filePath = resolve(folder, icon.name)
   if (!overrideAssets && existsSync(filePath)) {
     log?.(`Skipping, ${type} file already exists: ${filePath}`, true)
-    // if (logLevel !== 'silent')
-    //   consola.log(yellow(`Skipping, ${type} file already exists: ${filePath}`))
-
     return
   }
 
@@ -43,7 +40,4 @@ async function generateAsset(
     .then(() => {})
 
   log?.(`Generated ${type} file: ${filePath}`, false)
-
-  // if (logLevel !== 'silent')
-  //   consola.ready(green(`Generated ${type} file: ${filePath}`))
 }
