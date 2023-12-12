@@ -34,6 +34,7 @@ export async function resolveInstructions(imageAssets: ImageAssets) {
   const {
     imageResolver,
     imageName,
+    originalName,
     preset = 'minimal',
     faviconPreset,
   } = imageAssets
@@ -58,6 +59,7 @@ export async function resolveInstructions(imageAssets: ImageAssets) {
 
   const instructions = {
     image: imageName,
+    originalName,
     favicon: {},
     transparent: {},
     maskable: {},

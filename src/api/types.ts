@@ -97,6 +97,10 @@ export interface ImageAssets {
    */
   imageName: string
   /**
+   * The original name of the image.
+   */
+  originalName?: string
+  /**
    * The preset to use.
    */
   preset: BuiltInPreset | Preset
@@ -134,6 +138,10 @@ export interface ImageAssetsInstructions {
    * The image path when providing an absolute path, otherwise the image name provided to `instructions`.
    */
   image: string
+  /**
+   * The original name of the image.
+   */
+  originalName?: string
   /**
    * The favicon icons instructions.
    *
