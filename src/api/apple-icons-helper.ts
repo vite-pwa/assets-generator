@@ -7,6 +7,8 @@ import { generateMaskableAsset } from './maskable.ts'
 import { createAppleSplashScreenHtmlLink } from './html.ts'
 
 export function resolveAppleSplashScreensInstructions(
+  // eslint-disable-next-line n/prefer-global/buffer
+  image: Buffer,
   imageAssets: ImageAssets,
   instructions: ImageAssetsInstructions,
   useAppleSplashScreens?: AppleSplashScreens,
@@ -96,7 +98,7 @@ export function resolveAppleSplashScreensInstructions(
   for (const size of splashScreens) {
     const name = resolveName(size.landscape, size.size, size.dark)
     const url = `${imageAssets.basePath}${name}`
-    const promise = () => generateMaskableAsset('png', imageAssets.imageName, size.size, {
+    const promise = () => generateMaskableAsset('png', image, size.size, {
       padding: size.padding,
       resizeOptions: {
         ...size.resizeOptions,
