@@ -84,7 +84,7 @@ export async function resolveInstructions(imageAssets: ImageAssets) {
     }
   }
 
-  resolveAppleSplashScreensInstructions(imageAssets, instructions, useAppleSplashScreens)
+  resolveAppleSplashScreensInstructions(image, imageAssets, instructions, useAppleSplashScreens)
 
   return instructions
 }
