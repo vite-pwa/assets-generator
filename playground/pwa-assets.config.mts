@@ -1,4 +1,5 @@
 import { createAppleSplashScreens, defineConfig, minimal2023Preset } from '@vite-pwa/assets-generator/config'
+import { readFile } from 'node:fs/promises'
 
 export default defineConfig({
   headLinkOptions: {
@@ -7,10 +8,15 @@ export default defineConfig({
   preset: {
     ...minimal2023Preset,
     appleSplashScreens: createAppleSplashScreens({
+      async darkImageResolver(imageName) {
+        return imageName === 'pwa/public/favicon.svg'
+            ? await readFile('pwa/public/splash-dark.svg')
+            : undefined
+      },
       padding: 0.3,
       resizeOptions: { fit: 'contain', background: 'white' },
-      // to test issue #28
-      //darkResizeOptions: { fit: 'contain', background: 'black' },
+      // to test issue #28, comment the line below
+      darkResizeOptions: { fit: 'contain', background: 'black' },
       linkMediaOptions: {
         log: true,
         addMediaScreen: true,

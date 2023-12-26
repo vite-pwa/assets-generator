@@ -83,6 +83,15 @@ export interface AppleTouchStartupImageOptions {
 }
 
 export interface AppleSplashScreens {
+  /**
+   * The image to use for generating dark apple splash screens assets.
+   *
+   * By default, it will use the original image.
+   *
+   * @param imageName The image name configured in images.
+   */
+  // eslint-disable-next-line n/prefer-global/buffer
+  darkImageResolver?: (imageName: string) => Promise<Buffer | undefined>
   sizes: AppleDeviceSize[]
   /**
    * The padding to add to the splash screen.
@@ -124,6 +133,8 @@ export interface AppleSplashScreens {
 }
 
 export interface ResolvedAppleSplashScreens {
+  // eslint-disable-next-line n/prefer-global/buffer
+  darkImageResolver?: (imageName: string) => Promise<Buffer | undefined>
   padding: number
   sizes: AppleDeviceSize[]
   linkMediaOptions: Required<AppleTouchStartupImageOptions>

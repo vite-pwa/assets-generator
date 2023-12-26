@@ -95,17 +95,36 @@ export function resolveAppleSplashScreensInstructions(
 
   sizesMap.clear()
 
+  // eslint-disable-next-line n/prefer-global/buffer
+  const cache: Record<string, Promise<Buffer>> = {}
+  const originalName = imageAssets.originalName!
+
+  // eslint-disable-next-line n/prefer-global/buffer
+  const imageResolver = (dark: boolean): Promise<Buffer> => {
+    if (!dark || typeof appleSplashScreens.darkImageResolver !== 'function')
+      return Promise.resolve(image)
+
+    const cached = cache[originalName]
+    if (cached)
+      return cached
+
+    return cache[originalName] = appleSplashScreens
+      .darkImageResolver(originalName)
+      .then(darkImage => Promise.resolve(darkImage ?? image))
+  }
+
   for (const size of splashScreens) {
     const name = resolveName(size.landscape, size.size, size.dark)
     const url = `${imageAssets.basePath}${name}`
-    const promise = () => generateMaskableAsset('png', image, size.size, {
+    const promise = () => imageResolver(size.dark === true).then(i => generateMaskableAsset('png', i, size.size, {
       padding: size.padding,
       resizeOptions: {
         ...size.resizeOptions,
         background: size.resizeOptions?.background ?? (size.dark ? 'black' : 'white'),
       },
       outputOptions: size.png,
-    })
+    }))
+
     instructions.appleSplashScreen[url] = {
       name,
       url,
@@ -159,6 +178,7 @@ function resolveAppleSplashScreens(
       sizes,
       name = defaultSplashScreenName,
       png: usePng = {},
+      darkImageResolver,
     } = useAppleSplashScreens
 
     // Initialize defaults
@@ -186,6 +206,7 @@ function resolveAppleSplashScreens(
       xhtml = false,
     } = useLinkMediaOptions
     appleSplashScreens = {
+      darkImageResolver,
       padding,
       sizes,
       linkMediaOptions: {
