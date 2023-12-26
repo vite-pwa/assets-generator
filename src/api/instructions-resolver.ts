@@ -89,7 +89,10 @@ export async function resolveInstructions(imageAssets: ImageAssets) {
   return instructions
 }
 
-async function resolvePreset(preset: BuiltInPreset | Preset, faviconPreset?: HtmlLinkPreset): Promise<[Preset, HtmlLinkPreset]> {
+async function resolvePreset(
+  preset: BuiltInPreset | Preset,
+  faviconPreset?: HtmlLinkPreset,
+): Promise<[preset: Preset, htmlLinkPreset: HtmlLinkPreset]> {
   if (typeof preset === 'object')
     return [preset, faviconPreset ?? 'default']
 

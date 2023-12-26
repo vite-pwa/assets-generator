@@ -95,6 +95,15 @@ export const AllAppleDeviceNames = Array.from(Object.keys(appleSplashScreenSizes
 
 export function createAppleSplashScreens(
   options: {
+    /**
+     * The image to use for generating dark apple splash screens assets.
+     *
+     * By default, it will use the original image.
+     *
+     * @param imageName The image name configured in images.
+     */
+    // eslint-disable-next-line n/prefer-global/buffer
+    darkImageResolver?: (imageName: string) => Promise<Buffer | undefined>
     padding?: number
     resizeOptions?: ResizeOptions
     darkResizeOptions?: ResizeOptions
@@ -105,6 +114,7 @@ export function createAppleSplashScreens(
   devices: AppleDeviceName[] = AllAppleDeviceNames,
 ) {
   const {
+    darkImageResolver,
     padding,
     resizeOptions,
     darkResizeOptions,
@@ -114,6 +124,7 @@ export function createAppleSplashScreens(
   } = options
 
   return {
+    darkImageResolver,
     sizes: devices.map(deviceName => appleSplashScreenSizes[deviceName]),
     padding,
     resizeOptions,
@@ -127,6 +138,15 @@ export function createAppleSplashScreens(
 export function combinePresetAndAppleSplashScreens(
   preset: Preset,
   options: {
+    /**
+     * The image to use for generating dark apple splash screens assets.
+     *
+     * By default, it will use the original image.
+     *
+     * @param imageName The image name configured in images.
+     */
+    // eslint-disable-next-line n/prefer-global/buffer
+    darkImageResolver?: (imageName: string) => Promise<Buffer | undefined>
     padding?: number
     resizeOptions?: ResizeOptions
     darkResizeOptions?: ResizeOptions
