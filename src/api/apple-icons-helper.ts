@@ -154,7 +154,7 @@ function resolveAppleSplashScreens(
     const {
       padding = 0.3,
       resizeOptions: useResizeOptions = {},
-      darkResizeOptions: useDarkResizeOptions = {},
+      darkResizeOptions: useDarkResizeOptions,
       linkMediaOptions: useLinkMediaOptions = {},
       sizes,
       name = defaultSplashScreenName,
@@ -163,7 +163,7 @@ function resolveAppleSplashScreens(
 
     // Initialize defaults
     const resizeOptions = createResizeOptions(false, useResizeOptions)
-    const darkResizeOptions = createResizeOptions(true, useDarkResizeOptions)
+    const darkResizeOptions = useDarkResizeOptions ? createResizeOptions(true, useDarkResizeOptions) : undefined
     const png: PngOptions = createPngCompressionOptions(usePng)
 
     for (const size of sizes) {
@@ -176,7 +176,7 @@ function resolveAppleSplashScreens(
       if (typeof size.resizeOptions === 'undefined')
         size.resizeOptions = resizeOptions
 
-      if (typeof size.darkResizeOptions === 'undefined')
+      if (typeof size.darkResizeOptions === 'undefined' && darkResizeOptions)
         size.darkResizeOptions = darkResizeOptions
     }
     const {

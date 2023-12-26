@@ -9,7 +9,8 @@ export default defineConfig({
     appleSplashScreens: createAppleSplashScreens({
       padding: 0.3,
       resizeOptions: { fit: 'contain', background: 'white' },
-      darkResizeOptions: { fit: 'contain', background: 'black' },
+      // to test issue #28
+      //darkResizeOptions: { fit: 'contain', background: 'black' },
       linkMediaOptions: {
         log: true,
         addMediaScreen: true,
