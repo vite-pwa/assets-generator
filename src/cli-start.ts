@@ -63,9 +63,9 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
   consola.log(green(`Zero Config PWA Assets Generator v${version}`))
   consola.start('Preparing to generate PWA assets...')
 
-  const root = cliOptions?.root ?? process.cwd()
-
   cleanupCliOptions(cliOptions)
+
+  const root = cliOptions.root ?? process.cwd()
 
   const { config } = await loadConfig<UserConfig>(root, cliOptions)
 
