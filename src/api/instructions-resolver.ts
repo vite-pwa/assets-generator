@@ -101,7 +101,7 @@ async function resolvePreset(
     case 'minimal':
       return [await import('../presets/minimal.ts').then(m => m.minimalPreset), htmlLinkPreset]
     case 'minimal-2023':
-      return [await import('../presets/minimal-2023.ts').then(m => m.minimal2023Preset), htmlLinkPreset]
+      return [await import('../presets/minimal-2023.ts').then(m => m.minimal2023Preset), faviconPreset ?? '2023']
     default:
       throw new Error(`Preset ${preset} not yet implemented`)
   }
