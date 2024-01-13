@@ -46,8 +46,8 @@ function cleanupCliOptions(cliOptions: any) {
   delete cliOptions['p']
   delete cliOptions['o']
   delete cliOptions['m']
-  if (cliOptions.html) {
-    cliOptions.headLinkOptions = { ...cliOptions.html }
+  if (typeof cliOptions['html'] === 'object') {
+    cliOptions.headLinkOptions = { ...cliOptions['html'] }
     if (typeof cliOptions.headLinkOptions.preset === 'number')
       cliOptions.headLinkOptions.preset = `${cliOptions.headLinkOptions.preset}`
     if (typeof cliOptions.headLinkOptions.xhtml === 'string')
