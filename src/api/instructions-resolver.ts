@@ -93,14 +93,15 @@ async function resolvePreset(
   preset: BuiltInPreset | Preset,
   faviconPreset?: HtmlLinkPreset,
 ): Promise<[preset: Preset, htmlLinkPreset: HtmlLinkPreset]> {
+  const htmlLinkPreset = faviconPreset ?? 'default'
   if (typeof preset === 'object')
-    return [preset, faviconPreset ?? 'default']
+    return [preset, htmlLinkPreset]
 
   switch (preset) {
     case 'minimal':
-      return [await import('../presets/minimal.ts').then(m => m.minimalPreset), 'default']
+      return [await import('../presets/minimal.ts').then(m => m.minimalPreset), htmlLinkPreset]
     case 'minimal-2023':
-      return [await import('../presets/minimal-2023.ts').then(m => m.minimal2023Preset), '2023']
+      return [await import('../presets/minimal-2023.ts').then(m => m.minimal2023Preset), faviconPreset ?? '2023']
     default:
       throw new Error(`Preset ${preset} not yet implemented`)
   }

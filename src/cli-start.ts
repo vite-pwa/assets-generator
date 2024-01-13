@@ -14,7 +14,7 @@ import { generateManifestIconsEntry } from './api/generate-manifest-icons-entry.
 
 interface CliOptions extends Omit<UserConfig, 'preset' | 'images'> {
   preset?: BuiltInPreset
-  headLinkOptions?: HeadLinkOptions
+  headLinkOptions?: Omit<HeadLinkOptions, 'resolveSvgName'>
   override?: boolean
   manifest?: boolean
 }
@@ -29,6 +29,7 @@ export async function startCli(args: string[] = process.argv) {
     .option('-p, --preset <preset-name>', 'Built-in preset name: minimal, android, windows, ios or all')
     .option('-o, --override', 'Override assets? Defaults to true')
     .option('-m, --manifest', 'Generate generate PWA web manifest icons entry? Defaults to true')
+    .option('--html [options]', 'Available options: --html.basePath <path>, --html.preset <preset>, --html.xhtml <false|true>, --html.includeId <false|true>')
     .help()
     .command(
       '[...images]',
@@ -38,11 +39,33 @@ export async function startCli(args: string[] = process.argv) {
   cli.parse(args)
 }
 
+function cleanupCliOptions(cliOptions: any) {
+  delete cliOptions['--']
+  delete cliOptions['r']
+  delete cliOptions['c']
+  delete cliOptions['p']
+  delete cliOptions['o']
+  delete cliOptions['m']
+  if (typeof cliOptions['html'] === 'object') {
+    cliOptions.headLinkOptions = { ...cliOptions['html'] }
+    if (typeof cliOptions.headLinkOptions.preset === 'number')
+      cliOptions.headLinkOptions.preset = `${cliOptions.headLinkOptions.preset}`
+    if (typeof cliOptions.headLinkOptions.xhtml === 'string')
+      cliOptions.headLinkOptions.xhtml = cliOptions.headLinkOptions.xhtml === 'true'
+    if (typeof cliOptions.headLinkOptions.includeId === 'string')
+      cliOptions.headLinkOptions.includeId = cliOptions.headLinkOptions.includeId === 'true'
+
+    delete cliOptions['html']
+  }
+}
+
 async function run(images: string[] = [], cliOptions: CliOptions = {}) {
   consola.log(green(`Zero Config PWA Assets Generator v${version}`))
   consola.start('Preparing to generate PWA assets...')
 
-  const root = cliOptions?.root ?? process.cwd()
+  cleanupCliOptions(cliOptions)
+
+  const root = cliOptions.root ?? process.cwd()
 
   const { config } = await loadConfig<UserConfig>(root, cliOptions)
 
