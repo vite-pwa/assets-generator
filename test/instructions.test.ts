@@ -34,7 +34,6 @@ describe('instructions', () => {
           linkMediaOptions: {
             log: true,
             addMediaScreen: true,
-            basePath: '/',
             xhtml: true,
           },
         }, ['iPad Air 9.7"']),
@@ -63,7 +62,6 @@ describe('instructions', () => {
           linkMediaOptions: {
             log: true,
             addMediaScreen: true,
-            basePath: '/',
             xhtml: true,
           },
         }, ['iPad Air 9.7"']),

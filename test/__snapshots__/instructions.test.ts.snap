@@ -269,9 +269,9 @@ exports[`instructions > resolve instructions with apple splash screen icons with
     "/test/apple-splash-landscape-dark-2048x1536.png": {
       "buffer": [Function],
       "height": 1536,
-      "link": "<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="/apple-splash-landscape-dark-2048x1536.png" />",
+      "link": "<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="/test/apple-splash-landscape-dark-2048x1536.png" />",
       "linkObject": {
-        "href": "/apple-splash-landscape-dark-2048x1536.png",
+        "href": "/test/apple-splash-landscape-dark-2048x1536.png",
         "id": "atsi-1536-2048-2-dark",
         "media": "screen and (prefers-color-scheme: dark) and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)",
         "rel": "apple-touch-startup-image",
@@ -284,9 +284,9 @@ exports[`instructions > resolve instructions with apple splash screen icons with
     "/test/apple-splash-landscape-light-2048x1536.png": {
       "buffer": [Function],
       "height": 1536,
-      "link": "<link rel="apple-touch-startup-image" media="screen and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="/apple-splash-landscape-light-2048x1536.png" />",
+      "link": "<link rel="apple-touch-startup-image" media="screen and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="/test/apple-splash-landscape-light-2048x1536.png" />",
       "linkObject": {
-        "href": "/apple-splash-landscape-light-2048x1536.png",
+        "href": "/test/apple-splash-landscape-light-2048x1536.png",
         "id": "atsi-1536-2048-2-light",
         "media": "screen and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)",
         "rel": "apple-touch-startup-image",
@@ -299,9 +299,9 @@ exports[`instructions > resolve instructions with apple splash screen icons with
     "/test/apple-splash-portrait-dark-1536x2048.png": {
       "buffer": [Function],
       "height": 2048,
-      "link": "<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/apple-splash-portrait-dark-1536x2048.png" />",
+      "link": "<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/test/apple-splash-portrait-dark-1536x2048.png" />",
       "linkObject": {
-        "href": "/apple-splash-portrait-dark-1536x2048.png",
+        "href": "/test/apple-splash-portrait-dark-1536x2048.png",
         "id": "atsi-1536-2048-2-dark",
         "media": "screen and (prefers-color-scheme: dark) and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)",
         "rel": "apple-touch-startup-image",
@@ -314,9 +314,9 @@ exports[`instructions > resolve instructions with apple splash screen icons with
     "/test/apple-splash-portrait-light-1536x2048.png": {
       "buffer": [Function],
       "height": 2048,
-      "link": "<link rel="apple-touch-startup-image" media="screen and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/apple-splash-portrait-light-1536x2048.png" />",
+      "link": "<link rel="apple-touch-startup-image" media="screen and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/test/apple-splash-portrait-light-1536x2048.png" />",
       "linkObject": {
-        "href": "/apple-splash-portrait-light-1536x2048.png",
+        "href": "/test/apple-splash-portrait-light-1536x2048.png",
         "id": "atsi-1536-2048-2-light",
         "media": "screen and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)",
         "rel": "apple-touch-startup-image",
