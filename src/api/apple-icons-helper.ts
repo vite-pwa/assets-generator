@@ -13,7 +13,10 @@ export function resolveAppleSplashScreensInstructions(
   instructions: ImageAssetsInstructions,
   useAppleSplashScreens?: AppleSplashScreens,
 ) {
-  const appleSplashScreens = resolveAppleSplashScreens(useAppleSplashScreens)
+  const appleSplashScreens = resolveAppleSplashScreens(
+    imageAssets,
+    useAppleSplashScreens,
+  )
   if (!appleSplashScreens || !appleSplashScreens.sizes.length)
     return
 
@@ -166,6 +169,7 @@ interface SplashScreenData {
 }
 
 function resolveAppleSplashScreens(
+  imageAssets: ImageAssets,
   useAppleSplashScreens?: AppleSplashScreens,
 ) {
   let appleSplashScreens: ResolvedAppleSplashScreens | undefined
@@ -202,7 +206,7 @@ function resolveAppleSplashScreens(
     const {
       log = true,
       addMediaScreen = true,
-      basePath = '/',
+      basePath = imageAssets.basePath ?? '/',
       xhtml = false,
     } = useLinkMediaOptions
     appleSplashScreens = {
