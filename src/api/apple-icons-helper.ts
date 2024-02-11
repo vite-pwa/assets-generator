@@ -13,7 +13,10 @@ export function resolveAppleSplashScreensInstructions(
   instructions: ImageAssetsInstructions,
   useAppleSplashScreens?: AppleSplashScreens,
 ) {
-  const appleSplashScreens = resolveAppleSplashScreens(useAppleSplashScreens)
+  const appleSplashScreens = resolveAppleSplashScreens(
+    imageAssets,
+    useAppleSplashScreens,
+  )
   if (!appleSplashScreens || !appleSplashScreens.sizes.length)
     return
 
@@ -114,8 +117,9 @@ export function resolveAppleSplashScreensInstructions(
   }
 
   for (const size of splashScreens) {
+    const basePath = linkMediaOptions.basePath
     const name = resolveName(size.landscape, size.size, size.dark)
-    const url = `${imageAssets.basePath}${name}`
+    const url = `${basePath}${name}`
     const promise = () => imageResolver(size.dark === true).then(i => generateMaskableAsset('png', i, size.size, {
       padding: size.padding,
       resizeOptions: {
@@ -137,7 +141,7 @@ export function resolveAppleSplashScreensInstructions(
         addMediaScreen: linkMediaOptions.addMediaScreen,
         xhtml: linkMediaOptions.xhtml,
         name: resolveName,
-        basePath: linkMediaOptions.basePath,
+        basePath,
         dark: size.dark,
         includeId: imageAssets.htmlLinks.includeId,
       }),
@@ -147,7 +151,7 @@ export function resolveAppleSplashScreensInstructions(
         addMediaScreen: linkMediaOptions.addMediaScreen,
         xhtml: linkMediaOptions.xhtml,
         name: resolveName,
-        basePath: linkMediaOptions.basePath,
+        basePath,
         dark: size.dark,
         includeId: imageAssets.htmlLinks.includeId,
       }),
@@ -166,6 +170,7 @@ interface SplashScreenData {
 }
 
 function resolveAppleSplashScreens(
+  imageAssets: ImageAssets,
   useAppleSplashScreens?: AppleSplashScreens,
 ) {
   let appleSplashScreens: ResolvedAppleSplashScreens | undefined
@@ -202,7 +207,7 @@ function resolveAppleSplashScreens(
     const {
       log = true,
       addMediaScreen = true,
-      basePath = '/',
+      basePath = imageAssets.basePath ?? '/',
       xhtml = false,
     } = useLinkMediaOptions
     appleSplashScreens = {

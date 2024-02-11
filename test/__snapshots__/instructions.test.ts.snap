@@ -246,3 +246,157 @@ exports[`instructions > resolve instructions with apple splash screen icons 1`] 
   },
 }
 `;
+
+exports[`instructions > resolve instructions with apple splash screen icons with custom base url 1`] = `
+{
+  "apple": {
+    "/test/apple-touch-icon-180x180.png": {
+      "buffer": [Function],
+      "height": 180,
+      "link": "<link rel="apple-touch-icon" href="/test/apple-touch-icon-180x180.png">",
+      "linkObject": {
+        "href": "/test/apple-touch-icon-180x180.png",
+        "id": "ati-180-180",
+        "rel": "apple-touch-icon",
+      },
+      "mimeType": "image/png",
+      "name": "apple-touch-icon-180x180.png",
+      "url": "/test/apple-touch-icon-180x180.png",
+      "width": 180,
+    },
+  },
+  "appleSplashScreen": {
+    "/test/apple-splash-landscape-dark-2048x1536.png": {
+      "buffer": [Function],
+      "height": 1536,
+      "link": "<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="/test/apple-splash-landscape-dark-2048x1536.png" />",
+      "linkObject": {
+        "href": "/test/apple-splash-landscape-dark-2048x1536.png",
+        "id": "atsi-1536-2048-2-dark",
+        "media": "screen and (prefers-color-scheme: dark) and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)",
+        "rel": "apple-touch-startup-image",
+      },
+      "mimeType": "image/png",
+      "name": "apple-splash-landscape-dark-2048x1536.png",
+      "url": "/test/apple-splash-landscape-dark-2048x1536.png",
+      "width": 2048,
+    },
+    "/test/apple-splash-landscape-light-2048x1536.png": {
+      "buffer": [Function],
+      "height": 1536,
+      "link": "<link rel="apple-touch-startup-image" media="screen and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="/test/apple-splash-landscape-light-2048x1536.png" />",
+      "linkObject": {
+        "href": "/test/apple-splash-landscape-light-2048x1536.png",
+        "id": "atsi-1536-2048-2-light",
+        "media": "screen and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)",
+        "rel": "apple-touch-startup-image",
+      },
+      "mimeType": "image/png",
+      "name": "apple-splash-landscape-light-2048x1536.png",
+      "url": "/test/apple-splash-landscape-light-2048x1536.png",
+      "width": 2048,
+    },
+    "/test/apple-splash-portrait-dark-1536x2048.png": {
+      "buffer": [Function],
+      "height": 2048,
+      "link": "<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/test/apple-splash-portrait-dark-1536x2048.png" />",
+      "linkObject": {
+        "href": "/test/apple-splash-portrait-dark-1536x2048.png",
+        "id": "atsi-1536-2048-2-dark",
+        "media": "screen and (prefers-color-scheme: dark) and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)",
+        "rel": "apple-touch-startup-image",
+      },
+      "mimeType": "image/png",
+      "name": "apple-splash-portrait-dark-1536x2048.png",
+      "url": "/test/apple-splash-portrait-dark-1536x2048.png",
+      "width": 1536,
+    },
+    "/test/apple-splash-portrait-light-1536x2048.png": {
+      "buffer": [Function],
+      "height": 2048,
+      "link": "<link rel="apple-touch-startup-image" media="screen and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/test/apple-splash-portrait-light-1536x2048.png" />",
+      "linkObject": {
+        "href": "/test/apple-splash-portrait-light-1536x2048.png",
+        "id": "atsi-1536-2048-2-light",
+        "media": "screen and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)",
+        "rel": "apple-touch-startup-image",
+      },
+      "mimeType": "image/png",
+      "name": "apple-splash-portrait-light-1536x2048.png",
+      "url": "/test/apple-splash-portrait-light-1536x2048.png",
+      "width": 1536,
+    },
+  },
+  "favicon": {
+    "/test/favicon.ico": {
+      "buffer": [Function],
+      "height": 48,
+      "link": "<link rel="icon" href="/test/favicon.ico" sizes="48x48">",
+      "linkObject": {
+        "href": "/test/favicon.ico",
+        "id": "fav-48x48",
+        "rel": "icon",
+        "sizes": "48x48",
+      },
+      "mimeType": "image/x-icon",
+      "name": "favicon.ico",
+      "url": "/test/favicon.ico",
+      "width": 48,
+    },
+    "/test/favicon.svg": {
+      "buffer": [Function],
+      "height": 0,
+      "link": "<link rel="icon" href="/test/favicon.svg" sizes="any" type="image/svg+xml">",
+      "linkObject": {
+        "href": "/test/favicon.svg",
+        "id": "fav-svg",
+        "rel": "icon",
+        "sizes": "any",
+        "type": "image/svg+xml",
+      },
+      "mimeType": "image/svg+xml",
+      "name": "favicon.svg",
+      "url": "/test/favicon.svg",
+      "width": 0,
+    },
+  },
+  "image": "playground/pwa/public/favicon.svg",
+  "maskable": {
+    "/test/maskable-icon-512x512.png": {
+      "buffer": [Function],
+      "height": 512,
+      "mimeType": "image/png",
+      "name": "maskable-icon-512x512.png",
+      "url": "/test/maskable-icon-512x512.png",
+      "width": 512,
+    },
+  },
+  "originalName": undefined,
+  "transparent": {
+    "/test/pwa-192x192.png": {
+      "buffer": [Function],
+      "height": 192,
+      "mimeType": "image/png",
+      "name": "pwa-192x192.png",
+      "url": "/test/pwa-192x192.png",
+      "width": 192,
+    },
+    "/test/pwa-512x512.png": {
+      "buffer": [Function],
+      "height": 512,
+      "mimeType": "image/png",
+      "name": "pwa-512x512.png",
+      "url": "/test/pwa-512x512.png",
+      "width": 512,
+    },
+    "/test/pwa-64x64.png": {
+      "buffer": [Function],
+      "height": 64,
+      "mimeType": "image/png",
+      "name": "pwa-64x64.png",
+      "url": "/test/pwa-64x64.png",
+      "width": 64,
+    },
+  },
+}
+`;
