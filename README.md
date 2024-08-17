@@ -1,6 +1,6 @@
 <p align='center'>
 <img src='./hero.svg' alt="@vite-pwa/assets-generator - Zero-config PWA Assets Generator"><br>
-Zero-config PWA Assets Generator
+Zero-config PWA Assets GeneratorX
 </p>
 
 <p align='center'>
