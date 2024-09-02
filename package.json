@@ -10,7 +10,7 @@
   "homepage": "https://github.com/vite-pwa/assets-generator#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vite-pwa/assets-generator.git"
+    "url": "git+https://github.com/vite-pwa/assets-generator.git"
   },
   "bugs": "https://github.com/vite-pwa/assets-generator/issues",
   "keywords": [
