@@ -62,6 +62,7 @@
       "import": "./dist/api/generate-assets.mjs",
       "require": "./dist/api/generate-assets.cjs"
     },
+    "./package.json": "./package.json",
     "./*": "./*"
   },
   "main": "dist/index.cjs",
@@ -112,6 +113,6 @@
     "esno": "^4.0.0",
     "typescript": "^5.3.3",
     "unbuild": "^2.0.0",
-    "vitest": "^1.0.4"
+    "vitest": "^2.0.5"
   }
 }
