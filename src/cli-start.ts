@@ -1,16 +1,16 @@
-import process from 'node:process'
-import { basename, dirname, resolve } from 'node:path'
-import { readFile } from 'node:fs/promises'
-import cac from 'cac'
-import { consola } from 'consola'
-import { green, yellow } from 'colorette'
-import { version } from '../package.json'
-import { loadConfig } from './config.ts'
 import type { BuiltInPreset, HeadLinkOptions, UserConfig } from './config.ts'
-import { resolveInstructions } from './api/instructions-resolver.ts'
-import { generateHtmlMarkup } from './api/generate-html-markup.ts'
+import { readFile } from 'node:fs/promises'
+import { basename, dirname, resolve } from 'node:path'
+import process from 'node:process'
+import cac from 'cac'
+import { green, yellow } from 'colorette'
+import { consola } from 'consola'
+import { version } from '../package.json'
 import { generateAssets } from './api/generate-assets.ts'
+import { generateHtmlMarkup } from './api/generate-html-markup.ts'
 import { generateManifestIconsEntry } from './api/generate-manifest-icons-entry.ts'
+import { resolveInstructions } from './api/instructions-resolver.ts'
+import { loadConfig } from './config.ts'
 
 interface CliOptions extends Omit<UserConfig, 'preset' | 'images'> {
   preset?: BuiltInPreset
@@ -34,20 +34,21 @@ export async function startCli(args: string[] = process.argv) {
     .command(
       '[...images]',
       'Generate PWA assets from images files',
-    ).action((images, options) => run(images, options))
+    )
+    .action((images, options) => run(images, options))
 
   cli.parse(args)
 }
 
 function cleanupCliOptions(cliOptions: any) {
   delete cliOptions['--']
-  delete cliOptions['r']
-  delete cliOptions['c']
-  delete cliOptions['p']
-  delete cliOptions['o']
-  delete cliOptions['m']
-  if (typeof cliOptions['html'] === 'object') {
-    cliOptions.headLinkOptions = { ...cliOptions['html'] }
+  delete cliOptions.r
+  delete cliOptions.c
+  delete cliOptions.p
+  delete cliOptions.o
+  delete cliOptions.m
+  if (typeof cliOptions.html === 'object') {
+    cliOptions.headLinkOptions = { ...cliOptions.html }
     if (typeof cliOptions.headLinkOptions.preset === 'number')
       cliOptions.headLinkOptions.preset = `${cliOptions.headLinkOptions.preset}`
     if (typeof cliOptions.headLinkOptions.xhtml === 'string')
@@ -55,7 +56,7 @@ function cleanupCliOptions(cliOptions: any) {
     if (typeof cliOptions.headLinkOptions.includeId === 'string')
       cliOptions.headLinkOptions.includeId = cliOptions.headLinkOptions.includeId === 'true'
 
-    delete cliOptions['html']
+    delete cliOptions.html
   }
 }
 

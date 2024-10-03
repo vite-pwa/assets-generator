@@ -4,7 +4,7 @@ import type { HeadLinkOptions } from './config.ts'
 /**
  * Icon size.
  */
-export type AssetSize = number | { width: number; height: number }
+export type AssetSize = number | { width: number, height: number }
 
 /**
  * Icon size with resolved width and height.
@@ -90,7 +90,7 @@ export interface AppleSplashScreens {
    *
    * @param imageName The image name configured in images.
    */
-  // eslint-disable-next-line n/prefer-global/buffer
+  // eslint-disable-next-line node/prefer-global/buffer
   darkImageResolver?: (imageName: string) => Promise<Buffer | undefined>
   sizes: AppleDeviceSize[]
   /**
@@ -133,7 +133,7 @@ export interface AppleSplashScreens {
 }
 
 export interface ResolvedAppleSplashScreens {
-  // eslint-disable-next-line n/prefer-global/buffer
+  // eslint-disable-next-line node/prefer-global/buffer
   darkImageResolver?: (imageName: string) => Promise<Buffer | undefined>
   padding: number
   sizes: AppleDeviceSize[]

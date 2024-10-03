@@ -1,9 +1,9 @@
 import { readFile } from 'node:fs/promises'
 import { basename } from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { resolveInstructions } from '../src/api/instructions-resolver'
 import { minimal2023Preset } from '../src/presets'
 import { createAppleSplashScreens } from '../src/splash'
-import { resolveInstructions } from '../src/api/instructions-resolver'
 
 describe('instructions', () => {
   it ('resolve instructions', async () => {

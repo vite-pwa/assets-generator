@@ -1,7 +1,7 @@
-import { resolve } from 'node:path'
+import type { IconAsset, ImageAssetsInstructions } from './types.ts'
 import { existsSync } from 'node:fs'
 import { writeFile } from 'node:fs/promises'
-import type { IconAsset, ImageAssetsInstructions } from './types.ts'
+import { resolve } from 'node:path'
 
 export async function generateAssets(
   instruction: ImageAssetsInstructions,
@@ -36,7 +36,7 @@ async function generateAsset(
 
   await icon
     .buffer()
-    .then(b => writeFile(resolve(folder, icon.name), b))
+    .then(b => writeFile(resolve(folder, icon.name), new Uint8Array(b)))
     .then(() => {})
 
   log?.(`Generated ${type} file: ${filePath}`, false)

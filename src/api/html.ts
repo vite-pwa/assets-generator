@@ -1,5 +1,5 @@
-import { defaultSplashScreenName } from '../splash.ts'
 import type { AppleDeviceSize, AppleSplashScreenName, AssetSize } from '../types.ts'
+import { defaultSplashScreenName } from '../splash.ts'
 import { toResolvedSize } from '../utils.ts'
 
 export type HtmlLinkPreset = 'default' | '2023'
@@ -216,7 +216,6 @@ if (import.meta.vitest) {
       } satisfies AppleSplahScreenHtmlLinkOptions
       const linkString = createAppleSplashScreenHtmlLink('string', options)
       expectTypeOf(linkString).toEqualTypeOf<string>()
-      // eslint-disable-next-line @typescript-eslint/quotes
       expect(linkString).toMatchInlineSnapshot(`"<link rel="apple-touch-startup-image" media="screen and (device-width: 480px) and (device-height: 320px) and (-webkit-device-pixel-ratio: 1) and (orientation: landscape)" href="/apple-splash-landscape-light-320x480.png" />"`)
       const link = createAppleSplashScreenHtmlLink('link', options)
       expectTypeOf(link).toEqualTypeOf<AppleSplashScreenLink>()
@@ -236,7 +235,6 @@ if (import.meta.vitest) {
       } satisfies HtmlIconLinkOptions
       const appleTouchIconString = createAppleTouchIconHtmlLink('string', appleTouchIconOptions)
       expectTypeOf(appleTouchIconString).toEqualTypeOf<string>()
-      // eslint-disable-next-line @typescript-eslint/quotes
       expect(appleTouchIconString).toMatchInlineSnapshot(`"<link rel="apple-touch-icon" href="/apple-touch-icon.png">"`)
       const appleTouchIcon = createAppleTouchIconHtmlLink('link', appleTouchIconOptions)
       expectTypeOf(appleTouchIcon).toEqualTypeOf<HtmlLink>()
@@ -254,7 +252,6 @@ if (import.meta.vitest) {
       } satisfies HtmlIconLinkOptions
       const svgFavicon2023String = createFaviconHtmlLink('string', '2023', svgFaviconOptions)
       expectTypeOf(svgFavicon2023String).toEqualTypeOf<string>()
-      // eslint-disable-next-line @typescript-eslint/quotes
       expect(svgFavicon2023String).toMatchInlineSnapshot(`"<link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml">"`)
       const svgFavicon2023 = createFaviconHtmlLink('link', '2023', svgFaviconOptions)
       expectTypeOf(svgFavicon2023).toEqualTypeOf<FaviconLink>()
@@ -269,7 +266,6 @@ if (import.meta.vitest) {
       `)
       const svgFaviconDefaultString = createFaviconHtmlLink('string', 'default', svgFaviconOptions)
       expectTypeOf(svgFaviconDefaultString).toEqualTypeOf<string>()
-      // eslint-disable-next-line @typescript-eslint/quotes
       expect(svgFaviconDefaultString).toMatchInlineSnapshot(`"<link rel="icon" href="/favicon.svg" type="image/svg+xml">"`)
       const svgFaviconDefault = createFaviconHtmlLink('link', 'default', svgFaviconOptions)
       expectTypeOf(svgFaviconDefault).toEqualTypeOf<FaviconLink>()
@@ -287,7 +283,6 @@ if (import.meta.vitest) {
       } satisfies HtmlIconLinkOptions
       const icoFavicon2023String = createFaviconHtmlLink('string', '2023', icoFaviconOptions)
       expectTypeOf(icoFavicon2023String).toEqualTypeOf<string>()
-      // eslint-disable-next-line @typescript-eslint/quotes
       expect(icoFavicon2023String).toMatchInlineSnapshot(`"<link rel="icon" href="/favicon.ico" sizes="32x32">"`)
       const icoFavicon2023 = createFaviconHtmlLink('link', '2023', icoFaviconOptions)
       expectTypeOf(icoFavicon2023).toEqualTypeOf<FaviconLink>()
@@ -301,7 +296,6 @@ if (import.meta.vitest) {
       `)
       const icoFaviconDefaultString = createFaviconHtmlLink('string', 'default', icoFaviconOptions)
       expectTypeOf(icoFaviconDefaultString).toEqualTypeOf<string>()
-      // eslint-disable-next-line @typescript-eslint/quotes
       expect(icoFaviconDefaultString).toMatchInlineSnapshot(`"<link rel="icon" href="/favicon.ico" sizes="any">"`)
       const icoFaviconDefault = createFaviconHtmlLink('link', 'default', icoFaviconOptions)
       expectTypeOf(icoFaviconDefault).toEqualTypeOf<FaviconLink>()

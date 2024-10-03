@@ -3,8 +3,8 @@ import type {
   AssetSize,
   AssetType,
   ResolvedAsset,
-  ResolvedAssetSize,
   ResolvedAssets,
+  ResolvedAssetSize,
 } from './types.ts'
 import { defaultPngOptions } from './api/defaults.ts'
 

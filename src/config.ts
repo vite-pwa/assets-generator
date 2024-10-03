@@ -1,18 +1,18 @@
+import type { LoadConfigResult, LoadConfigSource } from 'unconfig'
+import type { HtmlLinkPreset } from './api'
+import type { Preset } from './preset.ts'
+import type { LogLevel } from './types.ts'
 import { existsSync, statSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import process from 'node:process'
-import type { LoadConfigResult, LoadConfigSource } from 'unconfig'
 import { createConfigLoader as createLoader } from 'unconfig'
-import type { Preset } from './preset.ts'
-import type { LogLevel } from './types.ts'
-import type { HtmlLinkPreset } from './api'
 
 export type { LoadConfigResult, LoadConfigSource }
 
-export * from './types.ts'
+export * from './api/defaults.ts'
 export * from './presets/index.ts'
 export * from './splash.ts'
-export * from './api/defaults.ts'
+export * from './types.ts'
 export { defaultAssetName } from './utils.ts'
 
 export type { Preset }

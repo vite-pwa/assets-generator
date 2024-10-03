@@ -4,19 +4,19 @@ import type { BuiltInPreset, Preset } from '../config.ts'
 import type { AppleSplashScreenLink, FaviconLink, HtmlLink, HtmlLinkPreset } from './html.ts'
 
 export type ImageSourceInput =
-    // eslint-disable-next-line n/prefer-global/buffer
-    | Buffer
-    | ArrayBuffer
-    | Uint8Array
-    | Uint8ClampedArray
-    | Int8Array
-    | Uint16Array
-    | Int16Array
-    | Uint32Array
-    | Int32Array
-    | Float32Array
-    | Float64Array
-    | string
+  // eslint-disable-next-line node/prefer-global/buffer
+  | Buffer
+  | ArrayBuffer
+  | Uint8Array
+  | Uint8ClampedArray
+  | Int8Array
+  | Uint16Array
+  | Int16Array
+  | Uint32Array
+  | Int32Array
+  | Float32Array
+  | Float64Array
+  | string
 
 export interface GenerateOptions {
   /**
@@ -108,7 +108,7 @@ export interface IconAsset<T extends HtmlLink> {
   /**
    * Creates the icon asset.
    */
-  // eslint-disable-next-line n/prefer-global/buffer
+  // eslint-disable-next-line node/prefer-global/buffer
   buffer: () => Promise<Buffer>
 }
 
@@ -119,7 +119,7 @@ export interface ImageAssets {
   /**
    * The image to use for generating the icon assets.
    */
-  // eslint-disable-next-line n/prefer-global/buffer
+  // eslint-disable-next-line node/prefer-global/buffer
   imageResolver: () => Buffer | Promise<Buffer>
   /**
    * The name of the image.

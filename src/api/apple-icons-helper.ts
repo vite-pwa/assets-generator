@@ -1,13 +1,13 @@
 import type { PngOptions, ResizeOptions } from 'sharp'
 import type { AppleDeviceSize, AppleSplashScreens, ResolvedAppleSplashScreens } from '../types.ts'
+import type { ImageAssets, ImageAssetsInstructions } from './types.ts'
 import { defaultSplashScreenName } from '../splash.ts'
 import { createPngCompressionOptions, createResizeOptions } from './defaults.ts'
-import type { ImageAssets, ImageAssetsInstructions } from './types.ts'
-import { generateMaskableAsset } from './maskable.ts'
 import { createAppleSplashScreenHtmlLink } from './html.ts'
+import { generateMaskableAsset } from './maskable.ts'
 
 export function resolveAppleSplashScreensInstructions(
-  // eslint-disable-next-line n/prefer-global/buffer
+  // eslint-disable-next-line node/prefer-global/buffer
   image: Buffer,
   imageAssets: ImageAssets,
   instructions: ImageAssetsInstructions,
@@ -98,11 +98,11 @@ export function resolveAppleSplashScreensInstructions(
 
   sizesMap.clear()
 
-  // eslint-disable-next-line n/prefer-global/buffer
+  // eslint-disable-next-line node/prefer-global/buffer
   const cache: Record<string, Promise<Buffer>> = {}
   const originalName = imageAssets.originalName!
 
-  // eslint-disable-next-line n/prefer-global/buffer
+  // eslint-disable-next-line node/prefer-global/buffer
   const imageResolver = (dark: boolean): Promise<Buffer> => {
     if (!dark || typeof appleSplashScreens.darkImageResolver !== 'function')
       return Promise.resolve(image)
