@@ -27,7 +27,6 @@ Zero-config PWA Assets Generator
   </a>
 </p>
 
-
 ## 🚀 Features
 
 - 📖 [**Documentation & guides**](https://vite-pwa-org.netlify.app/)
@@ -47,13 +46,13 @@ Zero-config PWA Assets Generator
 ## 📦 Install
 
 ```bash
-# npm 
-npm i @vite-pwa/assets-generator -D 
+# npm
+npm i @vite-pwa/assets-generator -D
 
-# yarn 
+# yarn
 yarn add @vite-pwa/assets-generator -D
 
-# pnpm 
+# pnpm
 pnpm add @vite-pwa/assets-generator -D
 ```
 

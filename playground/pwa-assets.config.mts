@@ -1,17 +1,21 @@
-import { createAppleSplashScreens, defineConfig, minimal2023Preset } from '@vite-pwa/assets-generator/config'
 import { readFile } from 'node:fs/promises'
+import {
+  createAppleSplashScreens,
+  defineConfig,
+  minimal2023Preset,
+} from '@vite-pwa/assets-generator/config'
 
 export default defineConfig({
   headLinkOptions: {
-    preset: '2023'
+    preset: '2023',
   },
   preset: {
     ...minimal2023Preset,
     appleSplashScreens: createAppleSplashScreens({
       async darkImageResolver(imageName) {
         return imageName === 'pwa/public/favicon.svg'
-            ? await readFile('pwa/public/splash-dark.svg')
-            : undefined
+          ? await readFile('pwa/public/splash-dark.svg')
+          : undefined
       },
       padding: 0.3,
       resizeOptions: { fit: 'contain', background: 'white' },

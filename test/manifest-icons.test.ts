@@ -1,9 +1,9 @@
+import type { ManifestIcons } from '../src/api'
 import { readFile } from 'node:fs/promises'
 import { basename } from 'node:path'
 import { expect, expectTypeOf, it } from 'vitest'
-import { resolveInstructions } from '../src/api/instructions-resolver'
 import { generateManifestIconsEntry } from '../src/api/generate-manifest-icons-entry'
-import type { ManifestIcons } from '../src/api'
+import { resolveInstructions } from '../src/api/instructions-resolver'
 
 it('should generate manifest icons entry', async () => {
   const instructions = await resolveInstructions({

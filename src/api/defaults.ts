@@ -16,7 +16,7 @@ export const defaultPngCompressionOptions: PngOptions = {
   quality: 60,
 }
 
-export const defaultPngOptions: Record<AssetType, { padding: number; resizeOptions: ResizeOptions }> = {
+export const defaultPngOptions: Record<AssetType, { padding: number, resizeOptions: ResizeOptions }> = {
   transparent: { padding: 0.05, resizeOptions: { fit: 'contain', background: 'transparent' } },
   maskable: { padding: 0.3, resizeOptions: { fit: 'contain', background: 'white' } },
   apple: { padding: 0.3, resizeOptions: { fit: 'contain', background: 'white' } },

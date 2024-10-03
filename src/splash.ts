@@ -1,47 +1,47 @@
 import type { PngOptions, ResizeOptions } from 'sharp'
-import type { AppleDeviceSize, AppleSplashScreenName, AppleSplashScreens, AppleTouchStartupImageOptions } from './types.ts'
 import type { Preset } from './preset.ts'
+import type { AppleDeviceSize, AppleSplashScreenName, AppleSplashScreens, AppleTouchStartupImageOptions } from './types.ts'
 
 export type AppleDeviceName =
-    | 'iPad Pro 12.9"'
-    | 'iPad Pro 11"'
-    | 'iPad Pro 10.5"'
-    | 'iPad Pro 9.7"'
-    | 'iPad mini 7.9"'
-    | 'iPad Air 10.5"'
-    | 'iPad Air 9.7"'
-    | 'iPad 10.2"'
-    | 'iPad 9.7"'
-    | 'iPhone 14 Pro Max'
-    | 'iPhone 14 Pro'
-    | 'iPhone 14 Plus'
-    | 'iPhone 14'
-    | 'iPhone 13 Pro Max'
-    | 'iPhone 13 Pro'
-    | 'iPhone 13'
-    | 'iPhone 13 mini'
-    | 'iPhone 12 Pro Max'
-    | 'iPhone 12 Pro'
-    | 'iPhone 12'
-    | 'iPhone 12 mini'
-    | 'iPhone 11 Pro Max'
-    | 'iPhone 11 Pro'
-    | 'iPhone 11'
-    | 'iPhone XS Max'
-    | 'iPhone XS'
-    | 'iPhone XR'
-    | 'iPhone X'
-    | 'iPhone 8 Plus'
-    | 'iPhone 8'
-    | 'iPhone 7 Plus'
-    | 'iPhone 7'
-    | 'iPhone 6s Plus'
-    | 'iPhone 6s'
-    | 'iPhone 6 Plus'
-    | 'iPhone 6'
-    | 'iPhone SE 4.7"'
-    | 'iPhone SE 4"'
-    | 'iPod touch 5th generation and later'
+  | 'iPad Pro 12.9"'
+  | 'iPad Pro 11"'
+  | 'iPad Pro 10.5"'
+  | 'iPad Pro 9.7"'
+  | 'iPad mini 7.9"'
+  | 'iPad Air 10.5"'
+  | 'iPad Air 9.7"'
+  | 'iPad 10.2"'
+  | 'iPad 9.7"'
+  | 'iPhone 14 Pro Max'
+  | 'iPhone 14 Pro'
+  | 'iPhone 14 Plus'
+  | 'iPhone 14'
+  | 'iPhone 13 Pro Max'
+  | 'iPhone 13 Pro'
+  | 'iPhone 13'
+  | 'iPhone 13 mini'
+  | 'iPhone 12 Pro Max'
+  | 'iPhone 12 Pro'
+  | 'iPhone 12'
+  | 'iPhone 12 mini'
+  | 'iPhone 11 Pro Max'
+  | 'iPhone 11 Pro'
+  | 'iPhone 11'
+  | 'iPhone XS Max'
+  | 'iPhone XS'
+  | 'iPhone XR'
+  | 'iPhone X'
+  | 'iPhone 8 Plus'
+  | 'iPhone 8'
+  | 'iPhone 7 Plus'
+  | 'iPhone 7'
+  | 'iPhone 6s Plus'
+  | 'iPhone 6s'
+  | 'iPhone 6 Plus'
+  | 'iPhone 6'
+  | 'iPhone SE 4.7"'
+  | 'iPhone SE 4"'
+  | 'iPod touch 5th generation and later'
 
 export interface AppleSplashScreen extends Record<AppleDeviceName, AppleDeviceSize> {}
 
@@ -102,7 +102,7 @@ export function createAppleSplashScreens(
      *
      * @param imageName The image name configured in images.
      */
-    // eslint-disable-next-line n/prefer-global/buffer
+    // eslint-disable-next-line node/prefer-global/buffer
     darkImageResolver?: (imageName: string) => Promise<Buffer | undefined>
     padding?: number
     resizeOptions?: ResizeOptions
@@ -145,7 +145,7 @@ export function combinePresetAndAppleSplashScreens(
      *
      * @param imageName The image name configured in images.
      */
-    // eslint-disable-next-line n/prefer-global/buffer
+    // eslint-disable-next-line node/prefer-global/buffer
     darkImageResolver?: (imageName: string) => Promise<Buffer | undefined>
     padding?: number
     resizeOptions?: ResizeOptions

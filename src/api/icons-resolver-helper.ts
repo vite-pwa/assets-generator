@@ -1,11 +1,11 @@
 import type { ResolvedAssets } from '../types.ts'
-import { toResolvedSize } from '../utils.ts'
-import type { ImageAssets, ImageAssetsInstructions, ImageSourceInput } from './types.ts'
 import type { HtmlLinkPreset } from './html.ts'
-import { createAppleTouchIconHtmlLink, createFaviconHtmlLink } from './html.ts'
-import { generateTransparentAsset } from './transparent.ts'
+import type { ImageAssets, ImageAssetsInstructions, ImageSourceInput } from './types.ts'
+import { toResolvedSize } from '../utils.ts'
 import { generateFavicon } from './favicon.ts'
+import { createAppleTouchIconHtmlLink, createFaviconHtmlLink } from './html.ts'
 import { generateMaskableAsset } from './maskable.ts'
+import { generateTransparentAsset } from './transparent.ts'
 
 export function resolveTransparentIcons(
   imageAssets: ImageAssets,
@@ -45,8 +45,7 @@ export function resolveTransparentIcons(
       padding,
       resizeOptions,
       outputOptions: assets.png,
-    }).then(m => m.toBuffer())
-      .then(b => generateFavicon('png', b))
+    }).then(m => m.toBuffer()).then(b => generateFavicon('png', b))
     const resolvedSize = toResolvedSize(size)
     instructions.favicon[url] = {
       name,
