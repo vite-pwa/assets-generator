@@ -5,23 +5,51 @@ exports[`should generate manifest icons entry 1`] = `
   "icons": [
     {
       "sizes": "64x64",
-      "src": "pwa-64x64.png",
+      "src": "/pwa-64x64.png",
       "type": "image/png",
     },
     {
       "sizes": "192x192",
-      "src": "pwa-192x192.png",
+      "src": "/pwa-192x192.png",
       "type": "image/png",
     },
     {
       "sizes": "512x512",
-      "src": "pwa-512x512.png",
+      "src": "/pwa-512x512.png",
       "type": "image/png",
     },
     {
       "purpose": "maskable",
       "sizes": "512x512",
-      "src": "maskable-icon-512x512.png",
+      "src": "/maskable-icon-512x512.png",
+      "type": "image/png",
+    },
+  ],
+}
+`;
+
+exports[`should generate manifest icons entry with custom base 1`] = `
+{
+  "icons": [
+    {
+      "sizes": "64x64",
+      "src": "/test/pwa-64x64.png",
+      "type": "image/png",
+    },
+    {
+      "sizes": "192x192",
+      "src": "/test/pwa-192x192.png",
+      "type": "image/png",
+    },
+    {
+      "sizes": "512x512",
+      "src": "/test/pwa-512x512.png",
+      "type": "image/png",
+    },
+    {
+      "purpose": "maskable",
+      "sizes": "512x512",
+      "src": "/test/maskable-icon-512x512.png",
       "type": "image/png",
     },
   ],
