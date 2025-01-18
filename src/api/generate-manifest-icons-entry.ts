@@ -8,14 +8,14 @@ export function generateManifestIconsEntry<Format extends ManifestIconsType>(
 
   for (const icon of Object.values(instruction.transparent)) {
     icons.icons.push({
-      src: icon.name,
+      src: icon.url,
       sizes: `${icon.width}x${icon.height}`,
       type: icon.mimeType,
     })
   }
   for (const icon of Object.values(instruction.maskable)) {
     icons.icons.push({
-      src: icon.name,
+      src: icon.url,
       sizes: `${icon.width}x${icon.height}`,
       type: icon.mimeType,
       purpose: 'maskable',
