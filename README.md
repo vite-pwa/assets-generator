@@ -61,7 +61,7 @@ pnpm add @vite-pwa/assets-generator -D
 Create `pwa-assets.config.js` or `pwa-assets.config.ts` file in your root project folder and configure a preset and the images to use to generate the PWA assets:
 
 ```ts
-import { defineConfig, minimalPreset as preset } from '@vite-pwa/assets-generator/config'
+import { defineConfig, minimal2023Preset as preset } from '@vite-pwa/assets-generator/config'
 
 export default defineConfig({
   preset,
