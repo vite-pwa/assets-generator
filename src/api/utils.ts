@@ -1,6 +1,7 @@
+import type { PngOptions, WebpOptions } from 'sharp'
 import type { AssetSize, ResolvedAssetSize } from '../types.ts'
 import type { GenerateOptionsOptionType, GenerateOptionsType, ImageSourceInput } from './types.ts'
-import sharp, { type PngOptions, type WebpOptions } from 'sharp'
+import sharp from 'sharp'
 import { toResolvedSize } from '../utils.ts'
 
 export function extractAssetSize(size: ResolvedAssetSize, padding: number) {
