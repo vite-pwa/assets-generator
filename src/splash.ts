@@ -59,6 +59,10 @@ export type AppleDeviceName =
 
 export interface AppleSplashScreen extends Record<AppleDeviceName, AppleDeviceSize> {}
 
+/**
+ * Apple device names and resolutions.
+ * @see https://developer.apple.com/design/human-interface-guidelines/layout#iOS-iPadOS-device-screen-dimensions
+ */
 export const appleSplashScreenSizes: AppleSplashScreen = {
   'iPad Pro 12.9"': { width: 2048, height: 2732, scaleFactor: 2 },
   'iPad Pro 11"': { width: 1668, height: 2388, scaleFactor: 2 },
