@@ -7,11 +7,25 @@ export type AppleDeviceName =
   | 'iPad Pro 11"'
   | 'iPad Pro 10.5"'
   | 'iPad Pro 9.7"'
-  | 'iPad mini 7.9"'
+  | 'iPad Air 13"'
+  | 'iPad Air 11"'
+  | 'iPad Air 10.9"'
   | 'iPad Air 10.5"'
   | 'iPad Air 9.7"'
+  | 'iPad 11"'
   | 'iPad 10.2"'
   | 'iPad 9.7"'
+  | 'iPad mini 8.3"'
+  | 'iPad mini 7.9"'
+  | 'iPhone 16 Pro Max'
+  | 'iPhone 16 Pro'
+  | 'iPhone 16 Plus'
+  | 'iPhone 16'
+  | 'iPhone 16e'
+  | 'iPhone 15 Pro Max'
+  | 'iPhone 15 Pro'
+  | 'iPhone 15 Plus'
+  | 'iPhone 15'
   | 'iPhone 14 Pro Max'
   | 'iPhone 14 Pro'
   | 'iPhone 14 Plus'
@@ -45,16 +59,34 @@ export type AppleDeviceName =
 
 export interface AppleSplashScreen extends Record<AppleDeviceName, AppleDeviceSize> {}
 
+/**
+ * Apple device names and resolutions.
+ * @see https://developer.apple.com/design/human-interface-guidelines/layout#iOS-iPadOS-device-screen-dimensions
+ */
 export const appleSplashScreenSizes: AppleSplashScreen = {
   'iPad Pro 12.9"': { width: 2048, height: 2732, scaleFactor: 2 },
   'iPad Pro 11"': { width: 1668, height: 2388, scaleFactor: 2 },
   'iPad Pro 10.5"': { width: 1668, height: 2388, scaleFactor: 2 },
   'iPad Pro 9.7"': { width: 1536, height: 2048, scaleFactor: 2 },
-  'iPad mini 7.9"': { width: 1536, height: 2048, scaleFactor: 2 },
+  'iPad Air 13"': { width: 2048, height: 2732, scaleFactor: 2 },
+  'iPad Air 11"': { width: 1640, height: 2360, scaleFactor: 2 },
+  'iPad Air 10.9"': { width: 1640, height: 2360, scaleFactor: 2 },
   'iPad Air 10.5"': { width: 1668, height: 2224, scaleFactor: 2 },
   'iPad Air 9.7"': { width: 1536, height: 2048, scaleFactor: 2 },
+  'iPad 11"': { width: 1640, height: 2360, scaleFactor: 2 },
   'iPad 10.2"': { width: 1620, height: 2160, scaleFactor: 2 },
   'iPad 9.7"': { width: 1536, height: 2048, scaleFactor: 2 },
+  'iPad mini 8.3"': { width: 1488, height: 2266, scaleFactor: 2 },
+  'iPad mini 7.9"': { width: 1536, height: 2048, scaleFactor: 2 },
+  'iPhone 16 Pro Max': { width: 1320, height: 2868, scaleFactor: 3 },
+  'iPhone 16 Pro': { width: 1206, height: 2622, scaleFactor: 3 },
+  'iPhone 16 Plus': { width: 1290, height: 2796, scaleFactor: 3 },
+  'iPhone 16': { width: 1179, height: 2556, scaleFactor: 3 },
+  'iPhone 16e': { width: 1170, height: 2532, scaleFactor: 3 },
+  'iPhone 15 Pro Max': { width: 1290, height: 2796, scaleFactor: 3 },
+  'iPhone 15 Pro': { width: 1179, height: 2556, scaleFactor: 3 },
+  'iPhone 15 Plus': { width: 1290, height: 2796, scaleFactor: 3 },
+  'iPhone 15': { width: 1179, height: 2556, scaleFactor: 3 },
   'iPhone 14 Pro Max': { width: 1290, height: 2796, scaleFactor: 3 },
   'iPhone 14 Pro': { width: 1179, height: 2556, scaleFactor: 3 },
   'iPhone 14 Plus': { width: 1284, height: 2778, scaleFactor: 3 },
