@@ -20,10 +20,10 @@ export interface FaviconLink extends HtmlLink {
 }
 
 export type HtmlLinkType = 'string' | 'link'
-export type HtmlLinkReturnType<T, R extends HtmlLink> =
-    T extends 'string' ? string :
-      T extends 'link' ? R :
-        never
+export type HtmlLinkReturnType<T, R extends HtmlLink>
+  = T extends 'string' ? string
+    : T extends 'link' ? R
+      : never
 
 export interface HtmlIconLinkOptions {
   name: string
