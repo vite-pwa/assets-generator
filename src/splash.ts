@@ -17,6 +17,10 @@ export type AppleDeviceName
     | 'iPad 9.7"'
     | 'iPad mini 8.3"'
     | 'iPad mini 7.9"'
+    | 'iPhone 17 Pro Max'
+    | 'iPhone 17 Pro'
+    | 'iPhone Air'
+    | 'iPhone 17'
     | 'iPhone 16 Pro Max'
     | 'iPhone 16 Pro'
     | 'iPhone 16 Plus'
@@ -78,6 +82,10 @@ export const appleSplashScreenSizes: AppleSplashScreen = {
   'iPad 9.7"': { width: 1536, height: 2048, scaleFactor: 2 },
   'iPad mini 8.3"': { width: 1488, height: 2266, scaleFactor: 2 },
   'iPad mini 7.9"': { width: 1536, height: 2048, scaleFactor: 2 },
+  'iPhone 17 Pro Max': { width: 1320, height: 2868, scaleFactor: 3 },
+  'iPhone 17 Pro': { width: 1206, height: 2622, scaleFactor: 3 },
+  'iPhone Air': { width: 1260, height: 2736, scaleFactor: 3 },
+  'iPhone 17': { width: 1206, height: 2622, scaleFactor: 3 },
   'iPhone 16 Pro Max': { width: 1320, height: 2868, scaleFactor: 3 },
   'iPhone 16 Pro': { width: 1206, height: 2622, scaleFactor: 3 },
   'iPhone 16 Plus': { width: 1290, height: 2796, scaleFactor: 3 },
