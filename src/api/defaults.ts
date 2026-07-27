@@ -22,7 +22,7 @@ export const defaultPngOptions: Record<AssetType, { padding: number, resizeOptio
   apple: { padding: 0.3, resizeOptions: { fit: 'contain', background: 'white' } },
 }
 
-export function createResizeOptions(dark: boolean, options: ResizeOptions) {
+export function createResizeOptions(dark: boolean, options: ResizeOptions): ResizeOptions {
   return {
     ...(dark ? defaultDarkResizeOptions : defaultResizeOptions),
     ...options,
