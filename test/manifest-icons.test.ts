@@ -23,3 +23,22 @@ it('should generate manifest icons entry', async () => {
   expectTypeOf(icons).toEqualTypeOf<ManifestIcons>()
   expect(icons).toMatchSnapshot()
 })
+
+it('should generate manifest icons entry with custom base', async () => {
+  const instructions = await resolveInstructions({
+    imageResolver: () => readFile('playground/pwa/public/favicon.svg'),
+    imageName: 'playground/pwa/public/favicon.svg',
+    preset: 'minimal-2023',
+    htmlLinks: {
+      xhtml: false,
+      includeId: false,
+    },
+    basePath: '/test/',
+    resolveSvgName: name => basename(name),
+  })
+  const iconsString = generateManifestIconsEntry('string', instructions)
+  expectTypeOf(iconsString).toEqualTypeOf<string>()
+  const icons = generateManifestIconsEntry('object', instructions)
+  expectTypeOf(icons).toEqualTypeOf<ManifestIcons>()
+  expect(icons).toMatchSnapshot()
+})
