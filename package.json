@@ -84,7 +84,8 @@
     "release": "bumpp",
     "run-playground": "pnpm -C playground run build",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "update-workflows": "pnpx actions-up -y"
   },
   "dependencies": {
     "cac": "^7.0.0",
