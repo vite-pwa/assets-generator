@@ -12,7 +12,7 @@ To develop and test the `@vite-pwa/assets-generator` package:
 
 1. Fork the `@vite-pwa/assets-generator` repository to your own GitHub account and then clone it to your local device.
 
-2. `@vite-pwa/assets-generator` uses pnpm v8. If you are working on multiple projects with different versions of pnpm, it's recommend to enable [Corepack](https://github.com/nodejs/corepack) by running `corepack enable`.
+2. `@vite-pwa/assets-generator` uses pnpm (check `packageManager` at `package.json`). If you are working on multiple projects with different versions of pnpm, it's recommend to enable [Corepack](https://github.com/nodejs/corepack) by running `corepack enable`.
 
 3. Check out a branch where you can work and commit your changes:
 ```shell
