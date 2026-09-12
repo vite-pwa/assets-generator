@@ -44,25 +44,25 @@
         "./dist/presets/index.d.mts"
       ],
       "presets/minimal": [
-          "./dist/presets/minimal.d.mts"
+        "./dist/presets/minimal.d.mts"
       ],
       "presets/minimal-2023": [
-          "./dist/presets/minimal-2023.d.mts"
+        "./dist/presets/minimal-2023.d.mts"
       ],
       "api": [
-          "./dist/api/index.d.mts"
+        "./dist/api/index.d.mts"
       ],
       "api/instructions": [
-          "./dist/api/instructions.d.mts"
+        "./dist/api/instructions.d.mts"
       ],
       "api/generate-html-markup": [
-          "./dist/api/generate-html-markup.d.mts"
+        "./dist/api/generate-html-markup.d.mts"
       ],
       "api/generate-manifest-icons-entry": [
-          "./dist/api/generate-manifest-icons-entry.d.mts"
+        "./dist/api/generate-manifest-icons-entry.d.mts"
       ],
       "api/generate-assets": [
-          "./dist/api/generate-assets.d.mts"
+        "./dist/api/generate-assets.d.mts"
       ]
     }
   },
@@ -89,8 +89,8 @@
   },
   "dependencies": {
     "cac": "^7.0.0",
-    "picocolors": "^1.1.1",
     "consola": "^3.4.2",
+    "picocolors": "^1.1.1",
     "sharp": "^0.35.4",
     "sharp-ico": "^0.1.5",
     "unconfig": "^7.5.0"
@@ -104,7 +104,7 @@
     "bumpp": "^12.3.0",
     "eslint": "^10.10.0",
     "publint": "^0.3.24",
-    "tsdown": "^0.23.0",
+    "tsdown": "^0.21.10",
     "typescript": "^6.0.3",
     "vitest": "^5.0.0"
   }
