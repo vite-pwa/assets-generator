@@ -27,7 +27,9 @@ export default defineConfig({
         basePath: '/',
         xhtml: true,
       },
-    }, ['iPad Air 9.7"']),
+    }, ['iPad Air 9.7"'], {
+      X: { width: 1125, height: 2436, padding: 0.3, scaleFactor: 2 },
+    }),
   },
   images: [
     'elk/public/logo.svg',

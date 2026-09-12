@@ -2,7 +2,7 @@
   "name": "@vite-pwa/assets-generator",
   "type": "module",
   "version": "1.0.4",
-  "packageManager": "pnpm@10.18.2",
+  "packageManager": "pnpm@11.25.0",
   "description": "Zero-config PWA Assets Generator",
   "author": "antfu <anthonyfu117@hotmail.com>",
   "license": "MIT",
@@ -24,24 +24,45 @@
   "exports": {
     ".": "./dist/index.mjs",
     "./config": "./dist/config.mjs",
-    "./presets": "./dist/presets.mjs",
+    "./presets": "./dist/presets/index.mjs",
     "./presets/minimal": "./dist/presets/minimal.mjs",
     "./presets/minimal-2023": "./dist/presets/minimal-2023.mjs",
-    "./api": "./dist/api.mjs",
+    "./api": "./dist/api/index.mjs",
     "./api/instructions": "./dist/api/instructions.mjs",
     "./api/generate-html-markup": "./dist/api/generate-html-markup.mjs",
     "./api/generate-manifest-icons-entry": "./dist/api/generate-manifest-icons-entry.mjs",
     "./api/generate-assets": "./dist/api/generate-assets.mjs",
     "./package.json": "./package.json"
   },
-  "main": "unbuild-dist/index.cjs",
-  "module": "unbuild-dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "types": "dist/index.d.mts",
   "typesVersions": {
     "*": {
-      "*": [
-        "./dist/*",
-        "./*"
+      "config": [
+        "./dist/config.d.mts"
+      ],
+      "presets": [
+        "./dist/presets/index.d.mts"
+      ],
+      "presets/minimal": [
+          "./dist/presets/minimal.d.mts"
+      ],
+      "presets/minimal-2023": [
+          "./dist/presets/minimal-2023.d.mts"
+      ],
+      "api": [
+          "./dist/api/index.d.mts"
+      ],
+      "api/instructions": [
+          "./dist/api/instructions.d.mts"
+      ],
+      "api/generate-html-markup": [
+          "./dist/api/generate-html-markup.d.mts"
+      ],
+      "api/generate-manifest-icons-entry": [
+          "./dist/api/generate-manifest-icons-entry.d.mts"
+      ],
+      "api/generate-assets": [
+          "./dist/api/generate-assets.d.mts"
       ]
     }
   },
@@ -50,7 +71,7 @@
   },
   "files": [
     "bin",
-    "unbuild-dist"
+    "dist"
   ],
   "engines": {
     "node": ">=16.14.0"
@@ -76,10 +97,12 @@
   "devDependencies": {
     "@antfu/eslint-config": "^9.5.1",
     "@antfu/ni": "^30.5.0",
+    "@arethetypeswrong/core": "^0.18.5",
     "@types/debug": "^4.1.13",
     "@types/node": "^22.20.2",
     "bumpp": "^12.3.0",
     "eslint": "^10.10.0",
+    "publint": "^0.3.24",
     "tsdown": "^0.23.0",
     "typescript": "^6.0.3",
     "vitest": "^5.0.0"
