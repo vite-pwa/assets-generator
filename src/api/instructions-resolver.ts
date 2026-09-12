@@ -14,7 +14,9 @@ import { resolveAppleSplashScreensInstructions } from './apple-icons-helper.ts'
 import { createFaviconHtmlLink } from './html.ts'
 import { resolveMaskableIcons, resolveTransparentIcons } from './icons-resolver-helper.ts'
 
-export async function resolveInstructions(imageAssets: ImageAssets) {
+export async function resolveInstructions(
+  imageAssets: ImageAssets,
+): Promise<ImageAssetsInstructions> {
   const {
     imageResolver,
     imageName,

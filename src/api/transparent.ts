@@ -1,3 +1,4 @@
+import type { Sharp } from 'sharp'
 import type { AssetSize } from '../types.ts'
 import type { GenerateOptionsOptionType, GenerateOptionsType, ImageSourceInput } from './types.ts'
 import { createSharp } from './utils.ts'
@@ -7,7 +8,7 @@ export async function generateTransparentAsset<OutputType extends GenerateOption
   image: ImageSourceInput,
   size: AssetSize,
   options?: GenerateOptionsOptionType<OutputType>,
-) {
+): Promise<Sharp> {
   return await createSharp<OutputType>(
     type,
     image,

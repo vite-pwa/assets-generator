@@ -3,8 +3,8 @@ import { readFile } from 'node:fs/promises'
 import { basename, dirname, resolve } from 'node:path'
 import process from 'node:process'
 import cac from 'cac'
-import { green, yellow } from 'colorette'
 import { consola } from 'consola'
+import pc from 'picocolors'
 import { version } from '../package.json'
 import { generateAssets } from './api/generate-assets.ts'
 import { generateHtmlMarkup } from './api/generate-html-markup.ts'
@@ -61,7 +61,7 @@ function cleanupCliOptions(cliOptions: any) {
 }
 
 async function run(images: string[] = [], cliOptions: CliOptions = {}) {
-  consola.log(green(`Zero Config PWA Assets Generator v${version}`))
+  consola.log(pc.green(`Zero Config PWA Assets Generator v${version}`))
   consola.start('Preparing to generate PWA assets...')
 
   cleanupCliOptions(cliOptions)
@@ -127,9 +127,9 @@ async function run(images: string[] = [], cliOptions: CliOptions = {}) {
       log
         ? (message, ignored) => {
             if (ignored)
-              consola.log(yellow(message))
+              consola.log(pc.yellow(message))
             else
-              consola.ready(green(message))
+              consola.ready(pc.green(message))
           }
         : undefined,
     )

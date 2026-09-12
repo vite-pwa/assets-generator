@@ -1,3 +1,9 @@
+ignoreWorkspaceRootCheck: true
+shamefullyHoist: true
+strictPeerDependencies: false
+autoInstallPeers: true
+shellEmulator: true
+
 packages:
   - playground
 ignoredBuiltDependencies:

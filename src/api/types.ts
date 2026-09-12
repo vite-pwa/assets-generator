@@ -1,5 +1,4 @@
-import type { PngOptions, WebpOptions } from 'sharp'
-import type sharp from 'sharp'
+import type { PngOptions, ResizeOptions, WebpOptions } from 'sharp'
 import type { BuiltInPreset, Preset } from '../config.ts'
 import type { AppleSplashScreenLink, FaviconLink, HtmlLink, HtmlLinkPreset } from './html.ts'
 
@@ -24,7 +23,7 @@ export interface GenerateOptions {
    */
   padding?: number
   outputOptions?: any
-  resizeOptions?: sharp.ResizeOptions
+  resizeOptions?: ResizeOptions
 }
 export type GenerateOptionsType = 'png' | 'webp' | 'none'
 export type GenerateOptionsOptionType<T>

@@ -131,7 +131,7 @@ export function defaultSplashScreenName(landscape: boolean, size: AppleDeviceSiz
   return `apple-splash-${landscape ? 'landscape' : 'portrait'}-${typeof dark === 'boolean' ? (dark ? 'dark-' : 'light-') : ''}${size.width}x${size.height}.png`
 }
 
-export const AllAppleDeviceNames = Array.from(Object.keys(appleSplashScreenSizes).map(k => k as AppleDeviceName))
+export const AllAppleDeviceNames: AppleDeviceName[] = Array.from(Object.keys(appleSplashScreenSizes).map(k => k as AppleDeviceName))
 
 export function createAppleSplashScreens(
   options: {
@@ -152,6 +152,10 @@ export function createAppleSplashScreens(
     name?: AppleSplashScreenName
   } = {},
   devices: AppleDeviceName[] = AllAppleDeviceNames,
+  /**
+   * Additional devices to add to the preset.
+   */
+  additionalDevices?: Record<string, AppleDeviceSize>,
 ) {
   const {
     darkImageResolver,
@@ -163,9 +167,23 @@ export function createAppleSplashScreens(
     name,
   } = options
 
+  const sizes: AppleDeviceSize[] = []
+  for (const deviceName of devices) {
+    const size = appleSplashScreenSizes[deviceName]
+    if (size) {
+      sizes.push(size)
+    }
+  }
+
+  if (additionalDevices) {
+    for (const size of Object.values(additionalDevices)) {
+      sizes.push(size)
+    }
+  }
+
   return {
     darkImageResolver,
-    sizes: devices.map(deviceName => appleSplashScreenSizes[deviceName]),
+    sizes,
     padding,
     resizeOptions,
     darkResizeOptions,
@@ -195,9 +213,13 @@ export function combinePresetAndAppleSplashScreens(
     name?: AppleSplashScreenName
   } = {},
   devices: AppleDeviceName[] = AllAppleDeviceNames,
+  /**
+   * Additional devices to add to the preset.
+   */
+  additionalDevices?: Record<string, AppleDeviceSize>,
 ) {
   return {
     ...preset,
-    appleSplashScreens: createAppleSplashScreens(options, devices),
+    appleSplashScreens: createAppleSplashScreens(options, devices, additionalDevices),
   } satisfies Preset
 }
