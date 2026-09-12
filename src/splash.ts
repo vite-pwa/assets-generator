@@ -131,7 +131,7 @@ export function defaultSplashScreenName(landscape: boolean, size: AppleDeviceSiz
   return `apple-splash-${landscape ? 'landscape' : 'portrait'}-${typeof dark === 'boolean' ? (dark ? 'dark-' : 'light-') : ''}${size.width}x${size.height}.png`
 }
 
-export const KnownAppleDeviceNames: AppleDeviceName[] = Array.from(Object.keys(appleSplashScreenSizes).map(k => k as AppleDeviceName))
+export const AllAppleDeviceNames: AppleDeviceName[] = Array.from(Object.keys(appleSplashScreenSizes).map(k => k as AppleDeviceName))
 
 export function createAppleSplashScreens(
   options: {
@@ -151,7 +151,7 @@ export function createAppleSplashScreens(
     png?: PngOptions
     name?: AppleSplashScreenName
   } = {},
-  devices: AppleDeviceName[] = KnownAppleDeviceNames,
+  devices: AppleDeviceName[] = AllAppleDeviceNames,
   /**
    * Additional devices to add to the preset.
    */
@@ -212,7 +212,7 @@ export function combinePresetAndAppleSplashScreens(
     png?: PngOptions
     name?: AppleSplashScreenName
   } = {},
-  devices: AppleDeviceName[] = KnownAppleDeviceNames,
+  devices: AppleDeviceName[] = AllAppleDeviceNames,
   /**
    * Additional devices to add to the preset.
    */
