@@ -8,6 +8,8 @@ Refer also to https://github.com/antfu/contribute.
 
 The `@vite-pwa/assets-generator` repo is a monorepo using pnpm workspaces. The package manager used to install and link dependencies must be [pnpm](https://pnpm.io/).
 
+You need to have Node.js (`>= 24.11.0`) installed on your machine. We recommend using the latest LTS version of Node.js.
+
 To develop and test the `@vite-pwa/assets-generator` package:
 
 1. Fork the `@vite-pwa/assets-generator` repository to your own GitHub account and then clone it to your local device.
