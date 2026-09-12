@@ -1,4 +1,4 @@
-import type { PngOptions, WebpOptions } from 'sharp'
+import type { Color, CreateChannels, PngOptions, SharpOptions, WebpOptions } from 'sharp'
 import type { AssetSize, ResolvedAssetSize } from '../types.ts'
 import type { GenerateOptionsOptionType, GenerateOptionsType, ImageSourceInput } from './types.ts'
 import sharp from 'sharp'
@@ -22,9 +22,9 @@ export async function createSharp<OutputType extends GenerateOptionsType>(
   type: OutputType,
   image: ImageSourceInput,
   size: AssetSize,
-  background: sharp.Color,
+  background: Color,
   options?: GenerateOptionsOptionType<OutputType>,
-  channels?: sharp.Channels,
+  channels?: CreateChannels,
 ) {
   const { padding = 0 } = options ?? {}
   const useSize = toResolvedSize(size)
@@ -36,7 +36,7 @@ export async function createSharp<OutputType extends GenerateOptionsType>(
       channels: channels ?? 4,
       background,
     },
-  }).composite([{
+  } satisfies SharpOptions).composite([{
     input: await sharp(image)
       .resize(
         width,

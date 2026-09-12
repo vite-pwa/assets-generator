@@ -8,7 +8,7 @@ export async function generateAssets(
   overrideAssets: boolean,
   folder: string,
   log?: (message: string, ignored: boolean) => void,
-) {
+): Promise<void> {
   const transparent = Array.from(Object.values(instruction.transparent))
   await Promise.all(transparent.map(icon => generateAsset('PNG', icon, folder, overrideAssets, log)))
   const maskable = Array.from(Object.values(instruction.maskable))
@@ -27,7 +27,7 @@ async function generateAsset(
   folder: string,
   overrideAssets: boolean,
   log?: (message: string, ignored: boolean) => void,
-) {
+): Promise<void> {
   const filePath = resolve(folder, icon.name)
   if (!overrideAssets && existsSync(filePath)) {
     log?.(`Skipping, ${type} file already exists: ${filePath}`, true)

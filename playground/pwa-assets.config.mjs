@@ -1,4 +1,4 @@
-import { readFile } from 'node:fs/promises'
+import { promises as fs } from 'node:fs'
 import {
   createAppleSplashScreens,
   defineConfig,
@@ -14,7 +14,7 @@ export default defineConfig({
     appleSplashScreens: createAppleSplashScreens({
       async darkImageResolver(imageName) {
         return imageName === 'pwa/public/favicon.svg'
-          ? await readFile('pwa/public/splash-dark.svg')
+          ? await fs.readFile('pwa/public/splash-dark.svg')
           : undefined
       },
       padding: 0.3,

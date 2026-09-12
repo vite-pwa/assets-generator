@@ -118,7 +118,7 @@ export function createAppleSplashScreenHtmlLink<Format extends HtmlLinkType>(
 function createFaviconLink(
   preset: HtmlLinkPreset,
   icon: HtmlIconLinkOptions,
-) {
+): FaviconLink {
   const href = `${icon.basePath ?? '/'}${icon.name}`
   if (icon.name.endsWith('.svg')) {
     if (preset === '2023') {
@@ -158,9 +158,11 @@ function createFaviconLink(
   } satisfies FaviconLink
 }
 
-interface RequiredAppleSplahScreenHtmlLinkOptions extends Required<Omit<AppleSplahScreenHtmlLinkOptions, 'xhtml'>> {}
+interface RequiredAppleSplashScreenHtmlLinkOptions extends Required<Omit<AppleSplahScreenHtmlLinkOptions, 'xhtml'>> {}
 
-function createAppleSplashScreenLink(options: RequiredAppleSplahScreenHtmlLinkOptions) {
+function createAppleSplashScreenLink(
+  options: RequiredAppleSplashScreenHtmlLinkOptions,
+) {
   const {
     size,
     landscape,
@@ -192,7 +194,9 @@ function createAppleSplashScreenLink(options: RequiredAppleSplahScreenHtmlLinkOp
   } satisfies AppleSplashScreenLink
 }
 
-function createRequiredHtmlLinkOptions(options: AppleSplahScreenHtmlLinkOptions) {
+function createRequiredHtmlLinkOptions(
+  options: AppleSplahScreenHtmlLinkOptions,
+) {
   return {
     size: options.size,
     landscape: options.landscape,

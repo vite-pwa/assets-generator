@@ -13,7 +13,7 @@ export function resolveTransparentIcons(
   assets: ResolvedAssets,
   htmlPreset: HtmlLinkPreset,
   instructions: ImageAssetsInstructions,
-) {
+): void {
   const asset = assets.assets.transparent
   const { sizes, padding, resizeOptions } = asset
   const { basePath, htmlLinks: { xhtml, includeId } } = imageAssets

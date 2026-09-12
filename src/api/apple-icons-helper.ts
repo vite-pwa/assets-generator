@@ -172,7 +172,7 @@ interface SplashScreenData {
 function resolveAppleSplashScreens(
   imageAssets: ImageAssets,
   useAppleSplashScreens?: AppleSplashScreens,
-) {
+): ResolvedAppleSplashScreens | undefined {
   let appleSplashScreens: ResolvedAppleSplashScreens | undefined
   if (useAppleSplashScreens) {
     const {

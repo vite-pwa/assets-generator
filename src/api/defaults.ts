@@ -29,7 +29,7 @@ export function createResizeOptions(dark: boolean, options: ResizeOptions): Resi
   } satisfies ResizeOptions
 }
 
-export function createPngCompressionOptions(options: PngOptions) {
+export function createPngCompressionOptions(options: PngOptions): PngOptions {
   return {
     ...defaultPngCompressionOptions,
     ...options,
