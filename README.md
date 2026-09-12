@@ -45,6 +45,8 @@ Zero-config PWA Assets Generator
 
 ## 📦 Install
 
+> From v2.0.0 `@vite-pwa/assets-generator` requires **Node 20.19.0 or above**
+
 ```bash
 # npm
 npm i @vite-pwa/assets-generator -D
